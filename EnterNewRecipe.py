@@ -5,11 +5,13 @@ Created on Fri May 18 16:35:58 2018
 @author: MANHARDTD
 """
 #create recipe list text file? and store recipes there
-import pickle
+#open file first and read contents, store to list
+#close list after adding any new recipes
 RecipeList = []
-newfile = "RecipeStorage.pk"
-with open(newfile, "wb") as RecipeStorage:
-    pickle.dump(RecipeList, RecipeStorage)
+with open('RecipeListFile.txt') as f:
+    content = f.readlines()
+for recipe in content:
+    RecipeList.append(recipe)
 
 #prompt user for name of recipe and create list named as input
 #rename this function
@@ -58,3 +60,8 @@ if no more ingredients, type 'next': ")
     #go through tuple and prompt user to add amount of each
     #how to do units?
     
+#add new recipes to RecipeListFile and close file
+def AddRecipesToFile():
+        for recipe in RecipeList:
+            if recipe not in 'RecipeListFile.txt':
+                recipeFile.write(recipe)
