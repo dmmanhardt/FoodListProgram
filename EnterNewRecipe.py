@@ -5,16 +5,16 @@ Created on Fri May 18 16:35:58 2018
 @author: MANHARDTD
 """
 #create recipe list text file? and store recipes there
-#open file first and read contents, store to list
-#close list after adding any new recipes
+#open file first and read contents, store to list in order to append recipes to list later if necessary
 RecipeList = []
-with open('RecipeListFile.txt') as f:
-    content = f.readlines()
+RecipeStorage = open('RecipeListFile.txt')
+content = RecipeStorage.readlines()
+RecipeStorage.close()
+    
 for recipe in content:
     RecipeList.append(recipe)
 
-#prompt user for name of recipe and create list named as input
-#rename this function
+#prompt user for name of recipe and see if it already exists in RecipeList, if not, run AddNewRecipe()
 def EnterNewRecipe():
     newRecipeName = False
     while newRecipeName == False:
@@ -24,24 +24,30 @@ def EnterNewRecipe():
         #ingredients
         if RecipeName not in RecipeList:
             newRecipeName = True
-            RecipeList.append(RecipeName)
-            addNewRecipe(RecipeName)
+            AddNewRecipe(RecipeName)
         else:
             print("There is already a recipe with that name.")
             
-def addNewRecipe(RecipeName):
+def AddNewRecipe(RecipeName):
     print("Adding new recipe: ", RecipeName)
+    RecipeList.append(RecipeName)
     #prompt user to enter how many days/servings the recipe is 
-    #and add assign that to a serving size variable
-    ServingSize = input("How many meals does this recipe serve for two people? ")
+    #and assign that to a serving size variable
+    DefineServingSize(RecipeName)
     #store serving size in tuple? as ((recipeName, servingSize, Ingredients),(recipeName,etc))
     #StoreServingSize(ServingSize)
     #once recipe is named, ask for ingredients and add to a tuple
-    print("We will now add the ingredients for", RecipeName, ", please enter each ingredient \
-individually")
     EnterIngredients(RecipeName)
+    #once ingredients are entered, add recipes to RecipeStorage and close
+    AddRecipesToFile(RecipeName)
+    
+def DefineServingSize(RecipeName):
+    ServingSize = input("How many meals does this recipe serve for two people? ")
+    
     
 def EnterIngredients(RecipeName):
+    print("We will now add the ingredients for", RecipeName, ", please enter each ingredient \
+individually")
     Ingredients = []
     MoreIngredients = True
     ingredientNumber = 1
@@ -61,7 +67,10 @@ if no more ingredients, type 'next': ")
     #how to do units?
     
 #add new recipes to RecipeListFile and close file
-def AddRecipesToFile():
+def AddRecipesToFile(RecipeName):
         for recipe in RecipeList:
             if recipe not in 'RecipeListFile.txt':
-                recipeFile.write(recipe)
+                print('Adding ', RecipeName, 'to RecipeStorage.txt.')
+                RecipeStorage = open('RecipeListFile.txt', 'a')
+                RecipeStorage.write(recipe)
+                RecipeStorage.close()
