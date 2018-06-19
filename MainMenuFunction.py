@@ -27,4 +27,4 @@ Your input: ')
             MainMenuValidChoice = True
         else:
             print("That was not a valid option, \
-                  please enter an integer (1-3) for your choice")
+please enter an integer (1-3) for your choice")
