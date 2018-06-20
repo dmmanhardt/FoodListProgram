@@ -15,9 +15,8 @@ def DaysNeedingRecipes():
         NumberOfDaysToPlanFor = int(input("Type the number of days you want to make a list for as an integer: "))
         #checks to see if the number of days is between 1-7
         if 0 < NumberOfDaysToPlanFor < 8:
-            ValidDaySelected = False
-            #FIX LIST 
-            ValidDays = (sunday, monday, tuesday, wednesday, thursday, friday, saturday)
+            ValidDaySelected = False 
+            ValidDays = ("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
             while ValidDaySelected == False:
                 #takes user input and converts to lowercase in order to compare to valid days of the week
                 DayToStartOn = input("What day will the list start on? ").lower()
@@ -25,10 +24,19 @@ def DaysNeedingRecipes():
                     print("That is not a valid day")
                 else:
                     ValidDaySelected = True
-                    NumberOfDays(NumberOfDaysToPlanFor, DayToStartOn)
+                    NumberOfDays(NumberOfDaysToPlanFor, DayToStartOn, ValidDays)
         else:
             print("That is not a valid input, please enter an integer.")
 
 #take user input of how many days to plan for and makes arrays to store the info                
-#def NumberOfDays(NumberOfDaysToPlanFor):
-    
+def NumberOfDays(NumberOfDaysToPlanFor, DayToStartOn, ValidDays):
+    #initiate RecipeList and assign user input of DayToStartOn as first day
+    RecipeList = []
+    RecipeList.append(DayToStartOn)
+    FirstDay = ValidDays.index(DayToStartOn)
+    #for each day to plan for, add subsequent day of the week
+    #find DayToStartOn in ValidDays list and append the next day to RecipeList?
+    while FirstDay <= NumberOfDaysToPlanFor:
+        RecipeList.append(FirstDay + 1)
+        FirstDay += 1
+        print(RecipeList)
