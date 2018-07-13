@@ -7,36 +7,37 @@ Created on Tue May 22 16:37:40 2018
 
 #takes user input for the amount of days to plan recipes for, and creates a list with that number of days
 #or creates a variable for each day with breakfast, lunch, and dinner?
-def DaysNeedingRecipes():
-    ValidNumberOfDays = False
-    while ValidNumberOfDays == False:
-        #takes user input as int to compare against the number of valid days
-        #change to check if NumberOFDaysToPlan for is a number, not string, then convert to int and compare to 0 < x < 8
-        NumberOfDaysToPlanFor = int(input("Type the number of days you want to make a list for as an integer: "))
-        #checks to see if the number of days is between 1-7
-        if 0 < NumberOfDaysToPlanFor < 8:
-            ValidNumberOfDays = True
-            ValidDaySelected = False 
-            ValidDays = ("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
-            while ValidDaySelected == False:
-                #takes user input and converts to lowercase in order to compare to valid days of the week
-                DayToStartOn = input("What day will the list start on? ").lower()
-                if DayToStartOn not in ValidDays:
-                    print("That is not a valid day")
-                else:
-                    ValidDaySelected = True
-                    NumberOfDays(NumberOfDaysToPlanFor, DayToStartOn, ValidDays)
-        else:
-            print("That is not a valid input, please enter an integer.")
 
-#take user input of how many days to plan for and makes arrays to store the info                
-def NumberOfDays(NumberOfDaysToPlanFor, DayToStartOn, ValidDays):
-    #initiate RecipeList and assign user input of DayToStartOn as first day
-    RecipeList = []
-    FirstDay = ValidDays.index(DayToStartOn)
-    #for each day to plan for, add subsequent day of the week
-    #find DayToStartOn in ValidDays list and append the next day to RecipeList?
-    #add end point for slicing, find way to loop back over beginning of list if number of days
-    #goes beyond validdays
-    for day in ValidDays[FirstDay:]:
-        RecipeList.append(day)
+def create_days_needing_recipes():
+    while True:
+        number_of_days_to_plan_for = input("Type the number of days you want to make a list for as an integer: ")
+        try:
+            number_of_days_to_plan_for = int(number_of_days_to_plan_for)
+            break
+        except:
+            print("That is not a valid input, please enter an integer.")
+    valid_days = ("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
+    while True:
+        day_to_start_on = input("What day will the list start on? ").lower()
+        if day_to_start_on in valid_days:
+            days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for)
+            break
+        else:
+            print("That is not a valid day")
+        break
+
+def days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for):
+    index = valid_days.index(day_to_start_on)
+    # doubling the list since before the script would not be able to loop over the list more than twice
+    valid_days = valid_days * 2
+    days_for_mealprep = (valid_days + valid_days)[index:index + number_of_days_to_plan_for]
+    return days_for_mealprep
+
+class DayForMealPrep:
+    def __init__(self):
+        self.day_for_mealprep = set()
+    def assign_meals_to_each_day(self):
+        for day in days_for_mealprep:
+            print(day)
+            
+        

@@ -5,18 +5,18 @@ Created on Fri May 18 09:38:12 2018
 @author: MANHARDTD
 """
 
-def FoodListCreation():
+def food_list_creation():
     #main menu asks user if they want to enter a recipe, create a food list, or exit
-    MainMenu()
+    main_menu()
     
     #create array for each recipe, named as recipe and key as ingredient, value as serving size
     
-    ListOfRecipesWithIngredients = (recipe1(ingredient(serving)), recipe2(ingredient(serving)))
+    list_of_recipes_with_ingredients = (recipe1(ingredient(serving)), recipe2(ingredient(serving)))
     #promt user how many nights they want to make a list for
-    DaysNeedingRecipe()
+    days_needing_recipes()
     #loop menu prompt until # of nights is full of recipes
     #menu promping user what they want to do (see list of recipes, pick a recipe, exit)
-    RecipeSelectionMenu()
+    recipe_selection_menu()
     
     #list of recipes displays the names of all the recipes entered
     
