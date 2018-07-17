@@ -19,7 +19,7 @@ Your input: ')
             enter_new_recipe()
             break
         elif main_menu_choice == "2":
-            create_new_food_list()
+            create_days_needing_recipes()
             break
         elif main_menu_choice == "3":
             quit()

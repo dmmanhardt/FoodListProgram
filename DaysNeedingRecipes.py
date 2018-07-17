@@ -30,14 +30,13 @@ def days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for):
     index = valid_days.index(day_to_start_on)
     # doubling the list since before the script would not be able to loop over the list more than twice
     valid_days = valid_days * 2
-    days_for_mealprep = (valid_days + valid_days)[index:index + number_of_days_to_plan_for]
-    return days_for_mealprep
+    days_for_meal_prep = []
+    days_for_meal_prep = (valid_days + valid_days)[index:index + number_of_days_to_plan_for]
+    print(days_for_meal_prep)
+    return days_for_meal_prep
 
-class DayForMealPrep:
-    def __init__(self):
-        self.day_for_mealprep = set()
-    def assign_meals_to_each_day(self):
-        for day in days_for_mealprep:
-            print(day)
-            
+def assign_meals_to_days(days_for_meal_prep):
+    days_for_breakfast = days_for_meal_prep
+    days_for_lunch = days_for_meal_prep
+    days_for_dinner = days_for_meal_prep      
         
