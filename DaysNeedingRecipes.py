@@ -39,4 +39,5 @@ def assign_meals_to_days(days_for_meal_prep):
     days_for_breakfast = days_for_meal_prep
     days_for_lunch = days_for_meal_prep
     days_for_dinner = days_for_meal_prep      
-        
+    return days_for_breakfast, days_for_lunch, days_for_dinner
+    
