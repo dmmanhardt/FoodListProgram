@@ -16,14 +16,19 @@ def pick_meals_for_days(days_for_meal_prep):
     breakfast_recipes = []
     lunch_recipes = []
     dinner_recipes = []
+    meals = ["breakfast", "lunch", "dinner"]
     for day in days_for_meal_prep:
-        breakfast_recipes.append(input("What would you like for breakfast on " + day + "? "))
-        lunch_recipes.append(input("What would you like for lunch on " + day + "? "))
-        dinner_recipes.append(input("What would you like for dinner on " + day + "? "))
-        # add if statements:
-        # if input = skip, add none to day and skip that day
-        # if input is not in list of recipes, ask to select new recipe
+        for meal in meals:
+            recipe_picked = (input("What would you like for %(meal)s on " % {'meal': meal} + day + "? " ))
+            add_meal_picked_to_day(meal, recipe_picked)
     return breakfast_recipes, lunch_recipes, dinner_recipes
+
+def add_meal_picked_to_day(meal, recipe_picked):
+    print("called add_meal_picked_to_day which is not functional")
+    # append input to correct list
+    # add if statements:
+    # if input = skip, add none to day and skip that day
+    # if input is not in list of recipes, ask to select new recipe
         
 def add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes):
     df = pd.DataFrame({"Days": days_for_meal_prep, "Breakfast": breakfast_recipes, "Lunch": lunch_recipes, "Dinner": dinner_recipes})
