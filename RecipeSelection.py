@@ -12,20 +12,31 @@ def recipe_selection(days_for_meal_prep):
     print(df)
     return df
 
-def pick_meals_for_days(days_for_meal_prep):
+def pick_meals_for_days(days_for_meal_prep, recipe_list):
     breakfast_recipes = []
     lunch_recipes = []
     dinner_recipes = []
     meals = ["breakfast", "lunch", "dinner"]
     for day in days_for_meal_prep:
         for meal in meals:
-            recipe_picked = (input("What would you like for %(meal)s on " % {'meal': meal} + day + "? " ))
+            while True:
+                recipe_picked = (input("What would you like for %(meal)s on " % {'meal': meal} + day + "? " ))
+                if recipe_picked not in recipe_list:
+                    print("That is not a valid recipe, please enter a recipe")
+                break
             add_meal_picked_to_day(meal, recipe_picked)
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
 def add_meal_picked_to_day(meal, recipe_picked):
     print("called add_meal_picked_to_day which is not functional")
-    # append input to correct list
+    if meal == "breakfast":
+        breakfast_recipes.append(recipe_picked)
+    elif meal == "lunch":
+        lunch_recipes.append(recipe_picked)
+    elif meal == "dinner":
+        dinner_recipes.append(recipe_picked)
+    else:
+        print("Error occurred appending recipe.")
     # add if statements:
     # if input = skip, add none to day and skip that day
     # if input is not in list of recipes, ask to select new recipe
