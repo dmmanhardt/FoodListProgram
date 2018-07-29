@@ -9,7 +9,7 @@ def food_list_creation():
     # main menu asks user if they want to enter a recipe, create a food list, or exit
     main_menu()
     # menu promping user what they want to do (see list of recipes, pick a recipe, exit)
-    recipe_selection(days_for_meal_prep, days_for_breakfast, days_for_lunch, days_for_dinner)
+    recipe_selection()
     
     # list of recipes displays the names of all the recipes entered
     

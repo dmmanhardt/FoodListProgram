@@ -4,7 +4,12 @@ Created on Tue Jul 17 16:20:32 2018
 
 @author: David
 """
+from DaysNeedingRecipes import *
 import pandas as pd
+
+breakfast_recipes = []
+lunch_recipes = []
+dinner_recipes = []
 
 def recipe_selection(days_for_meal_prep):
     print("We will now select recipes for ", days_for_meal_prep)
@@ -12,10 +17,9 @@ def recipe_selection(days_for_meal_prep):
     print(df)
     return df
 
+# takes user selection of recipe for each meal in each day in days_for_meal_prep and outputs lists for each meal of the day
+
 def pick_meals_for_days(days_for_meal_prep, recipe_list):
-    breakfast_recipes = []
-    lunch_recipes = []
-    dinner_recipes = []
     meals = ["breakfast", "lunch", "dinner"]
     for day in days_for_meal_prep:
         for meal in meals:
@@ -39,7 +43,6 @@ def add_meal_picked_to_day(meal, recipe_picked):
         print("Error occurred appending recipe.")
     # add if statements:
     # if input = skip, add none to day and skip that day
-    # if input is not in list of recipes, ask to select new recipe
         
 def add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes):
     df = pd.DataFrame({"Days": days_for_meal_prep, "Breakfast": breakfast_recipes, "Lunch": lunch_recipes, "Dinner": dinner_recipes})

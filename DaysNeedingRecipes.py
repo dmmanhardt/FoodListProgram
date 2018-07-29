@@ -5,8 +5,7 @@ Created on Tue May 22 16:37:40 2018
 @author: MANHARDTD
 """
 
-#takes user input for the amount of days to plan recipes for, and creates a list with that number of days
-#or creates a variable for each day with breakfast, lunch, and dinner?
+# takes user input for the amount of days to plan recipes for, and creates a list with that number of days
 
 def create_days_needing_recipes():
     while True:
@@ -35,9 +34,12 @@ def days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for):
     print(days_for_meal_prep)
     return days_for_meal_prep
 
-def assign_meals_to_days(days_for_meal_prep):
-    days_for_breakfast = days_for_meal_prep
-    days_for_lunch = days_for_meal_prep
-    days_for_dinner = days_for_meal_prep      
-    return days_for_breakfast, days_for_lunch, days_for_dinner
+
+# =============================================================================
+# def assign_meals_to_days(days_for_meal_prep):
+#     days_for_breakfast = days_for_meal_prep
+#     days_for_lunch = days_for_meal_prep
+#     days_for_dinner = days_for_meal_prep      
+#     return days_for_breakfast, days_for_lunch, days_for_dinner
+# =============================================================================
     
