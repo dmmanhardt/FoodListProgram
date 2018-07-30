@@ -17,10 +17,8 @@ Your input: ')
         #choice 1 would run the EnterNewRecipe function
         if main_menu_choice == "1":
             enter_new_recipe()
-            break
         elif main_menu_choice == "2":
-            create_days_needing_recipes()
-            break
+            recipe_selection()
         elif main_menu_choice == "3":
             quit()
             break

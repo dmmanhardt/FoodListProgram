@@ -4,18 +4,10 @@ Created on Fri May 18 16:35:58 2018
 
 @author: MANHARDTD
 """
-#create recipe list text file? and store recipes there
-#open file first and read contents, store to list in order to append recipes to list later if necessary
-recipe_list = []
-recipe_storage = open('RecipeListFile.txt')
-content = recipe_storage.readlines()
-recipe_storage.close()
-    
-for recipe in content:
-    recipe_list.append(recipe)
 
 #prompt user for name of recipe and see if it already exists in RecipeList, if not, run AddNewRecipe()
 def enter_new_recipe():
+    recipe_list = read_recipe_storage()
     while  True:
         recipe_name = input("What is the name of the recipe? ")
         #check to see if the recipe is already stored in recipeList

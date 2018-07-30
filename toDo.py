@@ -5,7 +5,7 @@ Created on Tue Jul 17 16:53:30 2018
 @author: David
 """
 
-# working on foodlistcreation.py, need to get recipe_selection() to work, parameters
-# are not coming through
+# once recipes for each meal/day are selected, grab the ingredients from the recipe_list
+# and add them to a text file (?)
 
-# add functionality in comments in RecipeSelection.py
+# figure out how to store the recipes and ingredients

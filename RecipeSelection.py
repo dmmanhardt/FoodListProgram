@@ -4,18 +4,27 @@ Created on Tue Jul 17 16:20:32 2018
 
 @author: David
 """
-from DaysNeedingRecipes import *
+
 import pandas as pd
 
 breakfast_recipes = []
 lunch_recipes = []
 dinner_recipes = []
 
-def recipe_selection(days_for_meal_prep):
+# main function that calls functions to select recipes for each day needed and append them to a dataframe
+
+# recipe_list is undefined for now, need to create function to grab current recipes
+
+recipe_list = ["none", "chicken"]
+
+def recipe_selection():
+    days_for_meal_prep = create_days_needing_recipes()
     print("We will now select recipes for ", days_for_meal_prep)
     df = pd.DataFrame(columns = days_for_meal_prep)
     print(df)
-    return df
+    pick_meals_for_days(days_for_meal_prep, recipe_list)
+    final_recipe_dataframe = add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes)
+    
 
 # takes user selection of recipe for each meal in each day in days_for_meal_prep and outputs lists for each meal of the day
 
@@ -32,7 +41,6 @@ def pick_meals_for_days(days_for_meal_prep, recipe_list):
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
 def add_meal_picked_to_day(meal, recipe_picked):
-    print("called add_meal_picked_to_day which is not functional")
     if meal == "breakfast":
         breakfast_recipes.append(recipe_picked)
     elif meal == "lunch":

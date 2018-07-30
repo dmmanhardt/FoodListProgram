@@ -19,7 +19,8 @@ def create_days_needing_recipes():
     while True:
         day_to_start_on = input("What day will the list start on? ").lower()
         if day_to_start_on in valid_days:
-            days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for)
+            days_for_meal_prep = days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for)
+            return days_for_meal_prep
             break
         else:
             print("That is not a valid day")
@@ -33,13 +34,3 @@ def days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for):
     days_for_meal_prep = (valid_days + valid_days)[index:index + number_of_days_to_plan_for]
     print(days_for_meal_prep)
     return days_for_meal_prep
-
-
-# =============================================================================
-# def assign_meals_to_days(days_for_meal_prep):
-#     days_for_breakfast = days_for_meal_prep
-#     days_for_lunch = days_for_meal_prep
-#     days_for_dinner = days_for_meal_prep      
-#     return days_for_breakfast, days_for_lunch, days_for_dinner
-# =============================================================================
-    
