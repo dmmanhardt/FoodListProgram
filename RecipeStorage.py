@@ -17,9 +17,10 @@ def read_recipe_storage():
     return recipe_list
 
 # recipe storage format = ["recipe_name: (ingredient_name: ingredient_amount: measurement, ingredient_name: ingredient_amount: measurement, etc)"]
-    
+# Ingredient class needs to be inside Recipe class? so that it is associated with the recipe
 class Recipe(object):
-    pass
+    def __init__(self, ingredients):
+        self.ingredients = ingredients
 
 class Ingredient(object):
     def __init__(self, amount, measurement):
@@ -31,6 +32,10 @@ steak_and_potatoes = Recipe()
 
 ingredient_list = ["steak", "potatoes"]
 
-for ingredient in ingredient_list:
-    steak_and_potatoes.ingredient = Ingredient(input("Serving amount? "), input("Measurement? "))
-    print(steak_and_potatoes.ingredient.amount, steak_and_potatoes.ingredient.measurement)
+
+def get_ingredients(recipe_name):
+    for ingredient in ingredient_list:
+        ingredient_name.ingredient = recipe_name.ingredient
+        # change input to recipe_name.ingredient.serving_amount and recipe_name.ingredient.measurement
+        recipe_name.ingredient = Ingredient(input("Serving amount? "), input("Measurement? "))
+        print(recipe_name.ingredient.amount, recipe_name.ingredient.measurement)

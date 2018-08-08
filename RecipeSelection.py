@@ -34,9 +34,9 @@ def pick_meals_for_days(days_for_meal_prep, recipe_list):
         for meal in meals:
             while True:
                 recipe_picked = (input("What would you like for %(meal)s on " % {'meal': meal} + day + "? " ))
-                if recipe_picked not in recipe_list:
-                    print("That is not a valid recipe, please enter a recipe")
-                break
+                if recipe_picked in recipe_list:
+                    break
+                print("That is not a valid recipe, please enter a recipe")
             add_meal_picked_to_day(meal, recipe_picked)
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
