@@ -5,22 +5,21 @@ Created on Mon Jul 30 16:08:25 2018
 @author: MANHARDTD
 """
 
-import pickle
 import pandas as pd
 import os
 
 # recipe storage format = ["recipe_name: (ingredient_name: ingredient_amount: measurement, ingredient_name: ingredient_amount: measurement, etc)"]
 # Ingredient class needs to be inside Recipe class? so that it is associated with the recipe
-class Recipe(object):
-    def __init__(self, name, ingredients, serving_size):
-        self.name = name
-        self.ingredients = ingredients
-        self.serving_size = serving_size
-
-class Ingredient(object):
-    def __init__(self, name, amount, measurement):
-        self.amount = amount
-        self.measurement = measurement
+#class Recipe(object):
+#    def __init__(self, name, ingredients, serving_size):
+#        self.name = name
+#        self.ingredients = ingredients
+#        self.serving_size = serving_size
+#
+#class Ingredient(object):
+#    def __init__(self, name, amount, measurement):
+#        self.amount = amount
+#        self.measurement = measurement
 
 # PICKLE ATTEMPT       
 #with open('recipe_storage.pkl', 'wb') as output:
@@ -58,11 +57,6 @@ class Ingredient(object):
 # DATABASE ATTEMPT
 # read recipe_storage excel file and grab recipe names and populate recipe_names list
 # if a recipe is picked, then grab the rest of the info and populate the lists
-recipe_names = []
-recipe_serving_size = []
-recipe_ingredient_names = []
-recipe_ingredient_amount = []
-recipe_ingredient_measurement = []
 
 # reads csv file and returns output as dataframe
 
@@ -70,26 +64,34 @@ def read_recipe_storage():
     file = "recipe_storage.csv"
     directory = os.path.dirname(os.path.realpath(file))
     file_to_open = directory + "\\" + file
-    recipe_dataframe = pd.read_csv(file_to_open, skipinitialspace = True)
-    return recipe_dataframe
+    recipe_df = pd.read_csv(file_to_open, skipinitialspace = True)
+    return recipe_df
 
 # outputs recipe names to local variable as list
 
 def add_recipe_names_to_list():
-    recipe_dataframe = read_recipe_storage()
-    for recipe in recipe_dataframe["Recipe Name"]:
+    recipe_names = []
+    recipe_df = read_recipe_storage()
+    for recipe in recipe_df["Recipe Name"]:
         recipe_names.append(recipe)
-    print(recipe_names)
+    return recipe_names
+
+# outputs recipe information for inputted recipe name
 
 def read_recipe_information(recipe_name):
-    recipe_dataframe = read_recipe_storage()
-    # find correct row
-    recipe_row = recipe_dataframe.loc[recipe_dataframe["Recipe Name"] == recipe_name]
-    
-            
+    recipe_serving_size = []
+    recipe_ingredient_names = []
+    recipe_ingredient_amount = []
+    recipe_ingredient_measurement = []
+    recipe_df = read_recipe_storage()
+    recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
+    recipe_serving_size.append(recipe_df.at[recipe_row, "Serving Size"])
+    recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
+    recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
+    recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"])           
 
 def output_recipe_storage():
-    recipe_dataframe = pd.dataframe({"Recipe Name" : recipe_names, 
+    recipe_df = pd.df({"Recipe Name" : recipe_names, 
                        "Serving Size" : recipe_serving_size, 
                        "Ingredient Names" : recipe_ingredient_names, 
                        "Ingredient Amount" : recipe_ingredient_amount, 

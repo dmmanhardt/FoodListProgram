@@ -32,5 +32,4 @@ def days_to_plan_for(day_to_start_on, valid_days, number_of_days_to_plan_for):
     valid_days = valid_days * 2
     days_for_meal_prep = []
     days_for_meal_prep = (valid_days + valid_days)[index:index + number_of_days_to_plan_for]
-    print(days_for_meal_prep)
     return days_for_meal_prep
