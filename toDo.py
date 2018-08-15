@@ -10,3 +10,7 @@ Created on Tue Jul 17 16:53:30 2018
 
 # next step:
 # use final dataframe with recipes selected and put together ingredient list
+
+# create_grocery_list() called under FoodListCreation.py
+
+# find out why food_list_creation isn't working

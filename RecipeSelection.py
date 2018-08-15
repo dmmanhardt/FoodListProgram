@@ -40,7 +40,7 @@ def pick_meals_for_days(days_for_meal_prep, recipe_names):
                     break
                 print("That is not a valid recipe, please enter a recipe")
             # adds 1 to recipe_picked int and converts to the actual name of the recipe
-            recipe_picked = recipe_names[recipe_picked + 1]
+            recipe_picked = recipe_names[recipe_picked - 1]
             add_meal_picked_to_day(meal, recipe_picked)
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
@@ -73,5 +73,6 @@ def add_meal_picked_to_day(meal, recipe_picked):
     # if input = skip, add none to day and skip that day
         
 def add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes):
+    print("called add_recipes_to_dataframe")
     df = pd.DataFrame({"Days": days_for_meal_prep, "Breakfast": breakfast_recipes, "Lunch": lunch_recipes, "Dinner": dinner_recipes})
-    print(df)
+    return df

@@ -10,5 +10,5 @@ def food_list_creation():
     main_menu()
     # go through recipes after they are picked and add their ingredients to a shopping_list that will be output
     # as a text (?) file
-        
+    create_grocery_list(df)    
     # exit loop and program

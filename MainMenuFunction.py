@@ -19,6 +19,7 @@ Your input: ')
             enter_new_recipe()
         elif main_menu_choice == "2":
             recipe_selection()
+            break
         elif main_menu_choice == "3":
             quit()
             break
