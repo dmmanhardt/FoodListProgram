@@ -18,7 +18,8 @@ Your input: ')
         if main_menu_choice == "1":
             enter_new_recipe()
         elif main_menu_choice == "2":
-            recipe_selection()
+            final_recipe_dataframe = recipe_selection()
+            create_grocery_list(final_recipe_dataframe) 
             break
         elif main_menu_choice == "3":
             quit()

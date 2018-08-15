@@ -7,10 +7,6 @@ Created on Tue Jul 17 16:20:32 2018
 
 import pandas as pd
 
-breakfast_recipes = []
-lunch_recipes = []
-dinner_recipes = []
-
 # main function that calls functions to select recipes for each day needed and append them to a dataframe
 
 # recipe_list is undefined for now, need to create function to grab current recipes
@@ -18,16 +14,22 @@ dinner_recipes = []
 recipe_names = add_recipe_names_to_list()
 
 def recipe_selection():
+    breakfast_recipes = []
+    lunch_recipes = []
+    dinner_recipes = []
     days_for_meal_prep = create_days_needing_recipes()
     print("We will now select recipes for", days_for_meal_prep)
     df = pd.DataFrame(columns = days_for_meal_prep)
-    pick_meals_for_days(days_for_meal_prep, recipe_names)
-    final_recipe_dataframe = add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes)    
+    pick_meals_for_days(days_for_meal_prep, recipe_names, breakfast_recipes,
+                        lunch_recipes, dinner_recipes)
+    final_recipe_dataframe = add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes)
+    return final_recipe_dataframe
 
 # takes user selection of recipe for each meal in each day in days_for_meal_prep and outputs lists for each meal of the day
 # COULD USE REFACTORING
 
-def pick_meals_for_days(days_for_meal_prep, recipe_names):
+def pick_meals_for_days(days_for_meal_prep, recipe_names, breakfast_recipes,
+                        lunch_recipes, dinner_recipes):
     meals = ["breakfast", "lunch", "dinner"]
     for day in days_for_meal_prep:
         for meal in meals:
@@ -41,7 +43,8 @@ def pick_meals_for_days(days_for_meal_prep, recipe_names):
                 print("That is not a valid recipe, please enter a recipe")
             # adds 1 to recipe_picked int and converts to the actual name of the recipe
             recipe_picked = recipe_names[recipe_picked - 1]
-            add_meal_picked_to_day(meal, recipe_picked)
+            add_meal_picked_to_day(meal, recipe_picked, breakfast_recipes,
+                                   lunch_recipes, dinner_recipes)
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
 def list_available_recipes(recipe_names):
@@ -59,7 +62,8 @@ def recipe_check(recipe_picked, recipe_names):
     else:
         return False
 
-def add_meal_picked_to_day(meal, recipe_picked):
+def add_meal_picked_to_day(meal, recipe_picked, breakfast_recipes,
+                           lunch_recipes, dinner_recipes):
     if meal == "breakfast":
         breakfast_recipes.append(recipe_picked)
     elif meal == "lunch":
@@ -73,6 +77,6 @@ def add_meal_picked_to_day(meal, recipe_picked):
     # if input = skip, add none to day and skip that day
         
 def add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes):
-    print("called add_recipes_to_dataframe")
-    df = pd.DataFrame({"Days": days_for_meal_prep, "Breakfast": breakfast_recipes, "Lunch": lunch_recipes, "Dinner": dinner_recipes})
-    return df
+    final_recipe_dataframe = pd.DataFrame({"Days": days_for_meal_prep, "Breakfast": breakfast_recipes, "Lunch": lunch_recipes, "Dinner": dinner_recipes})
+    return final_recipe_dataframe
+    
