@@ -79,16 +79,16 @@ def add_recipe_names_to_list():
 # outputs recipe information for inputted recipe name
 
 def read_recipe_information(recipe_name):
-    recipe_serving_size = []
     recipe_ingredient_names = []
     recipe_ingredient_amount = []
     recipe_ingredient_measurement = []
     recipe_df = read_recipe_storage()
     recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
-    recipe_serving_size.append(recipe_df.at[recipe_row, "Serving Size"])
+    recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
     recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
     recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
-    recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"])           
+    recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
+    return recipe_serving_size, recipe_ingredient_names, recipe_ingredient_amount, recipe_ingredient_measurement
 
 def output_recipe_storage():
     recipe_df = pd.df({"Recipe Name" : recipe_names, 

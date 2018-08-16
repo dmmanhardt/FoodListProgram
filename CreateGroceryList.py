@@ -15,11 +15,15 @@ def create_grocery_list(final_recipe_dataframe):
         all_recipes.append(recipe.Lunch)
         all_recipes.append(recipe.Dinner)
         # create count for each unique recipe in each list
-        
+        for recipe in all_recipes:
+            servings_needed = all_recipes.count(recipe)
+            print(("%(recipe)s needs %(serving)s servings") % {
+                    "recipe":recipe, "serving":servings_needed})
         # read ingredient info for each unique recipe
-        
+            recipe_information = read_recipe_information(recipe_name=recipe)
+            print("recipe serving size = %(size)s") % {"size":recipe_serving_size}
         # if the count for each recipe is different from the serving size
-        
+            #if servings_needed != recipe_serving_size:
             # then change each ingredient amount by that amount
             
         # add ingredients to grocery list
