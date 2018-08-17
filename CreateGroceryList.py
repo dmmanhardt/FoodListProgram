@@ -20,7 +20,7 @@ def create_grocery_list(final_recipe_dataframe):
             print(("%(recipe)s needs %(serving)s servings") % {
                     "recipe":recipe, "serving":servings_needed})
         # read ingredient info for each unique recipe
-            recipe_information = read_recipe_information(recipe_name=recipe)
+            recipe_information = ReadRecipeInformation()
             print("recipe serving size = %(size)s") % {"size":recipe_serving_size}
         # if the count for each recipe is different from the serving size
             #if servings_needed != recipe_serving_size:
