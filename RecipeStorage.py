@@ -81,29 +81,31 @@ def add_recipe_names_to_list():
 # CLASS ATTEMPT TO REPLACE READ_RECIPE_INFORMATION() IN ORDER TO BE ABLE
 # TO RETURN ONE VARIABLE PER FUNCTION WITHIN THE CLASS
     
-class ReadRecipeInformation():
-    def __init__(self, recipe_name):
-        self.recipe_ingredient_names = []
-        self.recipe_ingredient_amount = []
-        self.recipe_ingredient_measurement = []
-        self.recipe_df = read_recipe_storage()
-        self.recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
-        self.recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
-        self.recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
-        self.recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
-        self.recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
+#class ReadRecipeInformation():
+#    def __init__(self, recipe, recipe_df):
+#        self.recipe_name = recipe
+#        self.recipe_ingredient_names = []
+#        self.recipe_ingredient_amount = []
+#        self.recipe_ingredient_measurement = []
+#        self.recipe_df = read_recipe_storage()
+#        self.recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
+#        self.recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
+#        self.recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
+#        self.recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
+#        self.recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
 
-#def read_recipe_information(recipe_name):
-#    recipe_ingredient_names = []
-#    recipe_ingredient_amount = []
-#    recipe_ingredient_measurement = []
-#    recipe_df = read_recipe_storage()
-#    recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
-#    recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
-#    recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
-#    recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
-#    recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
-#    return recipe_serving_size, recipe_ingredient_names, recipe_ingredient_amount, recipe_ingredient_measurement
+def read_recipe_information(recipe_name):
+    recipe_ingredient_names = []
+    recipe_ingredient_amount = []
+    recipe_ingredient_measurement = []
+    recipe_df = read_recipe_storage()
+    recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
+    recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
+    recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
+    recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])
+    recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
+    return (recipe_serving_size, recipe_ingredient_names, 
+            recipe_ingredient_amount, recipe_ingredient_measurement)
 
 def output_recipe_storage():
     recipe_df = pd.df({"Recipe Name" : recipe_names, 
