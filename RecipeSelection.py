@@ -11,9 +11,10 @@ import pandas as pd
 
 # recipe_list is undefined for now, need to create function to grab current recipes
 
-recipe_names = add_recipe_names_to_list()
+
 
 def recipe_selection():
+    recipe_names = add_recipe_names_to_list()
     breakfast_recipes = []
     lunch_recipes = []
     dinner_recipes = []
