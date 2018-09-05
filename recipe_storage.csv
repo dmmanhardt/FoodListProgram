@@ -1,4 +1,6 @@
 Recipe Name,Meal Served,Serving Size,Ingredient Names,Ingredient Amount,Ingredient Measurement
-loaded sweet potatoes,,2,"bacon, sweet potatoes, scallions, eggs, avocados","5, 2, 4, 4, 2","slices, medium, , , "
-lo mein,,3,"ramen, veggies","1, 5","package, lbs"
-Quiche,Breakfast,3,"sweet potato, bacon, sweet onion, cherry tomatoes, baby arugula, garlic clove, eggs","1, 4, .5, 8, 1, 3, 6","large, slices, medium, , large handful, , "
+loaded sweet potatoes,Lunch,2,"bacon, sweet potatoes, scallions, eggs, avocados","5, 2, 4, 4, 2","slices, medium, , , "
+lo mein,Lunch,3,"ramen, veggies","1, 5","package, lbs"
+Quiche,Breakfast,3,"sweet potato, bacon, sweet onion, cherry tomatoes, baby arugula, garlic clove, eggs","1, 4, .5, 8, 1, 3, 6","large, slices, medium, , large handful, , "
+beef barbacoa,Lunch,3,"diced tomatoes, onion, garlic cloves, apple cider vinegar, maple syrup, beef shoulder","14, 1, 3, 1, 1, 2.5","ounce, medium, , tbsp, tbsp, lb"
+Pulled Pork,Dinner,3,"diced tomatoes, onion, tomato paste, spicy brown mustard, apple cider vinegar, paprika, paprika, cayenne pepper, pineapple chunks, pork roast","14.5, 1, 2, 2, 3, 2, 1, .5, 20, 4","ounce, medium, tbsp, tbsp, tbsp, tbsp, tsp, tsp, ounce, lb"

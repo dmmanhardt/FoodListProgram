@@ -23,23 +23,29 @@ def read_recipe_storage():
 
 # outputs recipe names to local variable as list
 
-def add_recipe_names_to_list():
+def add_recipe_names_to_list(recipe_df):
     recipe_names = []
-    recipe_df = read_recipe_storage()
     for recipe in recipe_df["Recipe Name"]:
         recipe_names.append(recipe)
     return recipe_names
 
+def add_meal_served_to_list(recipe_df, recipe_name):
+    recipe_row = output_recipe_row(recipe_df, recipe_name)
+    recipe_meal = recipe_df.at[recipe_row, "Meal Served"]
+    return recipe_meal
+    
+def output_recipe_row(recipe_df, recipe_name):
+    recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
+    return recipe_row
 
 # takes info from .csv file and outputs info into lists, assumes
 # all corresponding info is at same row
 
-def read_recipe_information(recipe_name):
+def read_recipe_information(recipe_df, recipe_name):
     recipe_ingredient_names = []
     recipe_ingredient_amount = []
     recipe_ingredient_measurement = []
-    recipe_df = read_recipe_storage()
-    recipe_row = recipe_df.loc[recipe_df["Recipe Name"] == recipe_name].index[0]
+    recipe_row = output_recipe_row(recipe_df, recipe_name)
     recipe_serving_size = recipe_df.at[recipe_row, "Serving Size"]
     recipe_ingredient_names.append(recipe_df.at[recipe_row, "Ingredient Names"])
     recipe_ingredient_amount.append(recipe_df.at[recipe_row, "Ingredient Amount"])

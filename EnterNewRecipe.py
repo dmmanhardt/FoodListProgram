@@ -9,8 +9,8 @@ import csv
 
 # prompt user for name of recipe and see if it already exists in 
 # recipe_names, if not, run add_new_recipe()
-def enter_new_recipe():
-    recipe_names = add_recipe_names_to_list()
+def enter_new_recipe(recipe_df):
+    recipe_names = add_recipe_names_to_list(recipe_df)
     while  True:
         recipe_name = input("What is the name of the recipe? ")
         if recipe_name not in recipe_names:

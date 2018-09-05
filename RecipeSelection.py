@@ -13,51 +13,88 @@ import pandas as pd
 
 
 
-def recipe_selection():
-    recipe_names = add_recipe_names_to_list()
+def recipe_selection(recipe_df):
+    recipe_names = add_recipe_names_to_list(recipe_df)
+    meal_served = output_recipe_meal_served(recipe_df, recipe_names)
     breakfast_recipes = []
     lunch_recipes = []
     dinner_recipes = []
     days_for_meal_prep = create_days_needing_recipes()
     print("We will now select recipes for", days_for_meal_prep)
     df = pd.DataFrame(columns = days_for_meal_prep)
-    pick_meals_for_days(days_for_meal_prep, recipe_names, breakfast_recipes,
-                        lunch_recipes, dinner_recipes)
+    pick_meals_for_days(days_for_meal_prep, recipe_names, meal_served, 
+                        breakfast_recipes, lunch_recipes, dinner_recipes)
     final_recipe_dataframe = add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes)
     return final_recipe_dataframe
+
+def output_recipe_meal_served(recipe_df, recipe_names):
+    meal_served = []
+    for recipe_name in recipe_names:
+        recipe_meal = add_meal_served_to_list(recipe_df, recipe_name)
+        meal_served.append(recipe_meal)
+    return meal_served
 
 # takes user selection of recipe for each meal in each day in days_for_meal_prep and outputs lists for each meal of the day
 # COULD USE REFACTORING
 
-def pick_meals_for_days(days_for_meal_prep, recipe_names, breakfast_recipes,
-                        lunch_recipes, dinner_recipes):
+def pick_meals_for_days(days_for_meal_prep, recipe_names, meal_served,
+                        breakfast_recipes, lunch_recipes, dinner_recipes):
     meals = ["breakfast", "lunch", "dinner"]
-    for day in days_for_meal_prep:
-        for meal in meals:
+    for meal in meals:
+        for day in days_for_meal_prep:
             while True:
-                list_available_recipes(recipe_names)
-                # take input and convert to int
+                recipe_numbers = list_available_recipes(recipe_names, meal, meal_served)
+                corresponding_recipes = list_corresponding_recipes(
+                        recipe_names, meal, meal_served)
                 recipe_picked = int(input("What would you like for %(meal)s on %(day)s? "\
                                        % {'meal': meal, 'day': day}))
-                if recipe_check(recipe_picked, recipe_names) == True:
+                if recipe_check(recipe_picked, recipe_numbers) == True:
                     break
                 print("That is not a valid recipe, please enter a recipe")
-            # adds 1 to recipe_picked int and converts to the actual name of the recipe
-            recipe_picked = recipe_names[recipe_picked - 1]
+                # converts number picked back to corresponding recipe_name string
+            recipe_picked = corresponding_recipes[recipe_picked - 1]
             add_meal_picked_to_day(meal, recipe_picked, breakfast_recipes,
                                    lunch_recipes, dinner_recipes)
     return breakfast_recipes, lunch_recipes, dinner_recipes
 
-def list_available_recipes(recipe_names):
-    print("Available recipes:")
-    for recipe in recipe_names:
-        count = (recipe_names.index(recipe) + 1)  
-        print("%(count)s) %(recipe)s" % {"count": count, "recipe": recipe})
+def list_recipe_meal(recipe_names, meal, meal_served, recipe):
+    recipe_index = recipe_names.index(recipe)
+    recipe_meal = meal_served[recipe_index].lower()
+    return recipe_meal
 
-def recipe_check(recipe_picked, recipe_names):
+def list_corresponding_recipes(recipe_names, meal, meal_served):
+    corresponding_recipes = []
+    for recipe in recipe_names:
+        recipe_meal = list_recipe_meal(recipe_names, meal, meal_served,
+                                       recipe)
+        corresponding_recipes = add_corresponding_recipe(
+                recipe_meal, meal, corresponding_recipes, recipe)
+    return corresponding_recipes
+            
+def add_corresponding_recipe(recipe_meal, meal, corresponding_recipes,
+                             recipe):
+    if recipe_meal == meal:
+        corresponding_recipes.append(recipe)
+    return corresponding_recipes
+
+def list_available_recipes(recipe_names, meal, meal_served):
+    print("Available recipes:")
+    number = 1
     recipe_numbers = []
     for recipe in recipe_names:
-        recipe_numbers.append(recipe_names.index(recipe) + 1)
+        recipe_index = recipe_names.index(recipe)
+        recipe_meal = meal_served[recipe_index].lower()
+        if recipe_meal == meal:  
+            recipe_numbers = add_recipe_number(number, recipe_numbers)
+            print("%(number)s) %(recipe)s" % {"number": number, "recipe": recipe})
+            number += 1
+    return recipe_numbers
+
+def add_recipe_number(number, recipe_numbers):
+    recipe_numbers.append(number)
+    return recipe_numbers
+
+def recipe_check(recipe_picked, recipe_numbers):
     if recipe_picked in recipe_numbers:
         return True
     else:

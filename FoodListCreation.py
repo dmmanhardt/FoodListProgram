@@ -25,10 +25,12 @@ def main_menu():
 Your input: ')
         #choice 1 would run the EnterNewRecipe function
         if main_menu_choice == "1":
-            enter_new_recipe()
+            recipe_df = read_recipe_storage()
+            enter_new_recipe(recipe_df)
         elif main_menu_choice == "2":
-            final_recipe_dataframe = recipe_selection()
-            grocery_df = create_grocery_list(final_recipe_dataframe)
+            recipe_df = read_recipe_storage()
+            final_recipe_dataframe = recipe_selection(recipe_df)
+            grocery_df = create_grocery_list(recipe_df, final_recipe_dataframe)
             output_grocery_list(grocery_df)
             break
         elif main_menu_choice == "3":

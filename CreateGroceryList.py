@@ -11,7 +11,7 @@ import numpy as np
 # recipes ingredients, outputs grocery list as text file with
 # today's date in name.
 
-def create_grocery_list(final_recipe_dataframe):
+def create_grocery_list(recipe_df, final_recipe_dataframe):
     all_recipes = []
     initial_ingredient_info = [np.nan, np.nan, np.nan]
     # creates grocery_df with a blank row in order to be able to append
@@ -29,11 +29,11 @@ def create_grocery_list(final_recipe_dataframe):
         for recipe in all_recipes:
             if recipe not in done_recipes:
                 servings_needed = all_recipes.count(recipe)
-#                print(("%(recipe)s needs %(serving)s servings") % {
-#                        "recipe":recipe, "serving":servings_needed})
+                print(("%(recipe)s needs %(serving)s servings") % {
+                        "recipe":recipe, "serving":servings_needed})
                 (recipe_serving_size, recipe_ingredient_names, 
-                recipe_ingredient_amount, recipe_ingredient_measurement) = read_recipe_information(recipe_name = recipe)
-#                print(("recipe serving size = %(size)i") % {"size":recipe_serving_size})
+                recipe_ingredient_amount, recipe_ingredient_measurement) = read_recipe_information(recipe_df, recipe_name = recipe)
+                print(("recipe serving size = %(size)i") % {"size":recipe_serving_size})
             # find and unpack the correct ingredient info for the recipe
                 if servings_needed != recipe_serving_size:
                     serving_size_difference = (servings_needed / recipe_serving_size)
@@ -48,10 +48,10 @@ def create_grocery_list(final_recipe_dataframe):
                                                     recipe_ingredient_amount,
                                                     recipe_ingredient_measurement)
                 done_recipes.append(recipe) 
-        grocery_df = sort_df(grocery_df) 
-        grocery_df = change_column_types(grocery_df)
-        print(grocery_df)
-        return(grocery_df)
+    grocery_df = sort_df(grocery_df) 
+    grocery_df = change_column_types(grocery_df)
+    print(grocery_df)
+    return(grocery_df)
                 
 
 def create_df(column_names, info_to_add, name_df):
