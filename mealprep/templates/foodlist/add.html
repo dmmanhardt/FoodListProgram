@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add Recipe{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="recipe_name">Recipe Name</label>
+    <input name="recipe_name" required>
+    <label for="meal_served">Meal Served</label>
+    <input meal="meal_served" required>
+    <label for="serving_size">Meals Served for Two People</label>
+    <input serving="serving_size" required>
+    <label for="recipe_ingredients">Recipe Ingredients</label>
+    <input ingredients="recipe_ingredients" required>
+    <label for="recipe_measurements">Ingredient Measurements</label>
+    <input measurements="recipe_measurements" required>
+    <label for="recipe_amounts">Ingredient Amounts</label>
+    <input amounts="recipe_amounts" required>
+    <input type="submit" value="Add">
+  </form>
+{% endblock %}

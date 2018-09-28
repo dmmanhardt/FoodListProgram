@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Recipe Selection{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  {% for meal in meals %}
+    <article class="meal">
+      <header>
+        <div>
+          <h1>{{ meal['meal'] }}</h1>
+          <div class="about">Day: {{ meal['day'] }} meal: {{ meal['meal'] }}</div>
+        </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

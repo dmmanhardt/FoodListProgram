@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Create{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="day_to_start_on">Day to Start On</label>
+    <input name="day_to_start_on" id="day_to_start_on" value="{{ request.form['day_to_start_on'] }}" required>
+    <label for="days_to_plan_for">Number of Days to Plan for</label>
+    <input name="days_to_plan_for" id="days_to_plan_for" value="{{ request.form['days_to_plan_for'] }}" required>
+    <a class="action" href="{{ url_for('create.select_recipes') }}">Create</a>
+  </form>
+{% endblock %}
