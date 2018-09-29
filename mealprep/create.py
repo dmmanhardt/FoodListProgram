@@ -14,15 +14,13 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 def create_list():
     if request.method == 'POST':
-        # these requests are not working, storing variables as None
-#        day_to_start_on = request.form['day_to_start_on']
-        day_to_start_on = 'Tuesday'
-        days_to_plan_for = request.form['days_to_plan_for']
+        start_day = request.form['start_day']
+        number_days = request.form['number_days']
         error = None
-        session['day_to_start_on'] = day_to_start_on
-        if not day_to_start_on:
+        
+        if not start_day:
             error = 'Day to start on is required.'
-        elif not days_to_plan_for:
+        elif not number_days:
             error = 'Number of days is required.'
             
         if error is not None:
@@ -32,9 +30,11 @@ def create_list():
             recipe_df = Storage.read_recipe_storage()
             # dataframe that contains days with meals for each to be 
             # populated
-            days_for_meal_prep = Selection.recipe_selection(
-                    recipe_df, day_to_start_on, days_to_plan_for)
+            days_for_meal_prep = Selection.recipe_selection( 
+                    recipe_df, start_day, number_days)
             session['days_for_meal_prep'] = days_for_meal_prep
+            return redirect(url_for('create.select_recipes'))
+
     return render_template('foodlist/create.html')
 
 @bp.route('/add', methods=('GET', 'POST'))
@@ -43,10 +43,6 @@ def add_recipe():
 
 @bp.route('/select', methods=('GET', 'POST'))
 def select_recipes():
-    day_to_start_on = session.get('day_to_start_on')
-    # days_for_meal_prep is being stored as nonetype
     days_for_meal_prep = session.get('days_for_meal_prep')
-    flash(day_to_start_on)
     flash(days_for_meal_prep)
-    # figure out how to display info from days_for_meal_prep here
-    return render_template('/foodlist/selection.html', meals=[1, 1, 1])
+    return render_template('/foodlist/selection.html')

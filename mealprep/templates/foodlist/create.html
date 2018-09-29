@@ -6,10 +6,10 @@
 
 {% block content %}
   <form method="post">
-    <label for="day_to_start_on">Day to Start On</label>
-    <input name="day_to_start_on" id="day_to_start_on" value="{{ request.form['day_to_start_on'] }}" required>
-    <label for="days_to_plan_for">Number of Days to Plan for</label>
-    <input name="days_to_plan_for" id="days_to_plan_for" value="{{ request.form['days_to_plan_for'] }}" required>
-    <a class="action" href="{{ url_for('create.select_recipes') }}">Create</a>
+    <label for="start_day">Day to Start On</label>
+    <input name="start_day" id="start_day" value="{{ request.form['start_day'] }}" required>
+    <label for="number_days">Number of Days to Plan for</label>
+    <input name="number_days" id="number_days" value="{{ request.form['number_days'] }}" required>
+    <input type="submit" value="Create" href="{{ url_for('create.select_recipes') }}">
   </form>
 {% endblock %}
