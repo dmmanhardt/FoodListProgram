@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Grocery List{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form>
+    <input type="text">{{ picked_recipes }}</input>
+  </form>
+{% endblock %}
