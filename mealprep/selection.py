@@ -23,12 +23,7 @@ def recipe_selection(recipe_df, start_day, number_days):
     # creates a dataframe to store recipes picked
     df = pd.DataFrame(columns = days_for_meal_prep)
     # add meals picked to dataframe
-    # CHANGE PICK MEALS FOR DAYS TO BE BROWSER BASED
     return days_for_meal_prep
-#    pick_meals_for_days(days_for_meal_prep, recipe_names, meal_served, 
-#                        breakfast_recipes, lunch_recipes, dinner_recipes)
-#    final_recipe_dataframe = add_recipes_to_dataframe(days_for_meal_prep, breakfast_recipes, lunch_recipes, dinner_recipes)
-#    return final_recipe_dataframe
 
 def output_recipe_meal_served(recipe_df, recipe_names):
     meal_served = []

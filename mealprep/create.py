@@ -14,6 +14,7 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 def create_list():
     if request.method == 'POST':
+        # add check to make sure start_day is valid
         start_day = request.form['start_day']
         number_days = request.form['number_days']
         error = None
@@ -26,10 +27,9 @@ def create_list():
         if error is not None:
             flash(error)
         else:
-            # run code to generate table to fill with meals
+            # opens excel storage and outputs contents into dataframe
             recipe_df = Storage.read_recipe_storage()
-            # dataframe that contains days with meals for each to be 
-            # populated
+            # create list of days to pick recipes for
             days_for_meal_prep = Selection.recipe_selection( 
                     recipe_df, start_day, number_days)
             session['days_for_meal_prep'] = days_for_meal_prep
@@ -54,15 +54,16 @@ def select_recipes():
             recipe_df, recipe_names)
     recipe_with_meal = dict(zip(recipe_names, meal_served))
     if request.method == 'POST':
-        picked_recipes = []
-        picked_recipes.append(request.form.get('recipe_select'))
-        print(picked_recipes)
+        # get all values from drop downs and store as list
+        picked_recipes = request.form.getlist('select_recipes')
+        # pair recipes_picked with day_and_meal in dictionary
+        day_and_meal = []
+        for day in days_for_meal_prep:
+            for meal in meals:
+                day_and_meal.append(day + meal)
+        day_meal_recipe = dict(zip(day_and_meal, picked_recipes))
         session['picked_recipes'] = picked_recipes
-#        for day in days_for_meal_prep:
-#            for meal in meals:
-#                picked_recipes.append(request.form.get('recipe_select'))
-#                print(picked_recipes)
-#        session['picked_recipes'] = picked_recipes
+        session['day_meal_recipe'] = day_meal_recipe
         error = None
         
         if error is not None:

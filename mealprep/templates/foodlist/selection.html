@@ -18,7 +18,7 @@
           <td>{{ day }}</td>
           {% for meal in meals %}
             <td align="center">
-              <select name="recipe_select" id="recipe_select", style="width: 150px", method="POST">
+              <select name="select_recipes" id="select_recipes", style="width: 150px">
                 <option value="none"></option>
                 {% for key, value in recipes.items() %}
                   {% if value == meal %}
