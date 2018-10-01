@@ -3,6 +3,7 @@ from flask import (Blueprint, flash, g, redirect, render_template,
 from werkzeug.exceptions import abort
 import mealprep.selection as Selection
 import mealprep.storage as Storage
+import mealprep.CreateGroceryList as CreateGroceryList
 
 bp = Blueprint('create', __name__)
 
@@ -75,6 +76,12 @@ def select_recipes():
     
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
+    recipe_df = Storage.read_recipe_storage()
     picked_recipes = session.get('picked_recipes')
+    day_meal_recipe = session.get('day_meal_recipe')
+    grocery_df = CreateGroceryList.create_grocery_list(
+            recipe_df, picked_recipes)
+    print(grocery_df)
     return render_template('/foodlist/grocerylist.html',
-                           picked_recipes=picked_recipes)
+                           picked_recipes=picked_recipes,
+                           day_meal_recipe=day_meal_recipe)
