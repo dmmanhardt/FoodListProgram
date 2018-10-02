@@ -6,6 +6,7 @@
 
 {% block content %}
   <form>
-    <input type="text">{{ picked_recipes }}</input>
+    <input type="text" value="{{ grocery_list }}">Grocery List</input>
+    <input type="text" value="{{ day_meal_recipe }}">Daily Plan</input>
   </form>
 {% endblock %}

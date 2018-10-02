@@ -81,7 +81,20 @@ def grocery_list():
     day_meal_recipe = session.get('day_meal_recipe')
     grocery_df = CreateGroceryList.create_grocery_list(
             recipe_df, picked_recipes)
-    print(grocery_df)
+    grocery_list = []
+    # separate grocery_df columns into their own lists, the loop over
+    # columns and combine info at same index into string, append string
+    # to grocery_list, then output string to textbox in html input 
+    # for easy copying
+    ingredient_names = grocery_df['Name'].tolist()
+    ingredient_amount = grocery_df['Amount'].tolist()
+    ingredient_measurements = grocery_df['Measurement'].tolist()
+    grocery_list = ''.join([name + ":" + str(amount) + measurement for
+                          name, amount, measurement in zip(
+                                  ingredient_names, ingredient_amount,
+                                  ingredient_measurements)])
+    print(grocery_list)
+    # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
-                           picked_recipes=picked_recipes,
+                           grocery_list=grocery_list,
                            day_meal_recipe=day_meal_recipe)
