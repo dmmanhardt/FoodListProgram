@@ -7,22 +7,17 @@ Created on Tue Jul 17 16:20:32 2018
 
 import pandas as pd
 import mealprep.storage as Storage
-import mealprep.DaysNeedingRecipes as DaysNeedingRecipes
 
 # main function that calls functions to select recipes for each day needed and append them to a dataframe
-def recipe_selection(recipe_df, start_day, number_days):
-    recipe_names = Storage.add_recipe_names_to_list(recipe_df)
-    meal_served = output_recipe_meal_served(recipe_df, recipe_names)
-    breakfast_recipes = []
-    lunch_recipes = []
-    dinner_recipes = []
-    # takes user input and creates list of days starting at start_day
-    # and adds number_days number of days to it
-    days_for_meal_prep = DaysNeedingRecipes.create_days_needing_recipes(
-            start_day, number_days)
-    # creates a dataframe to store recipes picked
-    df = pd.DataFrame(columns = days_for_meal_prep)
-    # add meals picked to dataframe
+def days_to_plan_for(start_day, number_days):
+    valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",
+                  "Thursday", "Friday", "Saturday")
+    index = valid_days.index(start_day)
+    # doubling the list since before the script would not be able to 
+    # loop over the list more than twice
+    valid_days = valid_days * 2
+    days_for_meal_prep = []
+    days_for_meal_prep = (valid_days + valid_days)[index:index + number_days]
     return days_for_meal_prep
 
 def output_recipe_meal_served(recipe_df, recipe_names):

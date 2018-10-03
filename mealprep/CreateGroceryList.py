@@ -24,7 +24,9 @@ def create_grocery_list(recipe_df, picked_recipes):
     grocery_df.dropna(subset = ["Name"], inplace = True) 
     done_recipes = []
     for recipe in picked_recipes:
-        if recipe not in done_recipes:
+        if recipe == "none":
+            continue
+        elif recipe not in done_recipes:
             servings_needed = picked_recipes.count(recipe)
             print(("%(recipe)s needs %(serving)s servings") % {
                     "recipe":recipe, "serving":servings_needed})

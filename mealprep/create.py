@@ -15,24 +15,22 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 def create_list():
     if request.method == 'POST':
-        # add check to make sure start_day is valid
-        start_day = request.form['start_day']
+        start_day = request.form['start_day'].capitalize()
         number_days = request.form['number_days']
-        error = None
-        
-        if not start_day:
-            error = 'Day to start on is required.'
-        elif not number_days:
-            error = 'Number of days is required.'
+        error = check_create_input_for_errors(start_day, number_days)
+        # this is outside of error checking function to avoid having
+        # to return error and number_days
+        try:
+            number_days = int(number_days)
+        except ValueError:
+            error = 'Number of days must be a number.'
             
         if error is not None:
             flash(error)
         else:
-            # opens excel storage and outputs contents into dataframe
-            recipe_df = Storage.read_recipe_storage()
             # create list of days to pick recipes for
-            days_for_meal_prep = Selection.recipe_selection( 
-                    recipe_df, start_day, number_days)
+            days_for_meal_prep = Selection.days_to_plan_for( 
+                    start_day, number_days)
             session['days_for_meal_prep'] = days_for_meal_prep
             return redirect(url_for('create.select_recipes'))
 
@@ -40,6 +38,7 @@ def create_list():
 
 @bp.route('/add', methods=('GET', 'POST'))
 def add_recipe():
+    # function to add new recipes to storage is not implemented yet
     return render_template('foodlist/add.html')
 
 @bp.route('/select', methods=('GET', 'POST'))
@@ -55,7 +54,6 @@ def select_recipes():
             recipe_df, recipe_names)
     recipe_with_meal = dict(zip(recipe_names, meal_served))
     if request.method == 'POST':
-        # get all values from drop downs and store as list
         picked_recipes = request.form.getlist('select_recipes')
         # pair recipes_picked with day_and_meal in dictionary
         day_and_meal = []
@@ -82,10 +80,6 @@ def grocery_list():
     grocery_df = CreateGroceryList.create_grocery_list(
             recipe_df, picked_recipes)
     grocery_list = []
-    # separate grocery_df columns into their own lists, the loop over
-    # columns and combine info at same index into string, append string
-    # to grocery_list, then output string to textbox in html input 
-    # for easy copying
     ingredient_names = grocery_df['Name'].tolist()
     ingredient_amount = grocery_df['Amount'].tolist()
     ingredient_measurements = grocery_df['Measurement'].tolist()
@@ -95,13 +89,23 @@ def grocery_list():
                                          ingredient_measurements):
         ingredient_info = ("%(name)s: %(amount)s %(measurement)s" % {"name":name,
                    "amount":amount, "measurement":measurement})
-        # delete trailing spaces from ingredient_info, where there is no measurement
         ingredient_info = ingredient_info.rstrip()
         grocery_list.append(ingredient_info)
-    # join together list and output as string
     grocery_list = ", ".join(grocery_list)
-    print(grocery_list)
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
                            grocery_list=grocery_list,
                            day_meal_recipe=day_meal_recipe)
+    
+def check_create_input_for_errors(start_day, number_days):        
+    valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",
+                  "Thursday", "Friday", "Saturday")
+    error = None
+    
+    if not start_day:
+        error = 'Day to start on is required.'
+    elif start_day not in valid_days:
+        error = 'That is not a valid day.'
+    elif not number_days:
+        error = 'Number of days is required.'
+    return error
