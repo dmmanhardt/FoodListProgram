@@ -89,10 +89,17 @@ def grocery_list():
     ingredient_names = grocery_df['Name'].tolist()
     ingredient_amount = grocery_df['Amount'].tolist()
     ingredient_measurements = grocery_df['Measurement'].tolist()
-    grocery_list = ''.join([name + ":" + str(amount) + measurement for
-                          name, amount, measurement in zip(
-                                  ingredient_names, ingredient_amount,
-                                  ingredient_measurements)])
+    # zip together lists and iterate over them to combine elements at same index
+    # from each list as string into combined list
+    for name, amount, measurement in zip(ingredient_names, ingredient_amount,
+                                         ingredient_measurements):
+        ingredient_info = ("%(name)s: %(amount)s %(measurement)s" % {"name":name,
+                   "amount":amount, "measurement":measurement})
+        # delete trailing spaces from ingredient_info, where there is no measurement
+        ingredient_info = ingredient_info.rstrip()
+        grocery_list.append(ingredient_info)
+    # join together list and output as string
+    grocery_list = ", ".join(grocery_list)
     print(grocery_list)
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
