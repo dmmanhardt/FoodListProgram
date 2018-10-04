@@ -45,6 +45,7 @@ def add_recipe():
 def select_recipes():
     days_for_meal_prep = session.get('days_for_meal_prep')
     meals = ['Breakfast', 'Lunch', 'Dinner']
+    session['meals'] = meals
     recipe_df = Storage.read_recipe_storage()
     recipe_names = Storage.add_recipe_names_to_list(recipe_df)
     # get recipe_meals and store them and recipe_names as key:value pairs
@@ -55,16 +56,16 @@ def select_recipes():
     recipe_with_meal = dict(zip(recipe_names, meal_served))
     if request.method == 'POST':
         picked_recipes = request.form.getlist('select_recipes')
-        # pair recipes_picked with day_and_meal in dictionary
         day_and_meal = []
         for day in days_for_meal_prep:
             for meal in meals:
-                day_and_meal.append([day, meal])   
+                day_and_meal.append([day])        
         day_meal_recipe = zip(day_and_meal, picked_recipes)
         recipe_plans = []
         for day, recipe in day_meal_recipe:
             day.append(recipe)
             recipe_plans.append(day)
+        session['day_and_meal'] = day_and_meal
         session['picked_recipes'] = picked_recipes
         session['recipe_plans'] = recipe_plans
         error = None
@@ -79,8 +80,11 @@ def select_recipes():
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
     recipe_df = Storage.read_recipe_storage()
+    days_for_meal_prep = session.get('days_for_meal_prep')
     picked_recipes = session.get('picked_recipes')
     recipe_plans = session.get('recipe_plans')
+    meals = session.get('meals')
+    day_and_meal = session.get('day_and_meal')
     grocery_df = CreateGroceryList.create_grocery_list(
             recipe_df, picked_recipes)
     grocery_list = []
@@ -95,16 +99,20 @@ def grocery_list():
                    "amount":amount, "measurement":measurement})
         ingredient_info = ingredient_info.rstrip()
         grocery_list.append(ingredient_info)
+    #this isn't used if grocery_list is used
     grocery_string = ", ".join(grocery_list)
     # round up amounts in grocery_list or before
     # figure out how to display table with day/meal picks
     # display as breakfast   lunch   dinner
     #     day    recipe      recipe  recipe
+    # create dataframe and display that?
+    # or in html, create cell for recipe and pop it from dictionary
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
-                           grocery_string=grocery_string,
                            grocery_list=grocery_list,
-                           recipe_plans=recipe_plans)
+                           days=day_and_meal,
+                           meals=meals,
+                           recipes=picked_recipes)
     
 def check_create_input_for_errors(start_day, number_days):        
     valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",

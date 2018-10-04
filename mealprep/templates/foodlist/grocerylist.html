@@ -6,7 +6,6 @@
 
 {% block content %}
   <form>
-    <input type="text" value="{{ grocery_string }}">Grocery String</input>
     <ul style="list-style-type:none">
       {% for item in grocery_list %}
         <li>{{ item }}</li>
@@ -15,12 +14,17 @@
   </form>
   <table style="width:100%">
     <tr>
-      {% for planning_info in recipe_plans %}
-        <th>{{ planning_info }}</th>
-        {% for info in planning_info %}
-          <td>{{ info }}</td>
-        {% endfor %}
+      <th>&nbsp;</th>
+      {% for meal in meals %}
+        <th>{{ meal }}</th>
       {% endfor %}
     </tr>
+    {% for day in days %}
+      <tr>
+        <td>{{ day }}</td>
+          {% set recipe = recipes.pop(0) %}
+          <td>{{ recipe }}</td>
+      </tr>
+    {% endfor %}
   </table>
 {% endblock %}
