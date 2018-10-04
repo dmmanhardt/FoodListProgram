@@ -20,7 +20,6 @@ def create_grocery_list(recipe_df, picked_recipes):
     grocery_df = create_df(column_names = ["Name", "Measurement", "Amount"],
                             info_to_add = initial_ingredient_info,
                             name_df = "grocery_df")
-    # numpy is throwing a future warning somewhere, not sure from where
     grocery_df.dropna(subset = ["Name"], inplace = True) 
     done_recipes = []
     for recipe in picked_recipes:
@@ -28,12 +27,9 @@ def create_grocery_list(recipe_df, picked_recipes):
             continue
         elif recipe not in done_recipes:
             servings_needed = picked_recipes.count(recipe)
-            print(("%(recipe)s needs %(serving)s servings") % {
-                    "recipe":recipe, "serving":servings_needed})
             (recipe_serving_size, recipe_ingredient_names, 
             recipe_ingredient_amount, recipe_ingredient_measurement) = Storage.read_recipe_information(recipe_df, recipe_name = recipe)
-            print(("recipe serving size = %(size)i") % {"size":recipe_serving_size})
-        # find and unpack the correct ingredient info for the recipe
+            # find and unpack the correct ingredient info for the recipe
             if servings_needed != recipe_serving_size:
                 serving_size_difference = (servings_needed / recipe_serving_size)
                 recipe_ingredient_amount = load_correct_amount_of_ingredients(recipe_ingredient_amount, serving_size_difference)
@@ -47,7 +43,6 @@ def create_grocery_list(recipe_df, picked_recipes):
                                                 recipe_ingredient_amount,
                                                 recipe_ingredient_measurement)
             done_recipes.append(recipe) 
-            print(done_recipes)
     grocery_df = sort_df(grocery_df) 
     grocery_df = change_column_types(grocery_df)
     return(grocery_df)

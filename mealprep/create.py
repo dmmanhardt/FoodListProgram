@@ -59,10 +59,14 @@ def select_recipes():
         day_and_meal = []
         for day in days_for_meal_prep:
             for meal in meals:
-                day_and_meal.append(day + meal)
-        day_meal_recipe = dict(zip(day_and_meal, picked_recipes))
+                day_and_meal.append([day, meal])   
+        day_meal_recipe = zip(day_and_meal, picked_recipes)
+        recipe_plans = []
+        for day, recipe in day_meal_recipe:
+            day.append(recipe)
+            recipe_plans.append(day)
         session['picked_recipes'] = picked_recipes
-        session['day_meal_recipe'] = day_meal_recipe
+        session['recipe_plans'] = recipe_plans
         error = None
         
         if error is not None:
@@ -76,7 +80,7 @@ def select_recipes():
 def grocery_list():
     recipe_df = Storage.read_recipe_storage()
     picked_recipes = session.get('picked_recipes')
-    day_meal_recipe = session.get('day_meal_recipe')
+    recipe_plans = session.get('recipe_plans')
     grocery_df = CreateGroceryList.create_grocery_list(
             recipe_df, picked_recipes)
     grocery_list = []
@@ -91,11 +95,16 @@ def grocery_list():
                    "amount":amount, "measurement":measurement})
         ingredient_info = ingredient_info.rstrip()
         grocery_list.append(ingredient_info)
-    grocery_list = ", ".join(grocery_list)
+    grocery_string = ", ".join(grocery_list)
+    # round up amounts in grocery_list or before
+    # figure out how to display table with day/meal picks
+    # display as breakfast   lunch   dinner
+    #     day    recipe      recipe  recipe
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
+                           grocery_string=grocery_string,
                            grocery_list=grocery_list,
-                           day_meal_recipe=day_meal_recipe)
+                           recipe_plans=recipe_plans)
     
 def check_create_input_for_errors(start_day, number_days):        
     valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",

@@ -12,8 +12,6 @@ import os
 # read recipe_storage excel file and grab recipe names and populate recipe_names list
 # if a recipe is picked, then grab the rest of the info and populate the lists
 
-# reads csv file and returns output as dataframe
-
 def read_recipe_storage():
     file = "recipe_storage.csv"
     directory = os.path.dirname(os.path.realpath(file))
@@ -52,12 +50,3 @@ def read_recipe_information(recipe_df, recipe_name):
     recipe_ingredient_measurement.append(recipe_df.at[recipe_row, "Ingredient Measurement"]) 
     return (recipe_serving_size, recipe_ingredient_names, 
             recipe_ingredient_amount, recipe_ingredient_measurement)
-    
-
-
-def output_recipe_storage():
-    recipe_df = pd.df({"Recipe Name" : recipe_names, 
-                       "Serving Size" : recipe_serving_size, 
-                       "Ingredient Names" : recipe_ingredient_names, 
-                       "Ingredient Amount" : recipe_ingredient_amount, 
-                       "Ingredient Measurement" : recipe_ingredient_measurement})

@@ -6,7 +6,21 @@
 
 {% block content %}
   <form>
-    <input type="text" value="{{ grocery_list }}">Grocery List</input>
-    <input type="text" value="{{ day_meal_recipe }}">Daily Plan</input>
+    <input type="text" value="{{ grocery_string }}">Grocery String</input>
+    <ul style="list-style-type:none">
+      {% for item in grocery_list %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
   </form>
+  <table style="width:100%">
+    <tr>
+      {% for planning_info in recipe_plans %}
+        <th>{{ planning_info }}</th>
+        {% for info in planning_info %}
+          <td>{{ info }}</td>
+        {% endfor %}
+      {% endfor %}
+    </tr>
+  </table>
 {% endblock %}
