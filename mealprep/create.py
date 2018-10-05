@@ -4,6 +4,7 @@ from werkzeug.exceptions import abort
 import mealprep.selection as Selection
 import mealprep.storage as Storage
 import mealprep.CreateGroceryList as CreateGroceryList
+import mealprep.EnterNewRecipe as EnterNewRecipe
 
 bp = Blueprint('create', __name__)
 
@@ -38,7 +39,19 @@ def create_list():
 
 @bp.route('/add', methods=('GET', 'POST'))
 def add_recipe():
-    # function to add new recipes to storage is not implemented yet
+    # change to be SQL database based
+    # change input to just paste recipe ingredients in textarea
+    # sort amounts by going through each line
+    # if == int: amount, if in common_measurements: measurement, rest is ingredient
+    if request.method == 'POST':
+        recipe_name = request.form('recipe_name')
+        meal_served = request.form('meal_served')
+        serving_size = request.form('serving_size')
+        recipe_ingredients = request.form('recipe_ingredients')
+        recipe_measurements = request.form('recipe_measurements')
+        recipe_amounts = request.form('recipe_ingredients')
+        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
+        serving_size, recipe_ingredients, recipe_measurements, recipe_amounts)
     return render_template('foodlist/add.html')
 
 @bp.route('/select', methods=('GET', 'POST'))
@@ -59,15 +72,15 @@ def select_recipes():
         day_and_meal = []
         for day in days_for_meal_prep:
             for meal in meals:
-                day_and_meal.append([day])        
-        day_meal_recipe = zip(day_and_meal, picked_recipes)
-        recipe_plans = []
-        for day, recipe in day_meal_recipe:
-            day.append(recipe)
-            recipe_plans.append(day)
+                day_and_meal.append([day])
+#        day_meal_recipe = zip(day_and_meal, picked_recipes)
+#        recipe_plans = []
+#        for day, recipe in day_meal_recipe:
+#            day.append(recipe)
+#            recipe_plans.append(day)
         session['day_and_meal'] = day_and_meal
         session['picked_recipes'] = picked_recipes
-        session['recipe_plans'] = recipe_plans
+#        session['recipe_plans'] = recipe_plans
         error = None
         
         if error is not None:
@@ -82,14 +95,17 @@ def grocery_list():
     recipe_df = Storage.read_recipe_storage()
     days_for_meal_prep = session.get('days_for_meal_prep')
     picked_recipes = session.get('picked_recipes')
-    recipe_plans = session.get('recipe_plans')
+#    recipe_plans = session.get('recipe_plans')
     meals = session.get('meals')
     day_and_meal = session.get('day_and_meal')
+    print(day_and_meal)
     grocery_df = CreateGroceryList.create_grocery_list(
             recipe_df, picked_recipes)
     grocery_list = []
     ingredient_names = grocery_df['Name'].tolist()
     ingredient_amount = grocery_df['Amount'].tolist()
+    # add check to see if measurement is typical unit of measurement (ie cup)
+    # if it is, round to eigths? if not, round to single digit
     ingredient_measurements = grocery_df['Measurement'].tolist()
     # zip together lists and iterate over them to combine elements at same index
     # from each list as string into combined list
@@ -102,15 +118,10 @@ def grocery_list():
     #this isn't used if grocery_list is used
     grocery_string = ", ".join(grocery_list)
     # round up amounts in grocery_list or before
-    # figure out how to display table with day/meal picks
-    # display as breakfast   lunch   dinner
-    #     day    recipe      recipe  recipe
-    # create dataframe and display that?
-    # or in html, create cell for recipe and pop it from dictionary
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
                            grocery_list=grocery_list,
-                           days=day_and_meal,
+                           days=days_for_meal_prep,
                            meals=meals,
                            recipes=picked_recipes)
     

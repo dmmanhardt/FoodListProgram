@@ -22,8 +22,10 @@
     {% for day in days %}
       <tr>
         <td>{{ day }}</td>
-          {% set recipe = recipes.pop(0) %}
-          <td>{{ recipe }}</td>
+          {% for meal in meals %}
+            {% set recipe = recipes.pop(0) %}
+            <td>{{ recipe }}</td>
+          {% endfor %}
       </tr>
     {% endfor %}
   </table>
