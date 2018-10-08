@@ -1,6 +1,7 @@
 from flask import (Blueprint, flash, g, redirect, render_template,
                    request, url_for, session)
 from werkzeug.exceptions import abort
+from mealprep.db import get_db
 import mealprep.selection as Selection
 import mealprep.storage as Storage
 import mealprep.CreateGroceryList as CreateGroceryList
@@ -11,6 +12,11 @@ bp = Blueprint('create', __name__)
 
 @bp.route('/')
 def index():
+    db = get_db()
+    recipes = db.execute(
+            'SELECT recipe_name, meal_served, serving_size,'
+            ' recipe_ingredients, recipe_measurements, recipe_amounts'
+            ).fetchall()
     return render_template('foodlist/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -44,14 +50,25 @@ def add_recipe():
     # sort amounts by going through each line
     # if == int: amount, if in common_measurements: measurement, rest is ingredient
     if request.method == 'POST':
-        recipe_name = request.form('recipe_name')
-        meal_served = request.form('meal_served')
-        serving_size = request.form('serving_size')
-        recipe_ingredients = request.form('recipe_ingredients')
-        recipe_measurements = request.form('recipe_measurements')
-        recipe_amounts = request.form('recipe_ingredients')
-        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
-        serving_size, recipe_ingredients, recipe_measurements, recipe_amounts)
+        recipe_name = request.form['recipe_name']
+        meal_served = request.form['meal_served']
+        serving_size = request.form['serving_size']
+        recipe_ingredients = request.form['recipe_ingredients']
+        recipe_measurements = request.form['recipe_measurements']
+        recipe_amounts = request.form['recipe_amounts']
+        
+        db = get_db()
+        db.execute(
+                'INSERT INTO recipe'
+                ' (recipe_name, meal_served, serving_size, recipe_ingredients,'
+                ' recipe_measurements, recipe_amounts)'
+                ' VALUES (?, ?, ?, ?, ?, ?)',
+                (recipe_name, meal_served, serving_size, recipe_ingredients,
+                recipe_measurements, recipe_amounts))
+        db.commit()
+        return redirect(url_for('create.index'))
+#        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
+#        serving_size, recipe_ingredients, recipe_measurements, recipe_amounts)
     return render_template('foodlist/add.html')
 
 @bp.route('/select', methods=('GET', 'POST'))
@@ -137,3 +154,6 @@ def check_create_input_for_errors(start_day, number_days):
     elif not number_days:
         error = 'Number of days is required.'
     return error
+
+#class Recipe():
+#    

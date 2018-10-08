@@ -7,17 +7,17 @@
 {% block content %}
   <form method="post">
     <label for="recipe_name">Recipe Name</label>
-    <input name="recipe_name" required>
+    <input name="recipe_name" value="{{ request.form['recipe_name'] }}" required>
     <label for="meal_served">Meal Served</label>
-    <input meal="meal_served" required>
+    <input name="meal_served" value="{{ request.form['meal_served'] }}" required>
     <label for="serving_size">Meals Served for Two People</label>
-    <input serving="serving_size" required>
+    <input name="serving_size" value="{{ request.form['serving_size'] }}" required>
     <label for="recipe_ingredients">Recipe Ingredients</label>
-    <input ingredients="recipe_ingredients" required>
+    <input name="recipe_ingredients" value="{{ request.form['recipe_ingredients'] }}" required>
     <label for="recipe_measurements">Ingredient Measurements</label>
-    <input measurements="recipe_measurements" required>
+    <input name="recipe_measurements" value="{{ request.form['recipe_measurements'] }}" required>
     <label for="recipe_amounts">Ingredient Amounts</label>
-    <input amounts="recipe_amounts" required>
-    <input type="submit" value="Add">
+    <input name="recipe_amounts" value="{{ request.form['recipe_amounts'] }}" required>
+    <input type="submit" value="Add" href="{{ url_for('create.index') }}">
   </form>
 {% endblock %}
