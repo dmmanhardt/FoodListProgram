@@ -12,12 +12,9 @@
     <input name="meal_served" value="{{ request.form['meal_served'] }}" required>
     <label for="serving_size">Meals Served for Two People</label>
     <input name="serving_size" value="{{ request.form['serving_size'] }}" required>
-    <label for="recipe_ingredients">Recipe Ingredients</label>
-    <input name="recipe_ingredients" value="{{ request.form['recipe_ingredients'] }}" required>
-    <label for="recipe_measurements">Ingredient Measurements</label>
-    <input name="recipe_measurements" value="{{ request.form['recipe_measurements'] }}" required>
-    <label for="recipe_amounts">Ingredient Amounts</label>
-    <input name="recipe_amounts" value="{{ request.form['recipe_amounts'] }}" required>
+    <textarea name="ingredient_info" style="width:200px; height:600px">
+      {{ request.form['ingredient_info'] }}
+    </textarea>
     <input type="submit" value="Add" href="{{ url_for('create.index') }}">
   </form>
 {% endblock %}

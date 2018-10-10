@@ -6,17 +6,18 @@ import mealprep.selection as Selection
 import mealprep.storage as Storage
 import mealprep.CreateGroceryList as CreateGroceryList
 import mealprep.EnterNewRecipe as EnterNewRecipe
+import mealprep.ParseRecipe as ParseRecipe
 
 bp = Blueprint('create', __name__)
 
 
 @bp.route('/')
 def index():
-    db = get_db()
-    recipes = db.execute(
-            'SELECT recipe_name, meal_served, serving_size,'
-            ' recipe_ingredients, recipe_measurements, recipe_amounts'
-            ).fetchall()
+#    db = get_db()
+#    recipes = db.execute(
+#            'SELECT recipe_name, meal_served, serving_size,'
+#            ' recipe_ingredients, recipe_measurements, recipe_amounts'
+#            ).fetchall()
     return render_template('foodlist/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -53,9 +54,9 @@ def add_recipe():
         recipe_name = request.form['recipe_name']
         meal_served = request.form['meal_served']
         serving_size = request.form['serving_size']
-        recipe_ingredients = request.form['recipe_ingredients']
-        recipe_measurements = request.form['recipe_measurements']
-        recipe_amounts = request.form['recipe_amounts']
+        ingredient_info = request.form['ingredient_info']
+        #ingredient_info is string in same format that is entered into text area
+        ingredient_info = ParseRecipe.parse_ingredient_info(ingredient_info)
         
         db = get_db()
         db.execute(
