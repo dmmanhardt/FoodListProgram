@@ -1,3 +1,4 @@
+from fractions import Fraction
 
 def parse_ingredient_info(ingredient_info):
     amounts = []
@@ -23,11 +24,10 @@ def parse_ingredient_info(ingredient_info):
         removal_list = []
         row = row.split()
         for word in row:
-            # if int in word or if word is fraction or decimal
             if check_for_numbers(word) == True:
-                word = int(word)
+                removal_list.append(word)
+                word = float(sum(Fraction(s) for s in word.split()))
                 if amount is not None:
-                    #convert fractions/decimals before adding?
                     amount += word
                 else:
                     amount = word
@@ -35,9 +35,8 @@ def parse_ingredient_info(ingredient_info):
                 measurement = word
             else:
                 continue
-        removal_list.append(amount)
         removal_list.append(measurement)
-        # remove amount and measurement from row, name is rest of row
+        # remove amount and measurement from row, ingredient is rest of row
         ingredient = [word for word in row if word not in removal_list]
         ingredient = ' '.join(ingredient)
         if amount is not None:
@@ -46,11 +45,9 @@ def parse_ingredient_info(ingredient_info):
             measurements.append(measurement)
         if ingredient is not None:
             ingredients.append(ingredient)
-    print(amounts)
-    print(measurements)
-    print(ingredients)
-    # zip together lists
-    #return zipped list
+    recipe_info = Recipe(amounts, measurements, ingredients)
+    return recipe_info
+
     
 def format_ingredient_info(ingredient_info):
     ingredient_info = [info.strip() for info in ingredient_info.split('\n')]
@@ -60,3 +57,11 @@ def format_ingredient_info(ingredient_info):
 
 def check_for_numbers(word):
     return (any(position.isdigit() for position in word))
+
+#create Recipe class and add amounts, measurements, and ingredients as attributes
+# in order to return single class object
+class Recipe:
+    def __init__(self, amounts, measurements, ingredients):
+        self.amounts = amounts
+        self.measurements = measurements
+        self.ingredients = ingredients

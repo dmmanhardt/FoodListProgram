@@ -56,16 +56,15 @@ def add_recipe():
         serving_size = request.form['serving_size']
         ingredient_info = request.form['ingredient_info']
         #ingredient_info is string in same format that is entered into text area
-        ingredient_info = ParseRecipe.parse_ingredient_info(ingredient_info)
-        
+        recipe_info = ParseRecipe.parse_ingredient_info(ingredient_info)
         db = get_db()
         db.execute(
                 'INSERT INTO recipe'
                 ' (recipe_name, meal_served, serving_size, recipe_ingredients,'
                 ' recipe_measurements, recipe_amounts)'
                 ' VALUES (?, ?, ?, ?, ?, ?)',
-                (recipe_name, meal_served, serving_size, recipe_ingredients,
-                recipe_measurements, recipe_amounts))
+                (recipe_name, meal_served, serving_size, recipe_info.ingredients,
+                recipe_info.measurements, recipe_info.amounts))
         db.commit()
         return redirect(url_for('create.index'))
 #        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
