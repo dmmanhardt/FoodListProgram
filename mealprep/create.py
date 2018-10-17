@@ -60,11 +60,19 @@ def add_recipe():
         db = get_db()
         db.execute(
                 'INSERT INTO recipe'
-                ' (recipe_name, meal_served, serving_size, recipe_ingredients,'
-                ' recipe_measurements, recipe_amounts)'
-                ' VALUES (?, ?, ?, ?, ?, ?)',
-                (recipe_name, meal_served, serving_size, recipe_info.ingredients,
-                recipe_info.measurements, recipe_info.amounts))
+                ' (recipe_name, meal_served, serving_size)'
+                ' VALUES (?, ?, ?)',
+                (recipe_name, meal_served, serving_size))
+        # would it be easier to just store lists as a string?
+        for ingredient in recipe_info.ingredients:
+            ingredient_index = recipe_info.ingredients.index(ingredient)
+            measurement = recipe_info.measurements[ingredient_index]
+            amount = recipe_info.amounts[ingredient_index]
+            db.execute(
+                    'INSERT INTO ingredient'
+                    ' (ingredient, measurement, amount)'
+                    ' VALUES (?, ?, ?)',
+                    (ingredient, measurement, amount))
         db.commit()
         return redirect(url_for('create.index'))
 #        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
