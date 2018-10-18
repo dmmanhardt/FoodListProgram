@@ -46,16 +46,13 @@ def create_list():
 
 @bp.route('/add', methods=('GET', 'POST'))
 def add_recipe():
-    # change to be SQL database based
-    # change input to just paste recipe ingredients in textarea
-    # sort amounts by going through each line
-    # if == int: amount, if in common_measurements: measurement, rest is ingredient
     if request.method == 'POST':
         recipe_name = request.form['recipe_name']
         meal_served = request.form['meal_served']
         serving_size = request.form['serving_size']
         ingredient_info = request.form['ingredient_info']
         #ingredient_info is string in same format that is entered into text area
+        #split ingredient info into amount, measurement, name for each ingredient
         recipe_info = ParseRecipe.parse_ingredient_info(ingredient_info)
         db = get_db()
         db.execute(
@@ -63,7 +60,6 @@ def add_recipe():
                 ' (recipe_name, meal_served, serving_size)'
                 ' VALUES (?, ?, ?)',
                 (recipe_name, meal_served, serving_size))
-        # would it be easier to just store lists as a string?
         for ingredient in recipe_info.ingredients:
             ingredient_index = recipe_info.ingredients.index(ingredient)
             measurement = recipe_info.measurements[ingredient_index]
@@ -85,6 +81,10 @@ def select_recipes():
     meals = ['Breakfast', 'Lunch', 'Dinner']
     session['meals'] = meals
     recipe_df = Storage.read_recipe_storage()
+    db = get_db()
+    recipes = db.execute(
+            'SELECT recipe_name, meal_served, serving_size'
+            ' FROM recipe').fetchall()
     recipe_names = Storage.add_recipe_names_to_list(recipe_df)
     # get recipe_meals and store them and recipe_names as key:value pairs
     # key being the meal, that way can loop through dictionary and pull
@@ -92,17 +92,17 @@ def select_recipes():
     meal_served = Selection.output_recipe_meal_served(
             recipe_df, recipe_names)
     recipe_with_meal = dict(zip(recipe_names, meal_served))
+    # don't need recipe_with_meal, incorporate recipes from SQL into selection.html
+    # in selection to get recipes with same meal:
+    # for recipe in recipes:
+    #     if recipe['meal_served'] == meal:
+    #         recipe['recipe_name']
     if request.method == 'POST':
         picked_recipes = request.form.getlist('select_recipes')
         day_and_meal = []
         for day in days_for_meal_prep:
             for meal in meals:
                 day_and_meal.append([day])
-#        day_meal_recipe = zip(day_and_meal, picked_recipes)
-#        recipe_plans = []
-#        for day, recipe in day_meal_recipe:
-#            day.append(recipe)
-#            recipe_plans.append(day)
         session['day_and_meal'] = day_and_meal
         session['picked_recipes'] = picked_recipes
 #        session['recipe_plans'] = recipe_plans
@@ -113,7 +113,7 @@ def select_recipes():
         else:
             return redirect(url_for('create.grocery_list'))
     return render_template('/foodlist/selection.html', meals=meals,
-                           days=days_for_meal_prep, recipes=recipe_with_meal)
+                           days=days_for_meal_prep, recipes=recipes)
     
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
