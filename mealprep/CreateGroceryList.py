@@ -8,12 +8,13 @@ Created on Tue Aug 14 20:23:34 2018
 import numpy as np
 import pandas as pd
 import mealprep.storage as Storage
+from mealprep.db import get_db
 
 # takes final dataframe with recipes for each meal, and reads each 
 # recipes ingredients, outputs grocery list as text file with
 # today's date in name.
 
-def create_grocery_list(recipe_df, picked_recipes):
+def create_grocery_list(recipes, picked_recipes):
     initial_ingredient_info = [np.nan, np.nan, np.nan]
     # creates grocery_df with a blank row in order to be able to append
     # to it for each recipe
@@ -27,6 +28,23 @@ def create_grocery_list(recipe_df, picked_recipes):
             continue
         elif recipe not in done_recipes:
             servings_needed = picked_recipes.count(recipe)
+            # replace with info from db
+            db = get_db()
+            #find recipe in db
+            #lookup ingredients of recipe from recipes db
+            #for ingredient in recipe:
+            #    
+#            recipe.ingredient
+#            recipe_serving_size = recipe['serving_size']
+            # find ingredient info from db?
+            ingredients = db.execute(
+            'SELECT recipe.id, recipe.recipe_name'
+            ' FROM recipe'
+            ' JOIN ingredient ON recipe.id = ingredient.recipe_id')
+            print(ingredients)
+            for ingredient in ingredients:
+                print(ingredient)
+                print(ingredient['ingredient'])
             (recipe_serving_size, recipe_ingredient_names, 
             recipe_ingredient_amount, recipe_ingredient_measurement) = Storage.read_recipe_information(recipe_df, recipe_name = recipe)
             # find and unpack the correct ingredient info for the recipe

@@ -47,8 +47,8 @@ def create_list():
 @bp.route('/add', methods=('GET', 'POST'))
 def add_recipe():
     if request.method == 'POST':
-        recipe_name = request.form['recipe_name']
-        meal_served = request.form['meal_served']
+        recipe_name = request.form['recipe_name'].capitalize()
+        meal_served = request.form['meal_served'].capitalize()
         serving_size = request.form['serving_size']
         ingredient_info = request.form['ingredient_info']
         #ingredient_info is string in same format that is entered into text area
@@ -64,15 +64,15 @@ def add_recipe():
             ingredient_index = recipe_info.ingredients.index(ingredient)
             measurement = recipe_info.measurements[ingredient_index]
             amount = recipe_info.amounts[ingredient_index]
+            # change this to be a one to many (one recipe to many ingredients)
+            # relationship
             db.execute(
                     'INSERT INTO ingredient'
-                    ' (ingredient, measurement, amount)'
+                    ' (recipe_id, ingredient, measurement, amount)'
                     ' VALUES (?, ?, ?)',
-                    (ingredient, measurement, amount))
+                    (recipe(id), ingredient, measurement, amount))
         db.commit()
         return redirect(url_for('create.index'))
-#        EnterNewRecipe.enter_new_recipe(recipe_name, meal_served, 
-#        serving_size, recipe_ingredients, recipe_measurements, recipe_amounts)
     return render_template('foodlist/add.html')
 
 @bp.route('/select', methods=('GET', 'POST'))
@@ -80,23 +80,10 @@ def select_recipes():
     days_for_meal_prep = session.get('days_for_meal_prep')
     meals = ['Breakfast', 'Lunch', 'Dinner']
     session['meals'] = meals
-    recipe_df = Storage.read_recipe_storage()
     db = get_db()
     recipes = db.execute(
             'SELECT recipe_name, meal_served, serving_size'
             ' FROM recipe').fetchall()
-    recipe_names = Storage.add_recipe_names_to_list(recipe_df)
-    # get recipe_meals and store them and recipe_names as key:value pairs
-    # key being the meal, that way can loop through dictionary and pull
-    # out recipe_name values with correct meal key
-    meal_served = Selection.output_recipe_meal_served(
-            recipe_df, recipe_names)
-    recipe_with_meal = dict(zip(recipe_names, meal_served))
-    # don't need recipe_with_meal, incorporate recipes from SQL into selection.html
-    # in selection to get recipes with same meal:
-    # for recipe in recipes:
-    #     if recipe['meal_served'] == meal:
-    #         recipe['recipe_name']
     if request.method == 'POST':
         picked_recipes = request.form.getlist('select_recipes')
         day_and_meal = []
@@ -117,15 +104,18 @@ def select_recipes():
     
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
-    recipe_df = Storage.read_recipe_storage()
+    # CHANGE THIS TO BE SQL BASED
+    db = get_db()
+    recipes = db.execute(
+            'SELECT recipe_name, meal_served, serving_size'
+            ' FROM recipe').fetchall()
     days_for_meal_prep = session.get('days_for_meal_prep')
     picked_recipes = session.get('picked_recipes')
 #    recipe_plans = session.get('recipe_plans')
     meals = session.get('meals')
     day_and_meal = session.get('day_and_meal')
-    print(day_and_meal)
     grocery_df = CreateGroceryList.create_grocery_list(
-            recipe_df, picked_recipes)
+            recipes, picked_recipes)
     grocery_list = []
     ingredient_names = grocery_df['Name'].tolist()
     ingredient_amount = grocery_df['Amount'].tolist()

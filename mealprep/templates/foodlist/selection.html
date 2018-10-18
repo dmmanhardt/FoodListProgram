@@ -20,9 +20,9 @@
             <td align="center">
               <select name="select_recipes" id="select_recipes", style="width: 150px">
                 <option value="none"></option>
-                {% for key, value in recipes.items() %}
-                  {% if value == meal %}
-                    <option value="{{ key }}">{{ key }}</option>
+                {% for recipe in recipes %}
+                  {% if recipe['meal_served'].capitalize() == meal %}
+                    <option value="{{ recipe['recipe_name']}}">{{ recipe['recipe_name'] }}</option>
                   {% endif %}
                 {% endfor %}
               </select>
