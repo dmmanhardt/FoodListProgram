@@ -37,14 +37,19 @@ def create_grocery_list(recipes, picked_recipes):
 #            recipe.ingredient
 #            recipe_serving_size = recipe['serving_size']
             # find ingredient info from db?
+            # this is returning all ingredients with a recipe_id foreign key
+            # how to make this return just the ingredients with the current
+            # recipe being looped over?
             ingredients = db.execute(
-            'SELECT recipe.id, recipe.recipe_name'
+            'SELECT ingredient.recipe_id, ingredient.ingredient, ingredient.measurement, ingredient.amount'
             ' FROM recipe'
-            ' JOIN ingredient ON recipe.id = ingredient.recipe_id')
-            print(ingredients)
+            ' JOIN ingredient ON recipe.id = ingredient.recipe_id'
+            # fix to only show ingredients with correct recipe_id for current recipe
+            ' WHERE ingredient.recipe_id = (recipe.id)'
+            ' VALUES ((SELECT id from recipe WHERE recipe_name=?))',
+            (recipe))
             for ingredient in ingredients:
-                print(ingredient)
-                print(ingredient['ingredient'])
+                print(ingredient['recipe_id'])
             (recipe_serving_size, recipe_ingredient_names, 
             recipe_ingredient_amount, recipe_ingredient_measurement) = Storage.read_recipe_information(recipe_df, recipe_name = recipe)
             # find and unpack the correct ingredient info for the recipe

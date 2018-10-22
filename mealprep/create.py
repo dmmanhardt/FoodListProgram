@@ -69,8 +69,8 @@ def add_recipe():
             db.execute(
                     'INSERT INTO ingredient'
                     ' (recipe_id, ingredient, measurement, amount)'
-                    ' VALUES (?, ?, ?)',
-                    (recipe(id), ingredient, measurement, amount))
+                    ' VALUES ((SELECT id from recipe WHERE recipe_name=?), ?, ?, ?)',
+                    (recipe_name, ingredient, measurement, amount))
         db.commit()
         return redirect(url_for('create.index'))
     return render_template('foodlist/add.html')
