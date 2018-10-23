@@ -16,7 +16,7 @@ from mealprep.db import get_db
 
 def create_grocery_list(recipes, picked_recipes):
     initial_ingredient_info = [np.nan, np.nan, np.nan]
-    # creates grocery_df with a blank row in order to be able to append
+    # creates dataframe with a blank row in order to be able to append
     # to it for each recipe
     grocery_df = create_df(column_names = ["Name", "Measurement", "Amount"],
                             info_to_add = initial_ingredient_info,
@@ -28,31 +28,25 @@ def create_grocery_list(recipes, picked_recipes):
             continue
         elif recipe not in done_recipes:
             servings_needed = picked_recipes.count(recipe)
-            # replace with info from db
             db = get_db()
-            #find recipe in db
-            #lookup ingredients of recipe from recipes db
-            #for ingredient in recipe:
-            #    
-#            recipe.ingredient
-#            recipe_serving_size = recipe['serving_size']
-            # find ingredient info from db?
-            # this is returning all ingredients with a recipe_id foreign key
-            # how to make this return just the ingredients with the current
-            # recipe being looped over?
+            # returns ingredients with same id as the recipe being looped over
+            # change this to grab column info and return each row in column
+            # as list
             ingredients = db.execute(
             'SELECT ingredient.recipe_id, ingredient.ingredient, ingredient.measurement, ingredient.amount'
             ' FROM recipe'
             ' JOIN ingredient ON recipe.id = ingredient.recipe_id'
-            # fix to only show ingredients with correct recipe_id for current recipe
-            ' WHERE ingredient.recipe_id = (recipe.id)'
-            ' VALUES ((SELECT id from recipe WHERE recipe_name=?))',
-            (recipe))
-            for ingredient in ingredients:
-                print(ingredient['recipe_id'])
-            (recipe_serving_size, recipe_ingredient_names, 
-            recipe_ingredient_amount, recipe_ingredient_measurement) = Storage.read_recipe_information(recipe_df, recipe_name = recipe)
-            # find and unpack the correct ingredient info for the recipe
+            ' WHERE ingredient.recipe_id = '
+            ' (SELECT id FROM recipe WHERE recipe_name = ?)',
+            (recipe,)).fetchall()
+            recipe_ingredient_names = create_recipe_info_list(
+                    ingredients, info='ingredient')
+            print(recipe_ingredient_names)
+#            recipe_serving_size = recipe['serving_size']              
+            # convert the amount of each ingredient depending on the actual
+            # servings needed
+            # loop through ingredient info and create lists for each?
+
             if servings_needed != recipe_serving_size:
                 serving_size_difference = (servings_needed / recipe_serving_size)
                 recipe_ingredient_amount = load_correct_amount_of_ingredients(recipe_ingredient_amount, serving_size_difference)
@@ -69,7 +63,12 @@ def create_grocery_list(recipes, picked_recipes):
     grocery_df = sort_df(grocery_df) 
     grocery_df = change_column_types(grocery_df)
     return(grocery_df)
-                
+    
+def create_recipe_info_list(ingredients, info):
+    info_list = []
+    for ingredient in ingredients:
+        info_list.append(ingredient[info])
+        return info_list
 
 def create_df(column_names, info_to_add, name_df):
     name_df = pd.DataFrame([info_to_add], dtype='object')
