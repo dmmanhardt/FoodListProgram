@@ -13,11 +13,6 @@ bp = Blueprint('create', __name__)
 
 @bp.route('/')
 def index():
-#    db = get_db()
-#    recipes = db.execute(
-#            'SELECT recipe_name, meal_served, serving_size,'
-#            ' recipe_ingredients, recipe_measurements, recipe_amounts'
-#            ).fetchall()
     return render_template('foodlist/index.html')
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -26,8 +21,6 @@ def create_list():
         start_day = request.form['start_day'].capitalize()
         number_days = request.form['number_days']
         error = check_create_input_for_errors(start_day, number_days)
-        # this is outside of error checking function to avoid having
-        # to return error and number_days
         try:
             number_days = int(number_days)
         except ValueError:
@@ -64,8 +57,6 @@ def add_recipe():
             ingredient_index = recipe_info.ingredients.index(ingredient)
             measurement = recipe_info.measurements[ingredient_index]
             amount = recipe_info.amounts[ingredient_index]
-            # change this to be a one to many (one recipe to many ingredients)
-            # relationship
             db.execute(
                     'INSERT INTO ingredient'
                     ' (recipe_id, ingredient, measurement, amount)'
@@ -86,13 +77,7 @@ def select_recipes():
             ' FROM recipe').fetchall()
     if request.method == 'POST':
         picked_recipes = request.form.getlist('select_recipes')
-        day_and_meal = []
-        for day in days_for_meal_prep:
-            for meal in meals:
-                day_and_meal.append([day])
-        session['day_and_meal'] = day_and_meal
         session['picked_recipes'] = picked_recipes
-#        session['recipe_plans'] = recipe_plans
         error = None
         
         if error is not None:
@@ -104,16 +89,13 @@ def select_recipes():
     
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
-    # CHANGE THIS TO BE SQL BASED
     db = get_db()
     recipes = db.execute(
             'SELECT recipe_name, meal_served, serving_size'
             ' FROM recipe').fetchall()
     days_for_meal_prep = session.get('days_for_meal_prep')
     picked_recipes = session.get('picked_recipes')
-#    recipe_plans = session.get('recipe_plans')
     meals = session.get('meals')
-    day_and_meal = session.get('day_and_meal')
     grocery_df = CreateGroceryList.create_grocery_list(
             recipes, picked_recipes)
     grocery_list = []
@@ -130,8 +112,6 @@ def grocery_list():
                    "amount":amount, "measurement":measurement})
         ingredient_info = ingredient_info.rstrip()
         grocery_list.append(ingredient_info)
-    #this isn't used if grocery_list is used
-    grocery_string = ", ".join(grocery_list)
     # round up amounts in grocery_list or before
     # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
     return render_template('/foodlist/grocerylist.html',
@@ -152,6 +132,3 @@ def check_create_input_for_errors(start_day, number_days):
     elif not number_days:
         error = 'Number of days is required.'
     return error
-
-#class Recipe():
-#    
