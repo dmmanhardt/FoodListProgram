@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Recipes{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <select name="edit_recipe" id="edit_recipe", style="width: 150px">
+      <option value="none"></option>
+      {% for recipe in recipes %}
+        <option value="{{ recipe['recipe_name']}}">{{ recipe['recipe_name'] }}</option>
+      {% endfor %}
+    </select>
+  <input type="submit" name="edit_recipe" value="Edit">
+  </form>
+{% endblock %}

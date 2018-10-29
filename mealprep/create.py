@@ -1,12 +1,11 @@
-from flask import (Blueprint, flash, g, redirect, render_template,
+from flask import (Blueprint, flash, redirect, render_template,
                    request, url_for, session)
-from werkzeug.exceptions import abort
 from mealprep.db import get_db
+import numpy as np
 import mealprep.selection as Selection
-import mealprep.storage as Storage
 import mealprep.CreateGroceryList as CreateGroceryList
-import mealprep.EnterNewRecipe as EnterNewRecipe
 import mealprep.ParseRecipe as ParseRecipe
+import datetime
 
 bp = Blueprint('create', __name__)
 
@@ -66,6 +65,28 @@ def add_recipe():
         return redirect(url_for('create.index'))
     return render_template('foodlist/add.html')
 
+@bp.route('/edit', methods=('GET', 'POST'))
+def select_recipe_to_edit():
+    db = get_db()
+    recipes = db.execute(
+            'SELECT id, recipe_name FROM recipe').fetchall()
+    if request.method == 'POST':
+        recipe_to_edit = request.form['edit_recipe']
+        # get recipe_id to use to edit recipe
+        session['recipe_to_edit'] = recipe_to_edit
+        return redirect(url_for('create.edit_recipe'))
+    return render_template('foodlist/recipes.html', recipes=recipes)
+
+@bp.route('/edit/<int:id>', methods=('GET', 'POST'))
+def edit_recipe(id):
+    ingredient_info = get_db.execute(
+            'SELECT r.id, ingredient, measurement, amount'
+            ' FROM recipe r'
+            ' JOIN ingredient i ON r.id = i.recipe_id'
+            ' WHERE r.id = ?',
+            (id,)).fetchone()  
+    return render_template('foodlist/edit.html', ingredient_info=ingredient_info)
+
 @bp.route('/select', methods=('GET', 'POST'))
 def select_recipes():
     days_for_meal_prep = session.get('days_for_meal_prep')
@@ -98,22 +119,21 @@ def grocery_list():
     meals = session.get('meals')
     grocery_df = CreateGroceryList.create_grocery_list(
             recipes, picked_recipes)
-    grocery_list = []
     ingredient_names = grocery_df['Name'].tolist()
-    ingredient_amount = grocery_df['Amount'].tolist()
-    # add check to see if measurement is typical unit of measurement (ie cup)
-    # if it is, round to eigths? if not, round to single digit
+    ingredient_amounts = grocery_df['Amount'].tolist()
     ingredient_measurements = grocery_df['Measurement'].tolist()
     # zip together lists and iterate over them to combine elements at same index
     # from each list as string into combined list
-    for name, amount, measurement in zip(ingredient_names, ingredient_amount,
-                                         ingredient_measurements):
-        ingredient_info = ("%(name)s: %(amount)s %(measurement)s" % {"name":name,
-                   "amount":amount, "measurement":measurement})
-        ingredient_info = ingredient_info.rstrip()
-        grocery_list.append(ingredient_info)
-    # round up amounts in grocery_list or before
-    # add option to save grocery_list using OutputGroceryList.output_grocery_list(grocery_df)
+    grocery_list = combine_ingredient_lists(ingredient_names,
+                                            ingredient_amounts,
+                                            ingredient_measurements)
+    if request.method == 'POST':
+        if request.form['store_button'] == 'Save As':
+            save_as(grocery_df, picked_recipes)
+        elif request.form['store_button'] == 'Email':
+            # NOT IMPLEMENTED
+#            email()
+            flash("Not implemented")
     return render_template('/foodlist/grocerylist.html',
                            grocery_list=grocery_list,
                            days=days_for_meal_prep,
@@ -132,3 +152,27 @@ def check_create_input_for_errors(start_day, number_days):
     elif not number_days:
         error = 'Number of days is required.'
     return error
+
+def combine_ingredient_lists(ingredient_names, ingredient_amounts,
+                             ingredient_measurements):
+    grocery_list = []
+    for name, amount, measurement in zip(ingredient_names, 
+                                         ingredient_amounts,
+                                         ingredient_measurements):
+        ingredient_info = ("%(name)s: %(amount)s %(measurement)s" % {
+                "name":name, "amount":amount, "measurement":measurement})
+        ingredient_info = ingredient_info.rstrip()
+        grocery_list.append(ingredient_info)
+    return grocery_list
+
+# saves grocery_df to current working directory as text file
+# figure out how to make this display save as dialog box to customize
+# saving location
+def save_as(grocery_df, picked_recipes):
+    current_date = datetime.datetime.today().strftime("%Y-%m-%d")
+#    test_file = open("grocerylist.txt", "a")
+#    test_file.write(grocery_df.to_string())
+#    test_file.close()
+    filename = ("Grocery List %(date)s.txt" % {"date":current_date})
+    np.savetxt(filename, grocery_df.values, fmt = "%s")
+#    return send_file(test_file, as_attachment=True, attachment_filename="grocery_list.txt")
