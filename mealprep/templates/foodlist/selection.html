@@ -22,7 +22,7 @@
                 <option value="none"></option>
                 {% for recipe in recipes %}
                   {% if recipe['meal_served'].capitalize() == meal %}
-                    <option value="{{ recipe['recipe_name']}}">{{ recipe['recipe_name'] }}</option>
+                    <option value="{{ recipe['recipe_name'] }}">{{ recipe['recipe_name'] }}</option>
                   {% endif %}
                 {% endfor %}
               </select>

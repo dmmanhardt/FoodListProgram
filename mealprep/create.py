@@ -72,19 +72,27 @@ def select_recipe_to_edit():
             'SELECT id, recipe_name FROM recipe').fetchall()
     if request.method == 'POST':
         recipe_to_edit = request.form['edit_recipe']
+        recipe_name = request.form['recipe_name']
         # get recipe_id to use to edit recipe
         session['recipe_to_edit'] = recipe_to_edit
-        return redirect(url_for('create.edit_recipe'))
+        print(recipe_name)
+        return redirect(
+                url_for('create.edit_recipe', id=recipe_to_edit, recipes = recipes))
     return render_template('foodlist/recipes.html', recipes=recipes)
 
 @bp.route('/edit/<int:id>', methods=('GET', 'POST'))
 def edit_recipe(id):
-    ingredient_info = get_db.execute(
+    db = get_db()
+    ingredient_info = db.execute(
             'SELECT r.id, ingredient, measurement, amount'
             ' FROM recipe r'
             ' JOIN ingredient i ON r.id = i.recipe_id'
             ' WHERE r.id = ?',
-            (id,)).fetchone()  
+            (id,)).fetchall()
+#    for ingredient in ingredient_info:
+#                
+    # loop over ingredient_info and create lists for amounts, ingredients,
+    # etc before inputting into edit.html?
     return render_template('foodlist/edit.html', ingredient_info=ingredient_info)
 
 @bp.route('/select', methods=('GET', 'POST'))
