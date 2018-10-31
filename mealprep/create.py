@@ -71,29 +71,26 @@ def select_recipe_to_edit():
     recipes = db.execute(
             'SELECT id, recipe_name FROM recipe').fetchall()
     if request.method == 'POST':
-        recipe_to_edit = request.form['edit_recipe']
-        recipe_name = request.form['recipe_name']
         # get recipe_id to use to edit recipe
-        session['recipe_to_edit'] = recipe_to_edit
-        print(recipe_name)
+        recipe_to_edit = request.form['edit_recipe']
         return redirect(
-                url_for('create.edit_recipe', id=recipe_to_edit, recipes = recipes))
+                url_for('create.edit_recipe', id=recipe_to_edit))
     return render_template('foodlist/recipes.html', recipes=recipes)
 
 @bp.route('/edit/<int:id>', methods=('GET', 'POST'))
 def edit_recipe(id):
-    db = get_db()
-    ingredient_info = db.execute(
-            'SELECT r.id, ingredient, measurement, amount'
-            ' FROM recipe r'
-            ' JOIN ingredient i ON r.id = i.recipe_id'
-            ' WHERE r.id = ?',
-            (id,)).fetchall()
-#    for ingredient in ingredient_info:
-#                
-    # loop over ingredient_info and create lists for amounts, ingredients,
-    # etc before inputting into edit.html?
-    return render_template('foodlist/edit.html', ingredient_info=ingredient_info)
+    recipe_info = select_recipe_info(id)
+    ingredient_info = select_ingredient_info(id)
+    if request.method == 'POST':
+        recipe_name = request.form['recipe_name']
+        meal_served = request.form['meal_served']
+        serving_size = request.form['serving_size']
+        amounts = request.form.getlist('amount')
+        ingredients = request.form.getlist('ingredient')
+        measurements = request.form.getlist('measurement')
+        #update database libraries with new information
+    return render_template('foodlist/edit.html', recipe_info=recipe_info, 
+                           ingredient_info=ingredient_info)
 
 @bp.route('/select', methods=('GET', 'POST'))
 def select_recipes():
@@ -160,6 +157,26 @@ def check_create_input_for_errors(start_day, number_days):
     elif not number_days:
         error = 'Number of days is required.'
     return error
+
+def select_recipe_info(id):
+    db = get_db()
+    recipe_info = db.execute(
+        'SELECT id, recipe_name, meal_served, serving_size'
+        ' FROM recipe'
+        ' WHERE id = ?',
+        (id,)).fetchone()
+    return recipe_info
+
+def select_ingredient_info(id):
+    db = get_db()
+    ingredient_info = db.execute(
+        'SELECT r.id, r.recipe_name, r.meal_served, r.serving_size,'
+        ' ingredient, measurement, amount'
+        ' FROM recipe r'
+        ' JOIN ingredient i ON r.id = i.recipe_id'
+        ' WHERE r.id = ?',
+        (id,)).fetchall()
+    return ingredient_info
 
 def combine_ingredient_lists(ingredient_names, ingredient_amounts,
                              ingredient_measurements):

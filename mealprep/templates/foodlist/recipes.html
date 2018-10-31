@@ -10,7 +10,6 @@
       <option value="none"></option>
       {% for recipe in recipes %}
         <option value="{{ recipe['id'] }}">{{ recipe['recipe_name'] }}</option>
-        <input type="hidden" name="recipe_name" value="{{ recipe['recipe_name'] }}">
       {% endfor %}
     </select>
   <input type="submit" name="edit_recipe" value="Edit">
