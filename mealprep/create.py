@@ -85,10 +85,18 @@ def edit_recipe(id):
         recipe_name = request.form['recipe_name']
         meal_served = request.form['meal_served']
         serving_size = request.form['serving_size']
+        ingredient_ids = [row['id'] for row in ingredient_info]
         amounts = request.form.getlist('amount')
         ingredients = request.form.getlist('ingredient')
         measurements = request.form.getlist('measurement')
+        # create dict to associate ingredient_id with correct
+        # amount, ingredient, measurement
+        ingredient_info_dictionary = create_ingredient_info_dict(
+                ingredient_ids, amounts, ingredients, measurements)
         #update database libraries with new information
+        update_recipe(id, recipe_name, meal_served, serving_size)
+        update_ingredient_info(ingredient_info_dictionary, id)
+        return redirect(url_for('create.index'))
     return render_template('foodlist/edit.html', recipe_info=recipe_info, 
                            ingredient_info=ingredient_info)
 
@@ -170,13 +178,44 @@ def select_recipe_info(id):
 def select_ingredient_info(id):
     db = get_db()
     ingredient_info = db.execute(
-        'SELECT r.id, r.recipe_name, r.meal_served, r.serving_size,'
-        ' ingredient, measurement, amount'
+        'SELECT r.recipe_name, r.meal_served, r.serving_size,'
+        ' i.id, i.ingredient, i.measurement, i.amount'
         ' FROM recipe r'
         ' JOIN ingredient i ON r.id = i.recipe_id'
         ' WHERE r.id = ?',
         (id,)).fetchall()
     return ingredient_info
+
+def create_ingredient_info_dict(
+        ingredient_ids, amounts, ingredients, measurements):
+    zipped_ingredient_info = zip(amounts, ingredients, measurements)
+    ingredient_info_dict = dict(zip(
+            ingredient_ids, zipped_ingredient_info))
+    return ingredient_info_dict
+
+def update_recipe(id, recipe_name, meal_served, serving_size):
+    db = get_db()
+    db.execute(
+        'UPDATE recipe SET recipe_name = ?, meal_served = ?,'
+        ' serving_size = ? WHERE id = ?',
+        (recipe_name, meal_served, serving_size, id)
+    )
+    db.commit()
+
+# commit new ingredient_info from user into database for correct recipe
+# and ingredient based on their respective id    
+def update_ingredient_info(ingredient_info_dictionary, id):
+    db = get_db()
+    for ingredient_id, ingredient in ingredient_info_dictionary.items():
+        amount = ingredient[0]
+        ingredient_name = ingredient[1]
+        measurement = ingredient[2]
+        db.execute(
+            'UPDATE ingredient SET ingredient = ?, measurement = ?,'
+            ' amount = ? WHERE recipe_id = ? AND id = ?',
+            (ingredient_name, measurement, amount, id, ingredient_id)
+        )
+    db.commit()
 
 def combine_ingredient_lists(ingredient_names, ingredient_amounts,
                              ingredient_measurements):

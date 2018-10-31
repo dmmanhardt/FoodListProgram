@@ -7,7 +7,6 @@ Created on Tue Aug 14 20:23:34 2018
 
 import numpy as np
 import pandas as pd
-import mealprep.storage as Storage
 from mealprep.db import get_db
 
 # uses picked recipes from selection.html and reads each recipes

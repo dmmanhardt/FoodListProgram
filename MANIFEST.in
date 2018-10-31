@@ -1,0 +1,4 @@
+include mealprep/schema.sql
+graft mealprep/static
+graft mealprep/templates
+global-exclude *.pyc
