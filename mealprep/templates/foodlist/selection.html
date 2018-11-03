@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Recipe Selection{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <table>
+      <tr>
+        <th>&nbsp;</th>
+        {% for meal in meals %}
+          <th>{{ meal }}</th>
+        {% endfor %}
+      </tr>
+      {% for day in days %}
+        <tr>
+          <td>{{ day }}</td>
+          {% for meal in meals %}
+            <td align="center">
+              <select name="select_recipes" id="select_recipes", style="width: 150px">
+                <option value="none"></option>
+                {% for recipe in recipes %}
+                  {% if recipe['meal_served'].capitalize() == meal %}
+                    <option value="{{ recipe['recipe_name'] }}">{{ recipe['recipe_name'] }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+    <input type="submit" value="Submit" href="{{ url_for('create.grocery_list') }}">
+  </form>
+{% endblock %}

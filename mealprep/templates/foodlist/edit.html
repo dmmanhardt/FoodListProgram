@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit Recipe{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="recipe_name">Recipe Name</label>
+    <input name="recipe_name" value="{{ recipe_info['recipe_name'] }}" required>
+    <label for="meal_served">Meal Served</label>
+    <input name="meal_served" value="{{ recipe_info['meal_served'] }}" required>
+    <label for="serving_size">Meals Served for Two People</label>
+    <input name="serving_size" value="{{ recipe_info['serving_size'] }}" required>
+    <table>
+      <tr>
+        <th>Amounts</th>
+        <th>Ingredients</th>
+        <th>Measurements</th>
+      </tr>
+      {% for ingredient in ingredient_info %}
+        <tr>
+          <td><input name="amount" value="{{ ingredient['amount'] }}"></td>
+          <td><input name="ingredient" value="{{ ingredient['ingredient'] }}"></td>
+          <td><input name="measurement" value="{{ ingredient['measurement'] }}"></td>
+        </tr>
+      {% endfor %}
+    </table>
+    <input type="submit" value="Save Changes" href="{{ url_for('create.index') }}">
+  </form>
+{% endblock %}

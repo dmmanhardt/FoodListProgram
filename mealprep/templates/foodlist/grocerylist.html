@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Grocery List{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form>
+    <ul style="list-style-type:none">
+      {% for item in grocery_list %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </form>
+  <table style="width:100%">
+    <tr>
+      <th>&nbsp;</th>
+      {% for meal in meals %}
+        <th>{{ meal }}</th>
+      {% endfor %}
+    </tr>
+    {% for day in days %}
+      <tr>
+        <td>{{ day }}</td>
+          {% for meal in meals %}
+            {% set recipe = recipes.pop(0) %}
+            <td>{{ recipe }}</td>
+          {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+  <form method="post">
+    <input type="submit" name="store_button" value="Save As">
+    <input type="submit" name="store_button" value="Email">
+  </form>
+{% endblock %}
