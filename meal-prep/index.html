@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Food List Creator</title>
+  </head>
+  <body>
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <h1>Food List Creation</h1>
+    <div style="width:600px;height:600px;overflow:hidden;">
+      <img src="images/mealprep.jpg" width="600px" height="auto"
+      alt="Single-serving sized containers filled with food">
+    </div>
+    <p>This tool lets you pick what <a href="https://docs.google.com/spreadsheets/d/1Ef7kmmLkyxJnnNii8e1LcGvhEnR54ag-MVBoj0iGHoc/edit?usp=drive_web&ouid=103486785758710998267">recipes</a> you want on certain days and outputs
+      a grocery list for your shopping along with an overview of which meals
+      you have planned for which day</p>
+    <button type="button" onclick="enterNewRecipe()" id="enterNewRecipe">
+      Enter a New Recipe</button>
+    <button type="button" onclick="createGroceryList()" id="createGroceryList">
+      Create a Grocery List</button>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

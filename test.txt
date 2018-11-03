@@ -1,0 +1,5 @@
+avocados  3.0
+bacon slices 7.5
+eggs  6.0
+scallions  6.0
+sweet potatoes medium 3.0
