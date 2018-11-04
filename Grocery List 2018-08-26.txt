@@ -1,7 +1,0 @@
-avocados  2.0
-bacon slices 5.0
-eggs  4.0
-ramen package 0.3333333333333333
-scallions  4.0
-sweet potatoes medium 2.0
-veggies lbs 1.6666666666666665
