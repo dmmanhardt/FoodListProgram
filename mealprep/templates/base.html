@@ -2,19 +2,21 @@
 <title>{% block title %}{% endblock %}Food Prep Helper</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
-  <h1><a href="{{ url_for('index') }}">Food Prep Helper</a></h1>
-  <u1>
-    <li><a href="{{ url_for('create.create_list') }}">Create Food List</a>
-    <li><a href="{{ url_for('create.add_recipe') }}">Add New Recipe</a>
-    <li><a href="{{ url_for('create.select_recipe_to_edit')}}">Edit Recipe</a>
-  </u1>
+    <h1><a href="{{ url_for('index') }}">Food Prep Helper</a></h1>
+    <u1>
+        <li><a href="page_url">Create Food List</a>
+    </u1>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <script src="page_url.js"></script>
 </nav>
 <section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
 </section>
