@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 
+const NavigationOptions = props => {
+    const options = props.navigationOptions.map((option, index) => {
+        return (
+            <h1>{option}</h1>
+        );
+    });
+
+    return (
+            <div>{options}</div>
+    );
+}
+
 class Options extends Component {
     render () {
+        const { navigationOptions } = this.props;
+
         return (
             <div>
-                <h1>Add New Recipe</h1>
-                <h1>Edit Recipe</h1>
-                <h1>Create Grocery List</h1>
+                <NavigationOptions navigationOptions={navigationOptions} />
             </div>
         );
     }
