@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Options from './Options';
-import CreateList from './CreateList';
+import Create from './Create';
 
 class App extends Component {
     render() {
