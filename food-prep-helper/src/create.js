@@ -5,8 +5,9 @@ class Create extends Component {
         startDay: [],
         numberDays: []
     };
-    
+
     render() {
+    }
 }
 
 class CreateInputs extends Component {
@@ -50,3 +51,5 @@ class CreateInputs extends Component {
         );
     }
 }
+
+export default CreateInputs;
