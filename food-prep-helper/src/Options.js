@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 
-const NavigationOptions = props => {
-    const options = props.navigationOptions.map((option, index) => {
-        return (
-            <h1>{option}</h1>
-        );
-    });
+// make each option it's own component? inside option component pass the onClick
+// prop to a DOM's component onClick event
 
-    return (
-            <div>{options}</div>
-    );
+class NavigationOptions extends Component {
+    render () {
+        const { navigationOptions } = this.props;
+
+        const options = navigationOptions.map((option, index) => {
+            return (
+                <h1 className={index} onClick={this.props.onClick}>{option}</h1>
+            );
+        });
+
+        return (
+                <div>{options}</div>
+        );
+    }
 }
 
 class Options extends Component {
@@ -17,7 +24,7 @@ class Options extends Component {
         const { navigationOptions } = this.props;
 
         return (
-            <div>
+            <div className="container">
                 <NavigationOptions navigationOptions={navigationOptions} />
             </div>
         );

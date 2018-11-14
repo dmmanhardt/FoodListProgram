@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 
 class Create extends Component {
-    state = {
-        startDay: [],
-        numberDays: []
-    };
-
-    render() {
-    }
-}
-
-class CreateInputs extends Component {
     constructor(props) {
         super(props);
 
@@ -30,6 +20,11 @@ class CreateInputs extends Component {
         });
     }
 
+    submitForm = () => {
+        this.props.handleSubmit(this.state);
+        this.setState(this.initialState);
+    }
+
     render() {
         const { startDay, numberDays } = this.state;
 
@@ -47,9 +42,13 @@ class CreateInputs extends Component {
                     name="numberDays"
                     value="numberDays"
                     onChange="{this.handleChange}" />
+                <input
+                    type="button"
+                    value="Submit"
+                    onClick={this.submitForm} />
             </form>
         );
     }
 }
 
-export default CreateInputs;
+export default Create;
