@@ -4,12 +4,18 @@ import React, { Component } from 'react';
 // prop to a DOM's component onClick event
 
 class NavigationOptions extends Component {
+    handleClick = () => {
+        console.log(this.props);
+    }
+
     render () {
         const { navigationOptions } = this.props;
-
         const options = navigationOptions.map((option, index) => {
             return (
-                <h1 className={index} onClick={this.props.onClick}>{option}</h1>
+                // add href link to component with the option name?
+                <th>
+                    <a value={option} onClick={this.handleClick}>{option}</a>
+                </th>
             );
         });
 
@@ -24,9 +30,9 @@ class Options extends Component {
         const { navigationOptions } = this.props;
 
         return (
-            <div className="container">
+            <table>
                 <NavigationOptions navigationOptions={navigationOptions} />
-            </div>
+            </table>
         );
     }
 }
