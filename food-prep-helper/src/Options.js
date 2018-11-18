@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 // prop to a DOM's component onClick event
 
 class NavigationOptions extends Component {
+    // change handleClick to push props to Selection.js
     handleClick = () => {
         console.log(this.props);
     }

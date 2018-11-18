@@ -38,10 +38,10 @@ class Create extends Component {
                     onChange={this.handleChange} />
                 <label>Number of Days to Plan For</label>
                 <input
-                    type="int"
+                    type="text"
                     name="numberDays"
-                    value="numberDays"
-                    onChange="{this.handleChange}" />
+                    value={numberDays}
+                    onChange={this.handleChange} />
                 <input
                     type="button"
                     value="Submit"
