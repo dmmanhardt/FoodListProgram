@@ -27,8 +27,8 @@ class RecipeOption extends Component {
 }
 
 const ReturnRecipeOptions = props => {
-    const meals = ["Breakfast", "Lunch", "Dinner"];
-    const week = [
+    var daysToPlanFor = [];
+    const weekList = [
         "Sunday",
         "Monday",
         "Tuesday",
@@ -40,10 +40,11 @@ const ReturnRecipeOptions = props => {
 
     for (let i = 0; i < props.createOptions[0].numberDays; i++) {
         // todo: get corresponding index of startDay from week
-        var daysToPlanFor = [week[(props.createOptions[0].startDay + 1 + i) % 7]];
-        console.log(props.createOptions[0].startDay);
-        console.log(week["Monday"]);
+        var indexOfDayInWeekList = weekList.indexOf(props.createOptions[0].startDay);
+        var dayToAdd = weekList[(indexOfDayInWeekList + 1 + i) % 7];
+        daysToPlanFor.push(dayToAdd);
     }
+
     return (
         <option>{daysToPlanFor}</option>
     );

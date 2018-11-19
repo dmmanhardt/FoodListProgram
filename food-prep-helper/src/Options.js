@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // prop to a DOM's component onClick event
 
 class NavigationOptions extends Component {
-    // change handleClick to push props to Selection.js
+    // todo: change this to render appropriate pick (ie add recipe when add is clicked)
     handleClick = () => {
         console.log(this.props);
     }
