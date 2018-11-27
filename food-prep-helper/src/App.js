@@ -5,11 +5,34 @@ import Selection from './Selection';
 
 class App extends Component {
     state = {
-        createOptions: []
+        createOptions: [],
+        daysToPlanFor: []
     };
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
+    }
+    
+    // return daysToPlanFor before passing to Selection component?
+    returnRecipeOptions = props => {
+        var daysToPlanFor = [];
+        const weekList = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ];
+
+        for (let i = 0; i < props.createOptions[0].numberDays; i++) {
+            // todo: get corresponding index of startDay from week
+            var indexOfDayInWeekList = weekList.indexOf(props.createOptions[0].startDay);
+            var dayToAdd = weekList[(indexOfDayInWeekList + 1 + i) % 7];
+            daysToPlanFor.push(dayToAdd);
+        }
+        this.setState({daysToPlanFor: [...this.state.daysToPlanFor, daysToPlanFor]});
     }
 
     render() {

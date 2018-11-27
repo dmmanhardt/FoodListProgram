@@ -51,17 +51,18 @@ const ReturnRecipeOptions = props => {
 }
 
 class SelectionDays extends Component {
-    // change this to get days from python file (if starting on monday with 4 Days
-    // python should return Monday, Tuesday, Wednesday, Thursday), then this
-    // function should return as a row: day, dropdown, dropdown, dropdown with
-    // each dropdown containing available recipes
     render () {
         const { createOptions } = this.props;
+        // move function that outputs daysToPlanFor here or earlier, then map
+        // over that array and create new row for each day with day as first column
+        // then select boxes for other columns
         const rows = createOptions.map((row, index) => {
             // change the select elements to be their own components
             return (
                 <tr key={index}>
                     <td>{row.startDay}</td>
+                    // change this to be <recipeDays> or something with daysToPlanFor
+                    // each day in day to play for will add <tr> key for that day
                     <td>
                         <RecipeOption createOptions={createOptions} />
                     </td>
