@@ -20,67 +20,64 @@ class RecipeOption extends Component {
         return (
             <select>
                 <option value="none"></option>
-                <ReturnRecipeOptions createOptions={createOptions} />
             </select>
         );
     }
 }
 
-const ReturnRecipeOptions = props => {
-    var daysToPlanFor = [];
-    const weekList = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-    ];
+// const ReturnRecipeOptions = props => {
+//     var daysToPlanFor = [];
+//     const weekList = [
+//         "Sunday",
+//         "Monday",
+//         "Tuesday",
+//         "Wednesday",
+//         "Thursday",
+//         "Friday",
+//         "Saturday"
+//     ];
+//
+//     for (let i = 0; i < props.createOptions[0].numberDays; i++) {
+//         // todo: get corresponding index of startDay from week
+//         var indexOfDayInWeekList = weekList.indexOf(props.createOptions[0].startDay);
+//         var dayToAdd = weekList[(indexOfDayInWeekList + 1 + i) % 7];
+//         daysToPlanFor.push(dayToAdd);
+//     }
+//
+//     return (
+//         <option>{daysToPlanFor}</option>
+//     );
+// }
 
-    for (let i = 0; i < props.createOptions[0].numberDays; i++) {
-        // todo: get corresponding index of startDay from week
-        var indexOfDayInWeekList = weekList.indexOf(props.createOptions[0].startDay);
-        var dayToAdd = weekList[(indexOfDayInWeekList + 1 + i) % 7];
-        daysToPlanFor.push(dayToAdd);
-    }
-
-    return (
-        <option>{daysToPlanFor}</option>
-    );
-}
-
-class SelectionDays extends Component {
-    render () {
-        const { createOptions } = this.props;
-        // move function that outputs daysToPlanFor here or earlier, then map
-        // over that array and create new row for each day with day as first column
-        // then select boxes for other columns
-        const rows = createOptions.map((row, index) => {
-            // change the select elements to be their own components
-            return (
-                <tr key={index}>
-                    <td>{row.startDay}</td>
-                    // change this to be <recipeDays> or something with daysToPlanFor
-                    // each day in day to play for will add <tr> key for that day
-                    <td>
-                        <RecipeOption createOptions={createOptions} />
-                    </td>
-                    <td>
-                        <RecipeOption createOptions={createOptions} />
-                    </td>
-                    <td>
-                        <RecipeOption createOptions={createOptions} />
-                    </td>
-                </tr>
-            );
-        });
-
-        return (
-            <tbody>{rows}</tbody>
-        );
-    }
-}
+// class SelectionDays extends Component {
+//     // move function that outputs daysToPlanFor here or earlier, then map
+//     // over that array and create new row for each day with day as first column
+//     // then select boxes for other columns
+//     render () {
+//         const { createOptions } = this.props;
+//         const rows = createOptions.map((row, index) => {
+//             // change the select elements to be their own components
+//             return (
+//                 <tr key={index}>
+//                     <td>{row.startDay}</td>
+//                     <td>
+//                         <RecipeOption createOptions={createOptions} />
+//                     </td>
+//                     <td>
+//                         <RecipeOption createOptions={createOptions} />
+//                     </td>
+//                     <td>
+//                         <RecipeOption createOptions={createOptions} />
+//                     </td>
+//                 </tr>
+//             );
+//         });
+//
+//         return (
+//             <tbody>{rows}</tbody>
+//         );
+//     }
+// }
 
 class Selection extends Component {
     render () {
@@ -89,7 +86,6 @@ class Selection extends Component {
         return (
             <table>
                 <SelectionHeader />
-                <SelectionDays createOptions={createOptions} />
             </table>
         );
     }

@@ -11,10 +11,6 @@ class App extends Component {
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
-    }
-    
-    // return daysToPlanFor before passing to Selection component?
-    returnRecipeOptions = props => {
         var daysToPlanFor = [];
         const weekList = [
             "Sunday",
@@ -25,11 +21,9 @@ class App extends Component {
             "Friday",
             "Saturday"
         ];
-
-        for (let i = 0; i < props.createOptions[0].numberDays; i++) {
-            // todo: get corresponding index of startDay from week
-            var indexOfDayInWeekList = weekList.indexOf(props.createOptions[0].startDay);
-            var dayToAdd = weekList[(indexOfDayInWeekList + 1 + i) % 7];
+        for (let i = 0; i < createOption.numberDays; i++) {
+            var indexOfDayInWeekList = weekList.indexOf(createOption.startDay);
+            var dayToAdd = weekList[(indexOfDayInWeekList + i) % 7];
             daysToPlanFor.push(dayToAdd);
         }
         this.setState({daysToPlanFor: [...this.state.daysToPlanFor, daysToPlanFor]});
@@ -40,12 +34,13 @@ class App extends Component {
         // modified
         const navigationOptions = ['Add', 'Edit', 'Create'];
         const { createOptions } = this.state;
+        const { daysToPlanFor } = this.state;
 
         return (
             <div className="container">
                 <Options navigationOptions={navigationOptions} />
                 <Create handleSubmit={this.handleSubmit} />
-                <Selection createOptions={createOptions}/>
+                <Selection daysToPlanFor={daysToPlanFor}/>
             </div>
         );
     }
