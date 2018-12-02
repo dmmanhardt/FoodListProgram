@@ -11,7 +11,7 @@ class App extends Component {
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
-        var daysToPlanFor = [];
+        const updatedArray = [...this.state.daysToPlanFor];
         const weekList = [
             "Sunday",
             "Monday",
@@ -24,9 +24,10 @@ class App extends Component {
         for (let i = 0; i < createOption.numberDays; i++) {
             var indexOfDayInWeekList = weekList.indexOf(createOption.startDay);
             var dayToAdd = weekList[(indexOfDayInWeekList + i) % 7];
-            daysToPlanFor.push(dayToAdd);
+            updatedArray.push(dayToAdd);
         }
-        this.setState({daysToPlanFor: [...this.state.daysToPlanFor, daysToPlanFor]});
+        this.setState({daysToPlanFor: updatedArray
+        });
     }
 
     render() {
