@@ -13,7 +13,29 @@ const SelectionHeader = () => {
     );
 }
 
+// for each day,meal pair, there should be one recipe selection. Push that
+// to recipesPicked array onChange, or handle by onSubmit. If not, would need
+// to be able to change recipe for day, meal in array
 class SelectionBody extends Component {
+    constructor(props) {
+        super(props);
+        this.initialState = {
+            recipesPicked: []
+        };
+
+        this.state = this.initialState;
+    }
+
+    handleChange = event => {
+        const { recipe, value } = event.target;
+
+        console.log("handle change");
+
+        this.setState({
+            [recipe] : value
+        });
+    }
+
     render () {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
@@ -28,19 +50,31 @@ class SelectionBody extends Component {
                     <td>
                         <select>
                             <option value="none"></option>
-                            <option value="recipe">Recipe for meal</option>
+                            <option
+                                key={day}
+                                value="recipe">
+                                Recipe for meal
+                            </option>
                         </select>
                     </td>
                     <td>
                         <select>
                             <option value="none"></option>
-                            <option value="recipe">Recipe for meal</option>
+                            <option
+                                key={day}
+                                value="recipe">
+                                Recipe for meal
+                            </option>
                         </select>
                     </td>
                     <td>
                         <select>
                             <option value="none"></option>
-                            <option value="recipe">Recipe for meal</option>
+                            <option
+                                key={day}
+                                value="recipe">
+                                Recipe for meal
+                            </option>
                         </select>
                     </td>
                 </tr>
@@ -48,29 +82,12 @@ class SelectionBody extends Component {
         });
 
         return (
-            <tbody>{selectionRows}</tbody>
+            <tbody onChange={this.handleChange}>{selectionRows}</tbody>
         );
     }
 }
 
 class Selection extends Component {
-    constructor(props) {
-        super(props);
-        this.initialState = {
-            recipesPicked: []
-        };
-
-        this.state = this.initialState;
-    }
-
-    handleChange = event => {
-        const { recipe, value } = event.target;
-
-        this.setState({
-            [recipe] : value
-        });
-    }
-
     render () {
         const { daysToPlanFor } = this.props;
 
