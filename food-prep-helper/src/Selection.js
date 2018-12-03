@@ -13,6 +13,25 @@ const SelectionHeader = () => {
     );
 }
 
+// set state of each select element to be meal and recipe picked
+// add this to recipesPicked array of SelectionBody. (ie will be able to map
+// and do row.meal, row.day, row.recipe)
+class SelectionOption extends Component {
+    constructor(props) {
+        super(props);
+        this.initialState = {
+            meal: '',
+            recipePicked: ''
+        };
+
+        this.state = this.initialState;
+    }
+
+    handleChange = event => {
+        const { recipe, value } = event.target;
+    }
+}
+
 // TODO for each day,meal pair, there should be one recipe selection. Push that
 // to recipesPicked array onChange, or handle by onSubmit. If not, would need
 // to be able to change recipe for day, meal in array
@@ -30,7 +49,8 @@ class SelectionBody extends Component {
         const { recipe, value } = event.target;
 
         console.log("handle change");
-
+        // push to recipesPicked?
+        // or create meal,day variable with value and push those to array at end
         this.setState({
             [recipe] : value
         });
@@ -53,6 +73,7 @@ class SelectionBody extends Component {
                             <option value="none"></option>
                             <option
                                 key={day}
+                                name="recipesPicked"
                                 value="recipe">
                                 Recipe for meal
                             </option>
