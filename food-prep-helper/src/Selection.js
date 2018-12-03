@@ -13,7 +13,7 @@ const SelectionHeader = () => {
     );
 }
 
-// for each day,meal pair, there should be one recipe selection. Push that
+// TODO for each day,meal pair, there should be one recipe selection. Push that
 // to recipesPicked array onChange, or handle by onSubmit. If not, would need
 // to be able to change recipe for day, meal in array
 class SelectionBody extends Component {
@@ -40,6 +40,7 @@ class SelectionBody extends Component {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
         // GroceryList component
+        const { recipesPicked } = this.state;
         const { daysToPlanFor } = this.props;
         const meals = ["Breakfast", "Lunch", "Dinner"];
 
