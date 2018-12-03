@@ -20,6 +20,7 @@ class SelectionOption extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
+            day: '',
             meal: '',
             recipePicked: ''
         };
@@ -29,6 +30,28 @@ class SelectionOption extends Component {
 
     handleChange = event => {
         const { recipe, value } = event.target;
+
+        this.setState({
+            [name] : value
+        });
+    }
+
+    render() {
+        const { day, meal, recipePicked } = this.state;
+        const meals = ["Breakfast", "Lunch", "Dinner"];
+
+        return (
+            <td name="day" value="{day}">
+                <select name="meal" value="{meal}">
+                    <option value="none"></option>
+                    <option
+                        name="recipePicked"
+                        value="recipe">
+                        Recipe for meal
+                    </option>
+                </select>
+            </td>
+        );
     }
 }
 
@@ -62,7 +85,6 @@ class SelectionBody extends Component {
         // GroceryList component
         const { recipesPicked } = this.state;
         const { daysToPlanFor } = this.props;
-        const meals = ["Breakfast", "Lunch", "Dinner"];
 
         const selectionRows = daysToPlanFor.map((day, index) => {
             return (
