@@ -16,7 +16,27 @@ const SelectionHeader = () => {
 // set state of each select element to be meal and recipe picked
 // add this to recipesPicked array of SelectionBody. (ie will be able to map
 // and do row.meal, row.day, row.recipe)
-class SelectionOption extends Component {
+
+//render SelectionRow from SelectionBody, SelectionRow maps over meals and
+//renders 3 SelectionCell for each
+
+class SelectionRow extends Component {
+    render() {
+        const meals = ["Breakfast", "Lunch", "Dinner"];
+
+        const selectionCells = meals.map((meal, index) => {
+            return (
+                <SelectionCell />
+            );
+        });
+
+        return (
+            <tr>{selectionCells}</tr>
+        );
+    }
+}
+
+class SelectionCell extends Component {
     constructor(props) {
         super(props);
         this.initialState = {
@@ -29,7 +49,7 @@ class SelectionOption extends Component {
     }
 
     handleChange = event => {
-        const { recipe, value } = event.target;
+        const { name, value } = event.target;
 
         this.setState({
             [name] : value
@@ -38,11 +58,10 @@ class SelectionOption extends Component {
 
     render() {
         const { day, meal, recipePicked } = this.state;
-        const meals = ["Breakfast", "Lunch", "Dinner"];
 
         return (
-            <td name="day" value="{day}">
-                <select name="meal" value="{meal}">
+            <td name="day" value="{day}" onChange={this.handleChange}>
+                <select name="meal" value="{meal}" onChange={this.handleChange}>
                     <option value="none"></option>
                     <option
                         name="recipePicked"
@@ -72,8 +91,7 @@ class SelectionBody extends Component {
         const { recipe, value } = event.target;
 
         console.log("handle change");
-        // push to recipesPicked?
-        // or create meal,day variable with value and push those to array at end
+
         this.setState({
             [recipe] : value
         });
@@ -88,40 +106,7 @@ class SelectionBody extends Component {
 
         const selectionRows = daysToPlanFor.map((day, index) => {
             return (
-                <tr key={index}>
-                    <td>{day}</td>
-                    <td>
-                        <select>
-                            <option value="none"></option>
-                            <option
-                                key={day}
-                                name="recipesPicked"
-                                value="recipe">
-                                Recipe for meal
-                            </option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value="none"></option>
-                            <option
-                                key={day}
-                                value="recipe">
-                                Recipe for meal
-                            </option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option value="none"></option>
-                            <option
-                                key={day}
-                                value="recipe">
-                                Recipe for meal
-                            </option>
-                        </select>
-                    </td>
-                </tr>
+                <SelectionRow />
             );
         });
 
