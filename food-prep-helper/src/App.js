@@ -41,7 +41,7 @@ class App extends Component {
             <div className="container">
                 <Options navigationOptions={navigationOptions} />
                 <Create handleSubmit={this.handleSubmit} />
-                <Selection daysToPlanFor={daysToPlanFor}/>
+                <Selection daysToPlanFor={daysToPlanFor} />
             </div>
         );
     }
