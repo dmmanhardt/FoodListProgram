@@ -14,17 +14,23 @@ const SelectionHeader = () => {
 }
 
 class SelectionCell extends Component {
+    // state = {
+        // dayCell: [] or = select.value ?,
+        // mealCell: [],
+        // recipePicked: [],
+    // };
+
     constructor(props) {
         super(props);
         this.initialState = {
             dayCell: '',
             mealCell: '',
-            recipePicked: ''
+            recipePicked: '',
         };
 
         this.state = this.initialState;
     }
-
+    // since handleChange is on select element, is only setting state of mealCell (since that's the name of that element)
     handleChange = event => {
         const { name, value } = event.target;
 
