@@ -14,18 +14,14 @@ const SelectionHeader = () => {
 }
 
 class SelectionCell extends Component {
-    // state = {
-        // dayCell: [] or = select.value ?,
-        // mealCell: [],
-        // recipePicked: [],
-    // };
-
     constructor(props) {
         super(props);
+        const { day, meal, mealIndex } = this.props;
+
         this.initialState = {
-            dayCell: '',
-            mealCell: '',
-            recipePicked: '',
+            dayCell: {day},
+            mealCell: {meal},
+            recipePicked: "none",
         };
 
         this.state = this.initialState;
@@ -35,17 +31,17 @@ class SelectionCell extends Component {
         const { name, value } = event.target;
 
         this.setState({
-            [name] : value
+            recipePicked: value,
         });
     }
-
+    // get dayCell and mealCell to update on render?
     render() {
         const { dayCell, mealCell, recipePicked } = this.state;
         const { day, meal, mealIndex } = this.props;
 
         return (
             <td name="dayCell" value={day}>
-                <select name="mealCell" value={meal} onChange={this.handleChange}>
+                <select name="mealCell" onChange={this.handleChange}>
                     <option name="recipePicked" value="none"></option>
                     <option
                         name="recipePicked"
