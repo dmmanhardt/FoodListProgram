@@ -26,7 +26,7 @@ class SelectionCell extends Component {
 
         this.state = this.initialState;
     }
-    // since handleChange is on select element, is only setting state of mealCell (since that's the name of that element)
+
     handleChange = event => {
         const { name, value } = event.target;
 
@@ -34,7 +34,7 @@ class SelectionCell extends Component {
             recipePicked: value,
         });
     }
-    // get dayCell and mealCell to update on render?
+
     render() {
         const { dayCell, mealCell, recipePicked } = this.state;
         const { day, meal, mealIndex } = this.props;
