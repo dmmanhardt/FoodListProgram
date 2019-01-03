@@ -54,9 +54,6 @@ class SelectionCell extends Component {
     }
 }
 
-// set state of each select element to be meal and recipe picked
-// add this to recipesPicked array of SelectionBody. (ie will be able to map
-// and do row.meal, row.day, row.recipe)
 class SelectionRow extends Component {
     constructor(props) {
         super(props);
@@ -66,9 +63,12 @@ class SelectionRow extends Component {
 
         this.state = this.initialState;
     }
-
-    handleChange = recipe => {
-        this.setState({recipesPicked: [...this.state.recipesPicked, recipe]
+    // if meal/day in recipesPicked, replace recipePicked
+    // else, concat
+    // MOVE THIS TO MAIN SELECTION COMPONENT (highest component) or main app
+    // which will then render GroceryList component
+    handleChange = event => {
+        this.setState({recipesPicked: this.state.recipesPicked.concat([event.target.value])
         });
     }
 
@@ -91,24 +91,7 @@ class SelectionRow extends Component {
     }
 }
 
-// TODO for each day,meal pair, there should be one recipe selection. Push that
-// to recipesPicked array onChange, or handle by onSubmit. If not, would need
-// to be able to change recipe for day, meal in array
 class SelectionBody extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.initialState = {
-    //         recipesPicked: []
-    //     };
-    //
-    //     this.state = this.initialState;
-    // }
-    //
-    // handleChange = recipe => {
-    //     this.setState({recipesPicked: [...this.state.recipesPicked, recipe]
-    //     });
-    // }
-
     render () {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
@@ -127,7 +110,7 @@ class SelectionBody extends Component {
         );
     }
 }
-
+// add day:meal as state and update that for each child?
 class Selection extends Component {
     render () {
         const { daysToPlanFor } = this.props;
