@@ -6,7 +6,8 @@ import Selection from './Selection';
 class App extends Component {
     state = {
         createOptions: [],
-        daysToPlanFor: []
+        daysToPlanFor: [],
+        recipesPicked: []
     };
 
     handleSubmit = createOption => {

@@ -28,7 +28,7 @@ class SelectionCell extends Component {
     }
 
     handleChange = event => {
-        const { name, value } = event.target;
+        const {value} = event.target;
 
         this.setState({
             recipePicked: value,
@@ -41,7 +41,7 @@ class SelectionCell extends Component {
 
         return (
             <td name="dayCell" value={day}>
-                <select name="mealCell" onChange={this.handleChange}>
+                <select name={meal} onChange={this.handleChange}>
                     <option name="recipePicked" value="none"></option>
                     <option
                         name="recipePicked"
@@ -68,7 +68,7 @@ class SelectionRow extends Component {
     // MOVE THIS TO MAIN SELECTION COMPONENT (highest component) or main app
     // which will then render GroceryList component
     handleChange = event => {
-        this.setState({recipesPicked: this.state.recipesPicked.concat([event.target.value])
+        this.setState({recipesPicked: this.state.recipesPicked.concat([[event.target.name, event.target.value]])
         });
     }
 
