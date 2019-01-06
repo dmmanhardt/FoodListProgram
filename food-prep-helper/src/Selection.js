@@ -35,13 +35,17 @@ class SelectionCell extends Component {
         });
     }
 
+    handleSelectChange = event => {
+        this.props.handleSelectionChange(event);
+    }
+
     render() {
         const { dayCell, mealCell, recipePicked } = this.state;
         const { day, meal, mealIndex } = this.props;
 
         return (
             <td name="dayCell" value={day}>
-                <select name={meal} onChange={this.handleChange}>
+                <select name={meal} onChange={this.handleSelectChange}>
                     <option name="recipePicked" value="none"></option>
                     <option
                         name="recipePicked"
@@ -72,13 +76,17 @@ class SelectionRow extends Component {
         });
     }
 
+    handleSelectionChange = () => {
+        this.props.handleSelectionChange(this.state);
+    }
+
     render() {
         const meals = ["Breakfast", "Lunch", "Dinner"];
         const { day, dayIndex } = this.props;
 
         const selectionCells = meals.map((meal, mealIndex) => {
             return (
-                <SelectionCell onChange={this.handleChange} key={mealIndex} day={day} meal={meal} index={mealIndex} />
+                <SelectionCell onChange={this.handleChange} key={mealIndex} day={day} meal={meal} index={mealIndex} handleSelectionChange={this.handleSelectionChange} />
             );
         });
 
@@ -91,7 +99,11 @@ class SelectionRow extends Component {
     }
 }
 
-class SelectionBody extends Component {
+class SelectionBody extends Component {   
+    handleSelectionChange = () => {
+        this.props.handleSelectionChange(this.state);
+    }
+
     render () {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
@@ -101,7 +113,7 @@ class SelectionBody extends Component {
 
         const selectionRows = daysToPlanFor.map((day, dayIndex) => {
             return (
-                <SelectionRow key={dayIndex} day={day} index={dayIndex} />
+                <SelectionRow key={dayIndex} day={day} index={dayIndex} handleSelectionChange={this.handleSelectionChange} />
             );
         });
 
@@ -112,13 +124,17 @@ class SelectionBody extends Component {
 }
 // add day:meal as state and update that for each child?
 class Selection extends Component {
+    handleSelectionChange = () => {
+        this.props.handleSelectionChange(this.state);
+    }
+
     render () {
         const { daysToPlanFor } = this.props;
 
         return (
             <table>
                 <SelectionHeader />
-                <SelectionBody daysToPlanFor={daysToPlanFor} />
+                <SelectionBody daysToPlanFor={daysToPlanFor} handleSelectionChange={this.handleSelectionChange} />
             </table>
         );
     }

@@ -31,18 +31,25 @@ class App extends Component {
         });
     }
 
+    handleSelectionChange = event => {
+        // this.setState({recipesPicked: [...this.state.recipesPicked, recipePicked.value]});
+        this.setState({recipesPicked: this.state.recipesPicked.concat([event])
+        });
+    }
+
     render() {
         // pass navigation options through as props since they don't need to be
         // modified
         const navigationOptions = ['Add', 'Edit', 'Create'];
         const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
+        const { recipesPicked } = this.state;
 
         return (
             <div className="container">
                 <Options navigationOptions={navigationOptions} />
                 <Create handleSubmit={this.handleSubmit} />
-                <Selection daysToPlanFor={daysToPlanFor} />
+                <Selection daysToPlanFor={daysToPlanFor} handleSelectionChange={this.handleSelectionChange} />
             </div>
         );
     }
