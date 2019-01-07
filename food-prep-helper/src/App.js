@@ -31,11 +31,13 @@ class App extends Component {
         });
     }
 
-    handleSelectionChange = event => {
-        // this.setState({recipesPicked: [...this.state.recipesPicked, recipePicked.value]});
-        this.setState({recipesPicked: this.state.recipesPicked.concat([event])
-        });
+    handleSelectionChange = recipePicked => {
+        this.setState({[recipePicked.target.name]: recipePicked.target.value});
     }
+
+// render GroceryList component by going through state and adding any besides createOptions
+// and daysToPlanFor to recipesPicked, pass recipes picked to python function that calculates
+// ingredient info
 
     render() {
         // pass navigation options through as props since they don't need to be

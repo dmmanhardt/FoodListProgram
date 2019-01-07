@@ -16,7 +16,8 @@ const SelectionHeader = () => {
 class SelectionCell extends Component {
     constructor(props) {
         super(props);
-        const { day, meal, mealIndex } = this.props;
+        const { day, meal, dayIndex } = this.props;
+        this.selectionIndex = dayIndex + meal;
 
         this.initialState = {
             dayCell: {day},
@@ -35,17 +36,13 @@ class SelectionCell extends Component {
         });
     }
 
-    handleSelectChange = event => {
-        this.props.handleSelectionChange(event);
-    }
-
     render() {
         const { dayCell, mealCell, recipePicked } = this.state;
         const { day, meal, mealIndex } = this.props;
 
         return (
             <td name="dayCell" value={day}>
-                <select name={meal} onChange={this.handleSelectChange}>
+                <select name={this.selectionIndex} onChange={this.props.handleSelectionChange}>
                     <option name="recipePicked" value="none"></option>
                     <option
                         name="recipePicked"
@@ -67,26 +64,19 @@ class SelectionRow extends Component {
 
         this.state = this.initialState;
     }
-    // if meal/day in recipesPicked, replace recipePicked
-    // else, concat
-    // MOVE THIS TO MAIN SELECTION COMPONENT (highest component) or main app
-    // which will then render GroceryList component
+
     handleChange = event => {
         this.setState({recipesPicked: this.state.recipesPicked.concat([[event.target.name, event.target.value]])
         });
-    }
-
-    handleSelectionChange = () => {
-        this.props.handleSelectionChange(this.state);
     }
 
     render() {
         const meals = ["Breakfast", "Lunch", "Dinner"];
         const { day, dayIndex } = this.props;
 
-        const selectionCells = meals.map((meal, mealIndex) => {
+        const selectionCells = meals.map((meal) => {
             return (
-                <SelectionCell onChange={this.handleChange} key={mealIndex} day={day} meal={meal} index={mealIndex} handleSelectionChange={this.handleSelectionChange} />
+                <SelectionCell onChange={this.handleChange} key={meal} day={day} meal={meal} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
             );
         });
 
@@ -100,20 +90,15 @@ class SelectionRow extends Component {
 }
 
 class SelectionBody extends Component {   
-    handleSelectionChange = () => {
-        this.props.handleSelectionChange(this.state);
-    }
-
     render () {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
         // GroceryList component
-        // const { recipesPicked } = this.state;
         const { daysToPlanFor } = this.props;
 
         const selectionRows = daysToPlanFor.map((day, dayIndex) => {
             return (
-                <SelectionRow key={dayIndex} day={day} index={dayIndex} handleSelectionChange={this.handleSelectionChange} />
+                <SelectionRow day={day} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
             );
         });
 
@@ -122,19 +107,15 @@ class SelectionBody extends Component {
         );
     }
 }
-// add day:meal as state and update that for each child?
-class Selection extends Component {
-    handleSelectionChange = () => {
-        this.props.handleSelectionChange(this.state);
-    }
 
+class Selection extends Component {
     render () {
         const { daysToPlanFor } = this.props;
 
         return (
             <table>
                 <SelectionHeader />
-                <SelectionBody daysToPlanFor={daysToPlanFor} handleSelectionChange={this.handleSelectionChange} />
+                <SelectionBody daysToPlanFor={daysToPlanFor} handleSelectionChange={this.props.handleSelectionChange} />
             </table>
         );
     }
