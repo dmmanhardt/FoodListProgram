@@ -7,7 +7,7 @@ class App extends Component {
     state = {
         createOptions: [],
         daysToPlanFor: [],
-        recipesPicked: []
+        recipesPicked: {}
     };
 
     handleSubmit = createOption => {
@@ -31,8 +31,26 @@ class App extends Component {
         });
     }
 
+    // create state variable for each when Selection is first rendered and
+    // default their value to "none" (because if user doesn't change a cell's
+    // selection, the state variable for that cell in app is never declared)
+
+    // OR create object for each mealCell and recipePicked can be mealCell.recipePicked?
     handleSelectionChange = recipePicked => {
+        // this is a nested state and should be avoided
+        // this.setState({recipesPicked: {[recipePicked.target.name]: recipePicked.target.value}});
+
         this.setState({[recipePicked.target.name]: recipePicked.target.value});
+        const stateVariables = [this.state];
+        this.setState({stateVariables: stateVariables});
+
+        // for (let i = 0; i < stateVariables.length; i++) {
+        //     if (stateVariables[i] === 'createOptions' || stateVariables[i] === 'daysToPlanFor' || stateVariables[i] === 'recipesPicked') {
+        //         continue
+        //     }else{
+        //         this.setState({[this.state.recipesPicked]: stateVariables[i]});
+        //     }
+        // }
     }
 
 // render GroceryList component by going through state and adding any besides createOptions
