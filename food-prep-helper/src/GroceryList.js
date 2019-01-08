@@ -6,7 +6,14 @@ import React, { Component } from 'react';
 class GroceryList extends Component {
     render() {
         const { recipesPicked } = this.props;
+        // loop through selectionCellIndexes here and populate recipesPicked here?
+        // or do it before in app component and pass recipesPicked through as props?
 
+        // pass recipesPicked to python file
+
+        // once python file passes back ingredient info
+        // loop over ingredient info and create list item component
+        // for each in format "Ingredient: amount measurement"
 
     }
 }

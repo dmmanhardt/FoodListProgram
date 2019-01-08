@@ -7,7 +7,7 @@ class App extends Component {
     state = {
         createOptions: [],
         daysToPlanFor: [],
-        recipesPicked: {}
+        recipesPicked: []
     };
 
     handleSubmit = createOption => {
@@ -22,35 +22,42 @@ class App extends Component {
             "Friday",
             "Saturday"
         ];
+
+        // creates array containing name of weekday for each day to plan for
         for (let i = 0; i < createOption.numberDays; i++) {
             var indexOfDayInWeekList = weekList.indexOf(createOption.startDay);
             var dayToAdd = weekList[(indexOfDayInWeekList + i) % 7];
             updatedArray.push(dayToAdd);
         }
-        this.setState({daysToPlanFor: updatedArray
-        });
+        this.setState({daysToPlanFor: updatedArray});
+        this.updateSelectionCellIndexes(updatedArray);
     }
 
-    // create state variable for each when Selection is first rendered and
-    // default their value to "none" (because if user doesn't change a cell's
-    // selection, the state variable for that cell in app is never declared)
+    // create array with all selectionCell indexes and declare it in state
+    // the call function to create state variable for each selectionCell 
+    // index here so that state object can be updated in handleSelectionChange
+    updateSelectionCellIndexes(daysToPlanFor) {
+        var selectionCellIndexes = [];
+        for (let i = 0; i < daysToPlanFor.length; i++) {
+            selectionCellIndexes.push(i + 'Breakfast');
+            selectionCellIndexes.push(i + 'Lunch');
+            selectionCellIndexes.push(i + 'Dinner');    
+        }
+        this.setState({selectionCellIndexes: selectionCellIndexes});
+        this.addSelectionCellIndexToState(selectionCellIndexes);
+    }
 
-    // OR create object for each mealCell and recipePicked can be mealCell.recipePicked?
+    addSelectionCellIndexToState(selectionCellIndexes) {
+        for (let i = 0; i < selectionCellIndexes.length; i++) {
+            this.setState({[selectionCellIndexes[i]]: "none"});
+        }
+    }
+
     handleSelectionChange = recipePicked => {
-        // this is a nested state and should be avoided
-        // this.setState({recipesPicked: {[recipePicked.target.name]: recipePicked.target.value}});
-
         this.setState({[recipePicked.target.name]: recipePicked.target.value});
-        const stateVariables = [this.state];
-        this.setState({stateVariables: stateVariables});
-
-        // for (let i = 0; i < stateVariables.length; i++) {
-        //     if (stateVariables[i] === 'createOptions' || stateVariables[i] === 'daysToPlanFor' || stateVariables[i] === 'recipesPicked') {
-        //         continue
-        //     }else{
-        //         this.setState({[this.state.recipesPicked]: stateVariables[i]});
-        //     }
-        // }
+        // var recipesPicked = this.state.selectionCellIndexes.map(selectionCell => this.state[selectionCell]);
+        // console.log(recipesPicked);
+        // this.setState({[recipesPicked]: recipesPicked});
     }
 
 // render GroceryList component by going through state and adding any besides createOptions
@@ -59,7 +66,7 @@ class App extends Component {
 
     render() {
         // pass navigation options through as props since they don't need to be
-        // modified
+        // modified. NOT IMPLEMENTED CURRENTLY
         const navigationOptions = ['Add', 'Edit', 'Create'];
         const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
