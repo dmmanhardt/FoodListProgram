@@ -6,6 +6,15 @@ import React, { Component } from 'react';
 class GroceryList extends Component {
     render() {
         const { recipesPicked } = this.props;
+        const ingredients = recipesPicked.map((recipe) => {
+            return (
+                <li>{recipe}</li>
+            );
+        });
+    
+        return (
+            <ul>{ingredients}</ul>
+        );
         // loop through selectionCellIndexes here and populate recipesPicked here?
         // or do it before in app component and pass recipesPicked through as props?
 

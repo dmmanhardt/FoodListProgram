@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Options from './Options';
 import Create from './Create';
 import Selection from './Selection';
+import GroceryList from './GroceryList';
 
 class App extends Component {
     state = {
@@ -54,10 +55,13 @@ class App extends Component {
     }
 
     handleSelectionChange = recipePicked => {
-        this.setState({[recipePicked.target.name]: recipePicked.target.value});
-        // var recipesPicked = this.state.selectionCellIndexes.map(selectionCell => this.state[selectionCell]);
-        // console.log(recipesPicked);
-        // this.setState({[recipesPicked]: recipesPicked});
+        // copy current state, change value of selectionCell that was just changed
+        // go through all selectionCells and update recipesPicked with their values
+        // update state with updated recipesPicked
+        var currentState = this.state;
+        currentState[recipePicked.target.name] = recipePicked.target.value;
+        var updatedRecipesPicked = this.state.selectionCellIndexes.map(selectionCell => currentState[selectionCell]);
+        this.setState({recipesPicked: updatedRecipesPicked});
     }
 
 // render GroceryList component by going through state and adding any besides createOptions
@@ -77,6 +81,7 @@ class App extends Component {
                 <Options navigationOptions={navigationOptions} />
                 <Create handleSubmit={this.handleSubmit} />
                 <Selection daysToPlanFor={daysToPlanFor} handleSelectionChange={this.handleSelectionChange} />
+                <GroceryList recipesPicked={recipesPicked} />
             </div>
         );
     }
