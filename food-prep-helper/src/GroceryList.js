@@ -13,7 +13,10 @@ class GroceryList extends Component {
         });
     
         return (
-            <ul>{ingredients}</ul>
+            <form>
+                <h6>Grocery List</h6>
+                <ul>{ingredients}</ul>
+            </form>
         );
         // loop through selectionCellIndexes here and populate recipesPicked here?
         // or do it before in app component and pass recipesPicked through as props?
