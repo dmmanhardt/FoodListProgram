@@ -14,7 +14,7 @@ class GroceryList extends Component {
     
         return (
             <form>
-                <h6>Grocery List</h6>
+                <h4>Grocery List:</h4>
                 <ul>{ingredients}</ul>
             </form>
         );

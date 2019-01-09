@@ -100,26 +100,34 @@ def edit_recipe(id):
     return render_template('foodlist/edit.html', recipe_info=recipe_info, 
                            ingredient_info=ingredient_info)
 
+# @bp.route('/select', methods=('GET', 'POST'))
+# def select_recipes():
+#     days_for_meal_prep = session.get('days_for_meal_prep')
+#     meals = ['Breakfast', 'Lunch', 'Dinner']
+#     session['meals'] = meals
+#     db = get_db()
+#     recipes = db.execute(
+#             'SELECT recipe_name, meal_served, serving_size'
+#             ' FROM recipe').fetchall()
+#     if request.method == 'POST':
+#         picked_recipes = request.form.getlist('select_recipes')
+#         session['picked_recipes'] = picked_recipes
+#         error = None
+        
+#         if error is not None:
+#             flash(error)
+#         else:
+#             return redirect(url_for('create.grocery_list'))
+#     return render_template('/foodlist/selection.html', meals=meals,
+#                            days=days_for_meal_prep, recipes=recipes)
+
 @bp.route('/select', methods=('GET', 'POST'))
-def select_recipes():
-    days_for_meal_prep = session.get('days_for_meal_prep')
-    meals = ['Breakfast', 'Lunch', 'Dinner']
-    session['meals'] = meals
+def fetch_recipes():
     db = get_db()
     recipes = db.execute(
             'SELECT recipe_name, meal_served, serving_size'
             ' FROM recipe').fetchall()
-    if request.method == 'POST':
-        picked_recipes = request.form.getlist('select_recipes')
-        session['picked_recipes'] = picked_recipes
-        error = None
-        
-        if error is not None:
-            flash(error)
-        else:
-            return redirect(url_for('create.grocery_list'))
-    return render_template('/foodlist/selection.html', meals=meals,
-                           days=days_for_meal_prep, recipes=recipes)
+    return recipes
     
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
