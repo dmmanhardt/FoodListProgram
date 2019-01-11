@@ -8,7 +8,7 @@ class App extends Component {
     state = {
         createOptions: [],
         daysToPlanFor: [],
-        recipesPicked: []
+        recipesPicked: [],
     };
 
     handleSubmit = createOption => {
@@ -64,6 +64,17 @@ class App extends Component {
         this.setState({recipesPicked: updatedRecipesPicked});
     }
 
+    getRecipesFromServer() {
+        return fetch('http://localhost:5000/select', {
+            method: 'GET',
+        })
+            .then(result => result)
+            .then(item => console.log(item))
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
 // render GroceryList component by going through state and adding any besides createOptions
 // and daysToPlanFor to recipesPicked, pass recipes picked to python function that calculates
 // ingredient info
@@ -75,6 +86,8 @@ class App extends Component {
         const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
         const { recipesPicked } = this.state;
+        const recipes = this.getRecipesFromServer();
+        console.log(recipes);
 
         return (
             <div className="container">

@@ -91,35 +91,19 @@ class SelectionRow extends Component {
 
 // change the fetch location, probably need to reorganize the file
 // structure first
-class SelectionBody extends Component { 
-    getRecipesFromServer() {
-        return fetch('/select', {
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                return responseJson;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-    
+class SelectionBody extends Component {     
     render () {
         // TODO add options to list recipes with same meal from Python scripts
         // TODO add key:value (day+meal:recipe) to state variable and pass to
         // GroceryList component
         const { daysToPlanFor } = this.props;
         // make HTTP request here to fetch recipes from create.py fetch_recipes()
-        const recipes = this.getRecipesFromServer();
-        console.log(recipes);
+        // const recipes = this.getRecipesFromServer();
+        // console.log(recipes);
 
         const selectionRows = daysToPlanFor.map((day, dayIndex) => {
             return (
-                <SelectionRow recipes={recipes} day={day} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
+                <SelectionRow day={day} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
             );
         });
 

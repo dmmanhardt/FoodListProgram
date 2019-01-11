@@ -123,12 +123,13 @@ def edit_recipe(id):
 
 @bp.route('/select', methods=('GET', 'POST'))
 def fetch_recipes():
-    db = get_db()
-    recipes = db.execute(
-            'SELECT recipe_name, meal_served, serving_size'
-            ' FROM recipe').fetchall()
-    return recipes
-    
+    if request.method == 'GET':
+        db = get_db()
+        recipes = db.execute(
+                'SELECT recipe_name, meal_served, serving_size'
+                ' FROM recipe').fetchall()
+        return "TEST"
+        
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
     db = get_db()
