@@ -39,16 +39,18 @@ class SelectionCell extends Component {
     render() {
         const { dayCell, mealCell, recipePicked } = this.state;
         const { day, meal, mealIndex } = this.props;
+        const { recipes } = this.props;
 
         return (
             <td name="dayCell" value={day}>
                 <select name={this.selectionIndex} onChange={this.props.handleSelectionChange}>
                     <option name="recipePicked" value="none"></option>
-                    <option
-                        name="recipePicked"
-                        value="{recipe}">
-                        "recipe"
-                    </option>
+                    { recipes.map(recipe => {
+                        if(recipe["meal_served"] === meal)
+                            return <option name="recipePicked" value={recipe["recipe_name"]}>
+                                        {recipe["recipe_name"]}                                    
+                                    </option>
+                    })}
                 </select>
             </td>
         );
@@ -73,10 +75,11 @@ class SelectionRow extends Component {
     render() {
         const meals = ["Breakfast", "Lunch", "Dinner"];
         const { day, dayIndex } = this.props;
+        const { recipes } = this.props;
 
         const selectionCells = meals.map((meal) => {
             return (
-                <SelectionCell onChange={this.handleChange} key={meal} day={day} meal={meal} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
+                <SelectionCell onChange={this.handleChange} recipes={recipes} key={meal} day={day} meal={meal} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
             );
         });
 
@@ -93,17 +96,12 @@ class SelectionRow extends Component {
 // structure first
 class SelectionBody extends Component {     
     render () {
-        // TODO add options to list recipes with same meal from Python scripts
-        // TODO add key:value (day+meal:recipe) to state variable and pass to
-        // GroceryList component
         const { daysToPlanFor } = this.props;
-        // make HTTP request here to fetch recipes from create.py fetch_recipes()
-        // const recipes = this.getRecipesFromServer();
-        // console.log(recipes);
+        const { recipes } = this.props;
 
         const selectionRows = daysToPlanFor.map((day, dayIndex) => {
             return (
-                <SelectionRow day={day} dayIndex={dayIndex} handleSelectionChange={this.props.handleSelectionChange} />
+                <SelectionRow day={day} dayIndex={dayIndex} recipes={recipes} handleSelectionChange={this.props.handleSelectionChange} />
             );
         });
 
@@ -116,11 +114,12 @@ class SelectionBody extends Component {
 class Selection extends Component {
     render () {
         const { daysToPlanFor } = this.props;
+        const { recipes } = this.props;
 
         return (
             <table>
                 <SelectionHeader />
-                <SelectionBody daysToPlanFor={daysToPlanFor} handleSelectionChange={this.props.handleSelectionChange} />
+                <SelectionBody daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.props.handleSelectionChange} />
             </table>
         );
     }

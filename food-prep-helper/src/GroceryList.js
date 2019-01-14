@@ -6,6 +6,18 @@ import React, { Component } from 'react';
 class GroceryList extends Component {
     render() {
         const { recipesPicked } = this.props;
+        // POST recipesPicked to create.py '/grocerylist' and fetch
+        // return groceryList which is returned as list
+        fetch('http://localhost:5000/grocerylist', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstParam: recipesPicked,
+            })
+        })
         const ingredients = recipesPicked.map((recipe) => {
             return (
                 <li>{recipe}</li>

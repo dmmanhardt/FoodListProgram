@@ -1,5 +1,5 @@
 from flask import (Blueprint, flash, redirect, render_template,
-                   request, url_for, session)
+                   request, url_for, session, jsonify)
 from mealprep.db import get_db
 import numpy as np
 import mealprep.selection as Selection
@@ -100,67 +100,49 @@ def edit_recipe(id):
     return render_template('foodlist/edit.html', recipe_info=recipe_info, 
                            ingredient_info=ingredient_info)
 
-# @bp.route('/select', methods=('GET', 'POST'))
-# def select_recipes():
-#     days_for_meal_prep = session.get('days_for_meal_prep')
-#     meals = ['Breakfast', 'Lunch', 'Dinner']
-#     session['meals'] = meals
-#     db = get_db()
-#     recipes = db.execute(
-#             'SELECT recipe_name, meal_served, serving_size'
-#             ' FROM recipe').fetchall()
-#     if request.method == 'POST':
-#         picked_recipes = request.form.getlist('select_recipes')
-#         session['picked_recipes'] = picked_recipes
-#         error = None
-        
-#         if error is not None:
-#             flash(error)
-#         else:
-#             return redirect(url_for('create.grocery_list'))
-#     return render_template('/foodlist/selection.html', meals=meals,
-#                            days=days_for_meal_prep, recipes=recipes)
-
 @bp.route('/select', methods=('GET', 'POST'))
 def fetch_recipes():
+    recipe_list = []
     if request.method == 'GET':
         db = get_db()
         recipes = db.execute(
                 'SELECT recipe_name, meal_served, serving_size'
                 ' FROM recipe').fetchall()
-        return "TEST"
+        # create class object for each recipe retrieved from db
+        for recipe in recipes:
+            recipe = Recipe(recipe['recipe_name'], recipe['meal_served'], recipe['serving_size'])
+            recipe_list.append(recipe)
+        # returns list of objects for each recipe
+        return jsonify([r.serialize() for r in recipe_list])
+
+class Recipe():
+    def __init__(self, recipe_name, meal_served, serving_size):
+        self.recipe_name = recipe_name.capitalize()
+        self.meal_served = meal_served.capitalize()
+        self.serving_size = serving_size
+    def serialize(self):
+        return {
+            'recipe_name': self.recipe_name,
+            'meal_served': self.meal_served,
+            'serving_size': self.serving_size,
+        }
         
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
-    db = get_db()
-    recipes = db.execute(
-            'SELECT recipe_name, meal_served, serving_size'
-            ' FROM recipe').fetchall()
-    days_for_meal_prep = session.get('days_for_meal_prep')
-    picked_recipes = session.get('picked_recipes')
-    meals = session.get('meals')
-    grocery_df = CreateGroceryList.create_grocery_list(
-            recipes, picked_recipes)
-    ingredient_names = grocery_df['Name'].tolist()
-    ingredient_amounts = grocery_df['Amount'].tolist()
-    ingredient_measurements = grocery_df['Measurement'].tolist()
-    # zip together lists and iterate over them to combine elements at same index
-    # from each list as string into combined list
-    grocery_list = combine_ingredient_lists(ingredient_names,
-                                            ingredient_amounts,
-                                            ingredient_measurements)
     if request.method == 'POST':
-        if request.form['store_button'] == 'Save As':
-            save_as(grocery_df, picked_recipes)
-        elif request.form['store_button'] == 'Email':
-            # NOT IMPLEMENTED
-#            email()
-            flash("Not implemented")
-    return render_template('/foodlist/grocerylist.html',
-                           grocery_list=grocery_list,
-                           days=days_for_meal_prep,
-                           meals=meals,
-                           recipes=picked_recipes)
+        print(request.form)
+        return request.form
+        # grocery_df = CreateGroceryList.create_grocery_list(
+        #         recipes, picked_recipes)
+        # ingredient_names = grocery_df['Name'].tolist()
+        # ingredient_amounts = grocery_df['Amount'].tolist()
+        # ingredient_measurements = grocery_df['Measurement'].tolist()
+        # # zip together lists and iterate over them to combine elements at same index
+        # # from each list as string into combined list
+        # grocery_list = combine_ingredient_lists(ingredient_names,
+        #                                         ingredient_amounts,
+        #                                         ingredient_measurements)
+        
     
 def check_create_input_for_errors(start_day, number_days):        
     valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",

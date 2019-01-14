@@ -9,7 +9,20 @@ class App extends Component {
         createOptions: [],
         daysToPlanFor: [],
         recipesPicked: [],
+        recipes: []
     };
+
+    componentDidMount() {
+        const url = "http://localhost:5000/select";
+
+        fetch(url)
+            .then(result => result.json())
+            .then(result => {
+                this.setState({
+                    recipes: result
+                })
+            });
+    }
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
@@ -64,17 +77,6 @@ class App extends Component {
         this.setState({recipesPicked: updatedRecipesPicked});
     }
 
-    getRecipesFromServer() {
-        return fetch('http://localhost:5000/select', {
-            method: 'GET',
-        })
-            .then(result => result)
-            .then(item => console.log(item))
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
 // render GroceryList component by going through state and adding any besides createOptions
 // and daysToPlanFor to recipesPicked, pass recipes picked to python function that calculates
 // ingredient info
@@ -86,14 +88,13 @@ class App extends Component {
         const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
         const { recipesPicked } = this.state;
-        const recipes = this.getRecipesFromServer();
-        console.log(recipes);
+        const { recipes } = this.state;
 
         return (
             <div className="container">
                 <Options navigationOptions={navigationOptions} />
                 <Create handleSubmit={this.handleSubmit} />
-                <Selection daysToPlanFor={daysToPlanFor} handleSelectionChange={this.handleSelectionChange} />
+                <Selection daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.handleSelectionChange} />
                 <GroceryList recipesPicked={recipesPicked} />
             </div>
         );
