@@ -4,6 +4,10 @@ import React, { Component } from 'react';
 // might have to pass recipesPicked to Python then return groceryList from
 // python?
 class GroceryList extends Component {
+    state = {
+        groceryList: []
+    };
+    
     render() {
         const { recipesPicked } = this.props;
         // POST recipesPicked to create.py '/grocerylist' and fetch
@@ -14,10 +18,16 @@ class GroceryList extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                firstParam: recipesPicked,
-            })
+            body: JSON.stringify(
+                recipesPicked,
+            )
         })
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                groceryList: response
+            })
+        });
         const ingredients = recipesPicked.map((recipe) => {
             return (
                 <li>{recipe}</li>

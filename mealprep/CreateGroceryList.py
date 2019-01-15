@@ -13,7 +13,7 @@ from mealprep.db import get_db
 # ingredients, outputs df with each ingredient's name, amount, and measurement
 # based on the number of times each recipe was picked
 
-def create_grocery_list(recipes, picked_recipes):
+def create_grocery_list(picked_recipes):
     initial_ingredient_info = [np.nan, np.nan, np.nan]
     # creates dataframe with a blank row in order to be able to append
     # to it for each recipe
@@ -85,7 +85,8 @@ def change_column_types(grocery_df):
         
 # converts amounts to the correct amount needed based on serving_size_difference        
 def load_correct_amount_of_ingredients(recipe_ingredient_amount, serving_size_difference):
-    recipe_ingredient_amount[:] = [(amount * serving_size_difference) for amount in recipe_ingredient_amount]
+    recipe_ingredient_amount[:] = [(amount * serving_size_difference) if not isinstance(amount, str)
+                                    else amount for amount in recipe_ingredient_amount]
     return recipe_ingredient_amount   
 
 def add_info_to_grocery_df(grocery_df, recipe_ingredient_names,

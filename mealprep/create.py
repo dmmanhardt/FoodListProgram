@@ -131,17 +131,17 @@ class Recipe():
 def grocery_list():
     if request.method == 'POST':
         print(request.get_json())
-        return request.form
-        # grocery_df = CreateGroceryList.create_grocery_list(
-        #         recipes, picked_recipes)
-        # ingredient_names = grocery_df['Name'].tolist()
-        # ingredient_amounts = grocery_df['Amount'].tolist()
-        # ingredient_measurements = grocery_df['Measurement'].tolist()
-        # # zip together lists and iterate over them to combine elements at same index
-        # # from each list as string into combined list
-        # grocery_list = combine_ingredient_lists(ingredient_names,
-        #                                         ingredient_amounts,
-        #                                         ingredient_measurements)
+        picked_recipes = request.get_json()
+        grocery_df = CreateGroceryList.create_grocery_list(picked_recipes)
+        ingredient_names = grocery_df['Name'].tolist()
+        ingredient_amounts = grocery_df['Amount'].tolist()
+        ingredient_measurements = grocery_df['Measurement'].tolist()
+        # zip together lists and iterate over them to combine elements at same index
+        # from each list as string into combined list
+        grocery_list = combine_ingredient_lists(ingredient_names,
+                                                ingredient_amounts,
+                                                ingredient_measurements)
+        return jsonify(grocery_list)
         
     
 def check_create_input_for_errors(start_day, number_days):        
