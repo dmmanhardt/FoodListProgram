@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 
-// use recipesPicked passed from Selection component to create GroceryList
-// might have to pass recipesPicked to Python then return groceryList from
-// python?
 class GroceryList extends Component {
     state = {
         groceryList: []
     };
-    
-    render() {
+
+    // POST recipesPicked to create.py '/grocerylist' and fetch
+    // return groceryList which is returned as list
+    fetchGroceryList() {
         const { recipesPicked } = this.props;
-        // POST recipesPicked to create.py '/grocerylist' and fetch
-        // return groceryList which is returned as list
-        fetch('http://localhost:5000/grocerylist', {
+        const groceryListUrl = 'http://localhost:5000/grocerylist'
+        fetch(groceryListUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -28,9 +26,22 @@ class GroceryList extends Component {
                 groceryList: response
             })
         });
-        const ingredients = recipesPicked.map((recipe) => {
+    }
+
+    componentDidMount() {
+        this.fetchGroceryList();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.recipesPicked !== this.props.recipesPicked) {
+            this.fetchGroceryList();
+        }
+    }
+    
+    render() {
+        const ingredients = this.state.groceryList.map((ingredient) => {
             return (
-                <li>{recipe}</li>
+                <li>{ingredient}</li>
             );
         });
     
@@ -40,15 +51,6 @@ class GroceryList extends Component {
                 <ul>{ingredients}</ul>
             </form>
         );
-        // loop through selectionCellIndexes here and populate recipesPicked here?
-        // or do it before in app component and pass recipesPicked through as props?
-
-        // pass recipesPicked to python file
-
-        // once python file passes back ingredient info
-        // loop over ingredient info and create list item component
-        // for each in format "Ingredient: amount measurement"
-
     }
 }
 

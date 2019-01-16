@@ -130,7 +130,6 @@ class Recipe():
 @bp.route('/grocerylist', methods=('GET', 'POST'))
 def grocery_list():
     if request.method == 'POST':
-        print(request.get_json())
         picked_recipes = request.get_json()
         grocery_df = CreateGroceryList.create_grocery_list(picked_recipes)
         ingredient_names = grocery_df['Name'].tolist()

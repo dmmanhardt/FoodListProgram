@@ -70,7 +70,7 @@ def find_serving_size_from_db(db, recipe):
         'SELECT recipe_name, serving_size'
         ' FROM recipe')
     for db_recipe in recipes_from_db:
-        if db_recipe['recipe_name'] == recipe:
+        if db_recipe['recipe_name'].capitalize() == recipe.capitalize():
             serving_size = db_recipe['serving_size']
     return serving_size
 

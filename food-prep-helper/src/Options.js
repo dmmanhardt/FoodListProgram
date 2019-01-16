@@ -1,41 +1,70 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 // make each option it's own component? inside option component pass the onClick
 // prop to a DOM's component onClick event
 
-class NavigationOptions extends Component {
-    // todo: change this to render appropriate pick (ie add recipe when add is clicked)
-    handleClick = () => {
-        console.log(this.props);
-    }
+const Index = () => <h2>Home</h2>
+const Add = () => <h2>Add Recipe</h2>
+const Edit = () => <h2>Edit Recipe</h2>
 
-    render () {
-        const { navigationOptions } = this.props;
-        const options = navigationOptions.map((option, index) => {
-            return (
-                // add href link to component with the option name?
-                <th>
-                    <a value={option} onClick={this.handleClick}>{option}</a>
-                </th>
-            );
-        });
+const AppRouter = () => (
+    <Router>
+        <div>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/add/">Add Recipe</Link>
+                    </li>
+                    <li>
+                        <Link to="/edit/">Edit Recipe</Link>
+                    </li>
+                </ul>
+            </nav>
 
-        return (
-                <div>{options}</div>
-        );
-    }
-}
+            <Route path="/" exact component={Index} />
+            <Route path="/add/" component={Add} />
+            <Route path="/edit/" component={Edit} />
+        </div>
+    </Router>
+);
 
-class Options extends Component {
-    render () {
-        const { navigationOptions } = this.props;
+// class NavigationOptions extends Component {
+//     // todo: change this to render appropriate pick (ie add recipe when add is clicked)
+//     handleClick = () => {
+//         console.log(this.props);
+//     }
 
-        return (
-            <table>
-                <NavigationOptions navigationOptions={navigationOptions} />
-            </table>
-        );
-    }
-}
+//     render () {
+//         const { navigationOptions } = this.props;
+//         const options = navigationOptions.map((option, index) => {
+//             return (
+//                 // add href link to component with the option name?
+//                 <th>
+//                     <a value={option} onClick={this.handleClick}>{option}</a>
+//                 </th>
+//             );
+//         });
 
-export default Options;
+//         return (
+//                 <div>{options}</div>
+//         );
+//     }
+// }
+
+// class Options extends Component {
+//     render () {
+//         const { navigationOptions } = this.props;
+
+//         return (
+//             <table>
+//                 <NavigationOptions navigationOptions={navigationOptions} />
+//             </table>
+//         );
+//     }
+// }
+
+export default AppRouter;
