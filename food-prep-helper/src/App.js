@@ -3,6 +3,7 @@ import Options from './Options';
 import Create from './Create';
 import Selection from './Selection';
 import GroceryList from './GroceryList';
+import Add from './Add';
 
 class App extends Component {
     state = {
@@ -96,6 +97,7 @@ class App extends Component {
                 <Create handleSubmit={this.handleSubmit} />
                 <Selection daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.handleSelectionChange} />
                 <GroceryList recipesPicked={recipesPicked} />
+                {/* <Add /> */}
             </div>
         );
     }

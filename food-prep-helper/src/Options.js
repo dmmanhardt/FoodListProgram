@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Add from './Add';
+import App from './App';
 
 // make each option it's own component? inside option component pass the onClick
 // prop to a DOM's component onClick event
 
 const Index = () => <h2>Home</h2>
-const Add = () => <h2>Add Recipe</h2>
 const Edit = () => <h2>Edit Recipe</h2>
 
 const AppRouter = () => (

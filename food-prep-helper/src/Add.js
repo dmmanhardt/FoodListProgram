@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class AddRecipe extends Component {
+class Add extends Component {
     constructor(props) {
         super(props);
 
@@ -11,7 +11,7 @@ class AddRecipe extends Component {
             ingredientInfo: "",
         };
 
-        this.setState = this.initialState;
+        this.state = this.initialState;
     }
 
     handleChange = event => {
@@ -33,22 +33,22 @@ class AddRecipe extends Component {
                 <input
                     type="text"
                     name="recipeName"
-                    value={recipeName}
+                    value={this.recipeName}
                     onChange={this.handleChange} />
                 <label>Meal Served</label>
                 <input
                     type="text"
                     name="mealServed"
-                    value={mealServed}
+                    value={this.mealServed}
                     onChange={this.handleChange} />
                 <label>Meals Served for Two People</label>
                 <input
                     type="number"
                     name="servingSize"
-                    value={servingSize}
+                    value={this.servingSize}
                     onChange={this.handleChange} />
-                <textarea name="ingredientInfo" style="width:200px; height:600px">
-                    {ingredientInfo}
+                <textarea name="ingredientInfo">
+                    {this.ingredientInfo}
                 </textarea>
                 <input type="submit" value="Add" href="{{ url_for('create.index') }}" />
             </form>
@@ -56,4 +56,4 @@ class AddRecipe extends Component {
     }
 }
 
-export default AddRecipe;
+export default Add;
