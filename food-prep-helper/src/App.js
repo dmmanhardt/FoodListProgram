@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Options from './Options';
 import Create from './Create';
 import Selection from './Selection';
@@ -90,15 +91,35 @@ class App extends Component {
         const { daysToPlanFor } = this.state;
         const { recipesPicked } = this.state;
         const { recipes } = this.state;
+        const Index = () => <h2>Home</h2>
+        const Edit = () => <h2>Edit Recipe</h2>
 
         return (
-            <div className="container">
-                <Options navigationOptions={navigationOptions} />
-                <Create handleSubmit={this.handleSubmit} />
-                <Selection daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.handleSelectionChange} />
-                <GroceryList recipesPicked={recipesPicked} />
-                {/* <Add /> */}
-            </div>
+            <Router>
+                <div className="container">
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to="/">Home</Link>
+                            </li>
+                            <li>
+                                <Link to="/add/">Add Recipe</Link>
+                            </li>
+                            <li>
+                                <Link to="/edit/">Edit Recipe</Link>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <Route path="/" exact component={Index} />
+                        {/* <Options navigationOptions={navigationOptions} /> */}
+                        <Create handleSubmit={this.handleSubmit} />
+                        <Selection daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.handleSelectionChange} />
+                        <GroceryList recipesPicked={recipesPicked} />
+                    <Route path="/add" component={Add} />
+                    <Route path="edit" component={Edit} />
+                </div>
+            </Router>
         );
     }
 }
