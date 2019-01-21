@@ -26,7 +26,7 @@ const AppRouter = () => (
                 </ul>
             </nav>
 
-            <Route path="/" exact component={Index} />
+            <Route path="/" exact component={App} />
             <Route path="/add/" component={Add} />
             <Route path="/edit/" component={Edit} />
         </div>

@@ -47,6 +47,7 @@ class Add extends Component {
                     name="servingSize"
                     value={this.servingSize}
                     onChange={this.handleChange} />
+                <label>Ingredient List (paste ingredient list here)</label>
                 <textarea name="ingredientInfo">
                     {this.ingredientInfo}
                 </textarea>
