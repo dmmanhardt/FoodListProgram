@@ -5,26 +5,33 @@ import Create from './Create';
 import Selection from './Selection';
 import GroceryList from './GroceryList';
 import Add from './Add';
+import Edit from './Edit';
 
 class App extends Component {
-    state = {
-        createOptions: [],
-        daysToPlanFor: [],
-        recipesPicked: [],
-        recipes: []
-    };
+    constructor(props) {
+        super(props);
 
-    componentDidMount() {
-        const url = "http://localhost:5000/select";
+        this.initialState = {
+            createOptions: [],
+            daysToPlanFor: [],
+            recipesPicked: [],
+            // recipes: []
+        };
 
-        fetch(url)
-            .then(result => result.json())
-            .then(result => {
-                this.setState({
-                    recipes: result
-                })
-            });
+        this.state = this.initialState;
     }
+
+    // componentDidMount() {
+    //     const url = "http://localhost:5000/select";
+
+    //     fetch(url)
+    //         .then(result => result.json())
+    //         .then(result => {
+    //             this.setState({
+    //                 recipes: result
+    //             })
+    //         });
+    // }
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
@@ -90,7 +97,7 @@ class App extends Component {
         const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
         const { recipesPicked } = this.state;
-        const { recipes } = this.state;
+        const { recipes } = this.props;
 
         return (
             <div className="Container">

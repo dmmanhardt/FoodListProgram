@@ -106,25 +106,30 @@ def fetch_recipes():
     if request.method == 'GET':
         db = get_db()
         recipes = db.execute(
-                'SELECT recipe_name, meal_served, serving_size'
+                'SELECT id, recipe_name, meal_served, serving_size'
                 ' FROM recipe').fetchall()
         # create class object for each recipe retrieved from db
         for recipe in recipes:
-            recipe = Recipe(recipe['recipe_name'], recipe['meal_served'], recipe['serving_size'])
+            recipe = Recipe(recipe['id'],
+                            recipe['recipe_name'],
+                            recipe['meal_served'], 
+                            recipe['serving_size'])
             recipe_list.append(recipe)
         # returns list of objects for each recipe
         return jsonify([r.serialize() for r in recipe_list])
 
 class Recipe():
-    def __init__(self, recipe_name, meal_served, serving_size):
+    def __init__(self, recipe_id, recipe_name, meal_served, serving_size):
+        self.recipe_id = recipe_id
         self.recipe_name = recipe_name.capitalize()
         self.meal_served = meal_served.capitalize()
         self.serving_size = serving_size
     def serialize(self):
         return {
-            'recipe_name': self.recipe_name,
-            'meal_served': self.meal_served,
-            'serving_size': self.serving_size,
+            'recipeID': self.recipe_id,
+            'recipeName': self.recipe_name,
+            'mealServed': self.meal_served,
+            'servingSize': self.serving_size,
         }
         
 @bp.route('/grocerylist', methods=('GET', 'POST'))
