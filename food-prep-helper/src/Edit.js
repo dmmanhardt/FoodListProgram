@@ -26,17 +26,27 @@ class Edit extends Component {
 
     // fetch recipeInfo from API and then pass as props to EditRecipe
     handleEditRecipe = () => {
-        const url = "http://localhost:5000/edit";
+        const recipeToEdit = this.state.recipeToEdit;
+        const editUrl = "http://localhost:5000/edit";
 
-        fetch(url)
+        fetch(editUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                recipeToEdit,
+            )
+        })
             .then(result => result.json())
             .then(result => {
                 this.setState({
-                    recipeInfo: result
+                    ingredientInfo: result
                 })
             });
-
-        <Route path="/edit/<int:id>" component={(props) => <EditRecipe recipeToEdit={this.state.recipeToEdit} {...props} />} />
+        this.props.history.push("/EditRecipe");
+        // <Route path="/edit/<int:id>" component={(props) => <EditRecipe recipeToEdit={this.state.recipeToEdit} {...props} />} />
     }
 
     render() {

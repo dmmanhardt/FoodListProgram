@@ -46,9 +46,9 @@ class SelectionCell extends Component {
                 <select name={this.selectionIndex} onChange={this.props.handleSelectionChange}>
                     <option name="recipePicked" value="none"></option>
                     { recipes.map(recipe => {
-                        if(recipe["meal_served"] === meal)
-                            return <option name="recipePicked" value={recipe["recipe_name"]}>
-                                        {recipe["recipe_name"]}                                    
+                        if(recipe["mealServed"] === meal)
+                            return <option name="recipePicked" value={recipe["recipeName"]}>
+                                        {recipe["recipeName"]}                                    
                                     </option>
                     })}
                 </select>

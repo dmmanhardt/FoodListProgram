@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowswerRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class EditRecipe extends Component {
     constructor(props) {
@@ -13,19 +13,6 @@ class EditRecipe extends Component {
         };
 
         this.state = this.initialState;
-    }
-
-    // on component mount, fetch current recipe info
-    componentDidMount() {
-        const url = "http://localhost:5000/edit";
-
-        fetch(url)
-            .then(result => result.json())
-            .then(result => {
-                this.setState({
-                    recipes: result
-                })
-            });
     }
 
     handleChange = event => {

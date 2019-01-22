@@ -15,23 +15,10 @@ class App extends Component {
             createOptions: [],
             daysToPlanFor: [],
             recipesPicked: [],
-            // recipes: []
         };
 
         this.state = this.initialState;
     }
-
-    // componentDidMount() {
-    //     const url = "http://localhost:5000/select";
-
-    //     fetch(url)
-    //         .then(result => result.json())
-    //         .then(result => {
-    //             this.setState({
-    //                 recipes: result
-    //             })
-    //         });
-    // }
 
     handleSubmit = createOption => {
         this.setState({createOptions: [...this.state.createOptions, createOption]});
@@ -91,10 +78,6 @@ class App extends Component {
 // ingredient info
 
     render() {
-        // pass navigation options through as props since they don't need to be
-        // modified. NOT IMPLEMENTED CURRENTLY
-        const navigationOptions = ['Add', 'Edit', 'Create'];
-        const { createOptions } = this.state;
         const { daysToPlanFor } = this.state;
         const { recipesPicked } = this.state;
         const { recipes } = this.props;
