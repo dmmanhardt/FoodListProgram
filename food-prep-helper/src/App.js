@@ -87,6 +87,7 @@ class App extends Component {
                 <Create handleSubmit={this.handleSubmit} />
                 <Selection daysToPlanFor={daysToPlanFor} recipes={recipes} handleSelectionChange={this.handleSelectionChange} />
                 <GroceryList recipesPicked={recipesPicked} />
+                {this.props.children}
             </div>
         );
     }

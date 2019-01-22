@@ -3,13 +3,15 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Add from './Add';
 import Edit from './Edit';
 import App from './App';
+import EditRecipe from './EditRecipe';
 
 // make each option it's own component? inside option component pass the onClick
 // prop to a DOM's component onClick event
 
 class AppRouter extends Component {
     state = {
-        recipes: []
+        recipes: [],
+        ingredientInfo: []
     };
 
     componentDidMount() {
@@ -24,8 +26,13 @@ class AppRouter extends Component {
             });
     }
 
+    // handleIngredientInfo = ingredientInfo => {
+    //     this.setState({ingredientInfo: ingredientInfo});
+    // }
+
     render() {
         const { recipes } = this.state;
+        const { ingredientInfo } = this.state;
 
         return (
             <Router>
@@ -46,7 +53,9 @@ class AppRouter extends Component {
 
                     <Route path="/" exact component={(props) => <App recipes={recipes} {...props} />} />
                     <Route path="/add/" component={Add} />
-                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} {...props} />} />
+                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} {...props} />}>
+                        <Route path="/EditRecipe/" render={(props) => <EditRecipe ingredientInfo={ingredientInfo} {...props} />} />
+                    </Route>
                 </div>
             </Router>
         );

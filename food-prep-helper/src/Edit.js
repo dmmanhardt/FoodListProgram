@@ -45,7 +45,8 @@ class Edit extends Component {
                     ingredientInfo: result
                 })
             });
-        this.props.history.push("/EditRecipe");
+        
+        this.props.history.push("/EditRecipe/");
         // <Route path="/edit/<int:id>" component={(props) => <EditRecipe recipeToEdit={this.state.recipeToEdit} {...props} />} />
     }
 
@@ -56,21 +57,25 @@ class Edit extends Component {
         // set value to be recipe["recipe_key"] in order to send
         // the key to API
         return (
-            <form>
-                <label>Select the Recipe to Edit</label>
-                <select name="recipeToEdit" id="recipeToEdit" onChange={this.handleChange}>
-                    <option value="none"></option>
-                    { recipes.map(recipe => {
-                        return <option name="recipeToEdit" value={recipe["recipeID"]}>
-                                    {recipe["recipeName"]}                                    
-                                </option>
-                    })}
-                </select>
-                <input
-                    type="button"
-                    value="Edit"
-                    onClick={this.handleEditRecipe} />
-            </form>
+            <div>
+                <form>
+                    <label>Select the Recipe to Edit</label>
+                    <select name="recipeToEdit" id="recipeToEdit" onChange={this.handleChange}>
+                        <option value="none"></option>
+                        { recipes.map(recipe => {
+                            return <option name="recipeToEdit" value={recipe["recipeID"]}>
+                                        {recipe["recipeName"]}                                    
+                                    </option>
+                        })}
+                    </select>
+                    <input
+                        type="button"
+                        value="Edit"
+                        onClick={this.handleEditRecipe} />
+                </form>
+
+                {this.props.children}
+            </div>
         );
     }
 }
