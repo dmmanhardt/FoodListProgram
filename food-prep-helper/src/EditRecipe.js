@@ -6,14 +6,23 @@ class EditRecipe extends Component {
         super(props);
 
         this.initialState = {
-            recipeName: "",
-            mealServed: "",
-            servingSize: "",
-            recipeID: "",
-            ingredientInfo: this.props.ingredientInfo,
+            ingredientInfo: []
         };
 
         this.state = this.initialState;
+    }
+
+    componentDidMount() {
+        const { recipeToEditInfo } = this.props;
+        console.log(this.props.location.state.recipeToEditInfo);
+
+        this.setState({
+            recipeName: recipeToEditInfo.recipeName,
+            mealServed: recipeToEditInfo.mealServed,
+            servingSize: recipeToEditInfo.servingSize,
+            recipeID: recipeToEditInfo.recipeID,
+            ingredientInfo: recipeToEditInfo.ingredientInfo,
+        })
     }
 
     handleChange = event => {

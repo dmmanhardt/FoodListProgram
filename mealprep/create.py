@@ -70,6 +70,7 @@ def select_recipe_to_edit():
     if request.method == 'POST':
         ingredient_list = []
         recipe_id = request.get_json()
+        print(recipe_id)
         # fetch ingredient info from db based on recipe_id
         # provided by client
         ingredient_info = select_ingredient_info(recipe_id)

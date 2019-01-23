@@ -10,26 +10,27 @@ class Edit extends Component {
         super(props);
 
         this.initialState = {
-            recipeToEdit: ""
+            recipeToEdit: null
         };
 
         this.state = this.initialState;
     }
 
-    // change this to pass all info to Options.js in order to pass
-    // to EditRecipe component. Maybe create class object for the recipe
-    // with all the info and pass that?
+    // return all recipe info based on index from recipes
     handleChange = event => {
         const {value} = event.target;
 
         this.setState({
-            recipeToEdit : value,
+            recipeToEdit : this.props.recipes[value]
         });
     }
 
-    // fetch recipeInfo from API and then pass as props to EditRecipe
+    // fetch ingredientInfo from API using recipeID, pass
+    // up to AppRouter, and then navigate to EditRecipe
+    // move this to EditRecipe instead?
     handleEditRecipe = () => {
-        const recipeToEdit = this.state.recipeToEdit;
+        const recipeToEditInfo = this.state.recipeToEdit;
+        const recipeToEditID = recipeToEditInfo.recipeID;
         const editUrl = "http://localhost:5000/edit";
 
         fetch(editUrl, {
@@ -39,17 +40,22 @@ class Edit extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(
-                recipeToEdit,
+                recipeToEditID,
             )
         })
             .then(result => result.json())
-            .then(result => this.props.handleIngredientInfo(result))
-            .then(result => {
+            // add resulting ingredient info to recipeToEditInfo
+            .then(function(result) {
+                recipeToEditInfo.ingredientInfo = result;
+                return recipeToEditInfo})
+            .then(recipeToEditInfo => this.props.handleIngredientInfo(recipeToEditInfo))
+            .then(
                 this.props.history.push({
                     pathname: '/EditRecipe',
                     search: '?query=abc',
+                    state: { recipeToEditInfo: recipeToEditInfo }
                 })
-            })
+            )
         };
 
     render() {
@@ -64,8 +70,8 @@ class Edit extends Component {
                     <label>Select the Recipe to Edit</label>
                     <select name="recipeToEdit" id="recipeToEdit" onChange={this.handleChange}>
                         <option value="none"></option>
-                        { recipes.map(recipe => {
-                            return <option name="recipeToEdit" value={recipe["recipeID"]}>
+                        { recipes.map((recipe, index) => {
+                            return <option name="recipeToEdit" value={index}>
                                         {recipe["recipeName"]}                                    
                                     </option>
                         })}

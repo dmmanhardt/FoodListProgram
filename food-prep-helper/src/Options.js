@@ -11,7 +11,7 @@ import EditRecipe from './EditRecipe';
 class AppRouter extends Component {
     state = {
         recipes: [],
-        ingredientInfo: []
+        recipeToEditInfo: null
     };
 
     componentDidMount() {
@@ -26,13 +26,16 @@ class AppRouter extends Component {
             });
     }
 
-    handleIngredientInfo = result => {
-        this.setState({ingredientInfo: result});
+    // set as recipeInfo instead? first just take whole index for
+    // recipe from recipes (mealServed, recipeID, recipeName, and servingSize)
+    // and then push ingredientInfo to it
+    handleIngredientInfo = (recipeToEditInfo) => {
+        this.setState({recipeToEditInfo: recipeToEditInfo});
     }
 
     render() {
         const { recipes } = this.state;
-        const { ingredientInfo } = this.state;
+        const { recipeToEditInfo } = this.state;
 
         return (
             <Router>
@@ -54,7 +57,7 @@ class AppRouter extends Component {
                     <Route path="/" exact component={(props) => <App recipes={recipes} {...props} />} />
                     <Route path="/add/" component={Add} />
                     <Route path="/edit/" render={(props) => <Edit recipes={recipes} handleIngredientInfo={this.handleIngredientInfo} {...props} />} />
-                    <Route path="/EditRecipe/" render={(props) => <EditRecipe ingredientInfo={ingredientInfo} {...props} />} />
+                    <Route path="/EditRecipe/" render={(props) => <EditRecipe recipeToEditInfo={recipeToEditInfo} {...props} />} />
                 </div>
             </Router>
         );
