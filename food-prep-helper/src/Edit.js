@@ -16,6 +16,9 @@ class Edit extends Component {
         this.state = this.initialState;
     }
 
+    // change this to pass all info to Options.js in order to pass
+    // to EditRecipe component. Maybe create class object for the recipe
+    // with all the info and pass that?
     handleChange = event => {
         const {value} = event.target;
 
@@ -40,15 +43,14 @@ class Edit extends Component {
             )
         })
             .then(result => result.json())
+            .then(result => this.props.handleIngredientInfo(result))
             .then(result => {
-                this.setState({
-                    ingredientInfo: result
+                this.props.history.push({
+                    pathname: '/EditRecipe',
+                    search: '?query=abc',
                 })
-            });
-        
-        this.props.history.push("/EditRecipe/");
-        // <Route path="/edit/<int:id>" component={(props) => <EditRecipe recipeToEdit={this.state.recipeToEdit} {...props} />} />
-    }
+            })
+        };
 
     render() {
         const { recipes } = this.props;

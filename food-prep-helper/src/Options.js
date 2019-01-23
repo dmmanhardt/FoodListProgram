@@ -26,9 +26,9 @@ class AppRouter extends Component {
             });
     }
 
-    // handleIngredientInfo = ingredientInfo => {
-    //     this.setState({ingredientInfo: ingredientInfo});
-    // }
+    handleIngredientInfo = result => {
+        this.setState({ingredientInfo: result});
+    }
 
     render() {
         const { recipes } = this.state;
@@ -53,9 +53,8 @@ class AppRouter extends Component {
 
                     <Route path="/" exact component={(props) => <App recipes={recipes} {...props} />} />
                     <Route path="/add/" component={Add} />
-                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} {...props} />}>
-                        <Route path="/EditRecipe/" render={(props) => <EditRecipe ingredientInfo={ingredientInfo} {...props} />} />
-                    </Route>
+                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} handleIngredientInfo={this.handleIngredientInfo} {...props} />} />
+                    <Route path="/EditRecipe/" render={(props) => <EditRecipe ingredientInfo={ingredientInfo} {...props} />} />
                 </div>
             </Router>
         );
