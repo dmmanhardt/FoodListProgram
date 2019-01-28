@@ -76,7 +76,32 @@ class EditRecipe extends Component {
     }
 
     handleSubmitEdits = () => {
-        // send edits to API to update db
+        const recipeToEditInfo = this.state.recipeToEditInfo;
+        const { recipeID, recipeName } = recipeToEditInfo;
+        const editRecipeUrl = "http://localhost:5000/edit_recipe";
+
+        console.log(recipeName);
+        console.log(recipeID);
+
+        fetch(editRecipeUrl, {
+            method: 'POST',
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                recipeName,
+                recipeID
+            )
+        })
+            .then(result => result.json())
+            .then(result => {
+                console.log(result);
+            })
+
+        this.props.history.push({
+            pathname: '/'
+        });
     }
 
     render() {
@@ -126,7 +151,7 @@ class EditRecipe extends Component {
                     { ingredientInfoRows } 
                 </table>
                 <input type="button" value="Add Ingredient" onClick={this.handleAddIngredient} />
-                <input type="submit" value="Update" href="{{ url_for('create.index') }}" />
+                <input type="submit" value="Update Recipe!" onClick={this.handleSubmitEdits} />
             </form>
         )
     }

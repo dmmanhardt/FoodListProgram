@@ -29,26 +29,7 @@ class Edit extends Component {
     // fetch ingredient info for recipe from API
     handleEditRecipe = () => {
         const recipeToEditInfo = this.state.recipeToEditInfo;
-        // const recipeToEditID = recipeToEditInfo.recipeID;
-        // const editUrl = "http://localhost:5000/edit";
 
-        // fetch(editUrl, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(
-        //         recipeToEditID,
-        //     )
-        // })
-        //     .then(result => result.json())
-        //     // add resulting ingredient info to recipeToEditInfo
-        //     .then(function(result) {
-        //         recipeToEditInfo.ingredientInfo = result;
-        //         return recipeToEditInfo})
-        //     .then(recipeToEditInfo => this.props.handleIngredientInfo(recipeToEditInfo))
-        //     .then(
         this.props.history.push({
             pathname: '/EditRecipe',
             search: '?query=abc',

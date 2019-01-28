@@ -93,25 +93,28 @@ def select_recipe_to_edit():
     #             url_for('create.edit_recipe', id=recipe_to_edit))
     # return render_template('foodlist/recipes.html', recipes=recipes)
 
-@bp.route('/edit/<int:id>', methods=('GET', 'POST'))
-def edit_recipe(id):
-    print("in edit_recipe before get")
+# @bp.route('/edit/<int:id>', methods=('GET', 'POST'))
+@bp.route('/edit_recipe', methods=('GET', 'POST'))
+def edit_recipe():
     if request.method == 'POST':
-        recipe_name = request.form['recipe_name']
-        meal_served = request.form['meal_served']
-        serving_size = request.form['serving_size']
-        ingredient_ids = [row['id'] for row in ingredient_info]
-        amounts = request.form.getlist('amount')
-        ingredients = request.form.getlist('ingredient')
-        measurements = request.form.getlist('measurement')
-        # create dict to associate ingredient_id with correct
-        # amount, ingredient, measurement
-        ingredient_info_dictionary = create_ingredient_info_dict(
-                ingredient_ids, amounts, ingredients, measurements)
-        #update database libraries with new information
-        update_recipe(id, recipe_name, meal_served, serving_size)
-        update_ingredient_info(ingredient_info_dictionary, id)
-        return redirect(url_for('create.index'))
+        recipe_info_to_be_updated = request.get_json()
+        print(recipe_info_to_be_updated)
+        return jsonify("test")
+        # recipe_name = request.form['recipe_name']
+        # meal_served = request.form['meal_served']
+        # serving_size = request.form['serving_size']
+        # ingredient_ids = [row['id'] for row in ingredient_info]
+        # amounts = request.form.getlist('amount')
+        # ingredients = request.form.getlist('ingredient')
+        # measurements = request.form.getlist('measurement')
+        # # create dict to associate ingredient_id with correct
+        # # amount, ingredient, measurement
+        # ingredient_info_dictionary = create_ingredient_info_dict(
+        #         ingredient_ids, amounts, ingredients, measurements)
+        # #update database libraries with new information
+        # update_recipe(id, recipe_name, meal_served, serving_size)
+        # update_ingredient_info(ingredient_info_dictionary, id)
+        # return redirect(url_for('create.index'))
     # return render_template('foodlist/edit.html', recipe_info=recipe_info, 
     #                        ingredient_info=ingredient_info)
 
