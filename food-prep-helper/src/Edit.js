@@ -10,7 +10,7 @@ class Edit extends Component {
         super(props);
 
         this.initialState = {
-            recipeToEdit: null
+            recipeToEditInfo: null
         };
 
         this.state = this.initialState;
@@ -21,42 +21,39 @@ class Edit extends Component {
         const {value} = event.target;
 
         this.setState({
-            recipeToEdit : this.props.recipes[value]
+            recipeToEditInfo : this.props.recipes[value]
         });
     }
 
-    // fetch ingredientInfo from API using recipeID, pass
-    // up to AppRouter, and then navigate to EditRecipe
-    // move this to EditRecipe instead?
+    // pass recipeToEditID to EditRecipe, which will then 
+    // fetch ingredient info for recipe from API
     handleEditRecipe = () => {
-        const recipeToEditInfo = this.state.recipeToEdit;
-        const recipeToEditID = recipeToEditInfo.recipeID;
-        const editUrl = "http://localhost:5000/edit";
+        const recipeToEditInfo = this.state.recipeToEditInfo;
+        // const recipeToEditID = recipeToEditInfo.recipeID;
+        // const editUrl = "http://localhost:5000/edit";
 
-        fetch(editUrl, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                recipeToEditID,
-            )
-        })
-            .then(result => result.json())
-            // add resulting ingredient info to recipeToEditInfo
-            .then(function(result) {
-                recipeToEditInfo.ingredientInfo = result;
-                return recipeToEditInfo})
-            .then(recipeToEditInfo => this.props.handleIngredientInfo(recipeToEditInfo))
-            .then(
-                this.props.history.push({
-                    pathname: '/EditRecipe',
-                    search: '?query=abc',
-                    state: { recipeToEditInfo: recipeToEditInfo }
-                })
-            )
-        };
+        // fetch(editUrl, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(
+        //         recipeToEditID,
+        //     )
+        // })
+        //     .then(result => result.json())
+        //     // add resulting ingredient info to recipeToEditInfo
+        //     .then(function(result) {
+        //         recipeToEditInfo.ingredientInfo = result;
+        //         return recipeToEditInfo})
+        //     .then(recipeToEditInfo => this.props.handleIngredientInfo(recipeToEditInfo))
+        //     .then(
+        this.props.history.push({
+            pathname: '/EditRecipe',
+            search: '?query=abc',
+            state: { recipeToEditInfo: recipeToEditInfo }
+        })};
 
     render() {
         const { recipes } = this.props;

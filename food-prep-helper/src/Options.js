@@ -56,8 +56,8 @@ class AppRouter extends Component {
 
                     <Route path="/" exact component={(props) => <App recipes={recipes} {...props} />} />
                     <Route path="/add/" component={Add} />
-                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} handleIngredientInfo={this.handleIngredientInfo} {...props} />} />
-                    <Route path="/EditRecipe/" render={(props) => <EditRecipe recipeToEditInfo={recipeToEditInfo} {...props} />} />
+                    <Route path="/edit/" render={(props) => <Edit recipes={recipes} {...props} />} />
+                    <Route path="/EditRecipe/" render={(props) => <EditRecipe handleIngredientInfo={this.handleIngredientInfo} {...props} />} />
                 </div>
             </Router>
         );

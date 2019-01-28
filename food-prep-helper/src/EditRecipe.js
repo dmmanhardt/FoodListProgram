@@ -6,30 +6,57 @@ class EditRecipe extends Component {
         super(props);
 
         this.initialState = {
-            ingredientInfo: []
+            recipeToEditInfo: this.props.location.state.recipeToEditInfo,
         };
 
         this.state = this.initialState;
     }
 
     componentDidMount() {
-        const { recipeToEditInfo } = this.props;
-        console.log(this.props.location.state.recipeToEditInfo);
+        const recipeToEditInfo = this.state.recipeToEditInfo;
+        const recipeToEditID = recipeToEditInfo.recipeID;
+        const editUrl = "http://localhost:5000/edit";
 
-        this.setState({
-            recipeName: recipeToEditInfo.recipeName,
-            mealServed: recipeToEditInfo.mealServed,
-            servingSize: recipeToEditInfo.servingSize,
-            recipeID: recipeToEditInfo.recipeID,
-            ingredientInfo: recipeToEditInfo.ingredientInfo,
+        fetch(editUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                recipeToEditID,
+            )
         })
+            .then(result => result.json())
+            // add resulting ingredient info to recipeToEditInfo
+            .then((result) => {
+                recipeToEditInfo.ingredientInfo = result;
+                this.setState({
+                    recipeToEditInfo: recipeToEditInfo
+                });    
+            })
     }
 
     handleChange = event => {
         const { name, value } = event.target;
+        const editedRecipe = this.state.recipeToEditInfo;
+        editedRecipe[name] = value;
 
         this.setState({
-            [name] : value
+            recipeToEditInfo : editedRecipe
+        });
+    }
+
+    handleIngredientInfoChange = event => {
+        const { id, value } = event.target;
+        const updatedState = this.state.recipeToEditInfo;
+        const ingredientKey = event.target.getAttribute('ingredientKey');
+        const updatedIngredientInfo = updatedState.ingredientInfo[ingredientKey];
+
+        updatedIngredientInfo[id] = value;
+
+        this.setState({
+            recipeToEditInfo : updatedState
         });
     }
 
@@ -53,7 +80,19 @@ class EditRecipe extends Component {
     }
 
     render() {
-        const { ingredientInfo } = this.state;
+        // checks to see if ingredientInfo exists, then creates new row for
+        // each ingredient that lists ingredient info
+        const ingredientInfoRows = this.state.recipeToEditInfo.ingredientInfo && this.state.recipeToEditInfo.ingredientInfo.map((ingredient, index) => {
+            return (
+                <tr>
+                    <td><input key={index} ingredientKey={index} id="amount" value={ingredient["amount"]} onChange={this.handleIngredientInfoChange} /></td>
+                    <td><input key={index} ingredientKey={index} id="name" value={ingredient["name"]} onChange={this.handleIngredientInfoChange} /></td>
+                    <td><input key={index} ingredientKey={index} id="measurement" value={ingredient["measurement"]} onChange={this.handleIngredientInfoChange} /></td>
+                </tr>)})
+
+        // const recipeName = this.state.recipeToEditInfo.recipeName;
+        const mealServed = this.state.recipeToEditInfo.mealServed;
+        const servingSize = this.state.recipeToEditInfo.servingSize;
 
         return (
             <form>
@@ -61,19 +100,21 @@ class EditRecipe extends Component {
                 <input
                     type="text"
                     name="recipeName"
-                    value={this.recipeName}
+                    value={this.state.recipeToEditInfo.recipeName}
                     onChange={this.handleChange} />
+                {/* change this to be a select element with 
+                Breakfast, Lunch, Dinner as options */}
                 <label>Meal Served</label>
                 <input
                     type="text"
                     name="mealServed"
-                    value={this.mealServed}
+                    value={mealServed}
                     onChange={this.handleChange} />
                 <label>Meals Served for Two People</label>
                 <input
                     type="number"
                     name="servingSize"
-                    value={this.servingSize}
+                    value={servingSize}
                     onChange={this.handleChange} />
                 <label>Ingredient List</label>
                 <table>
@@ -82,12 +123,7 @@ class EditRecipe extends Component {
                         <th>Ingredient</th>
                         <th>Measurement</th>
                     </tr>
-                    { ingredientInfo.map(ingredient => {
-                        return <tr>
-                                    <td><input name="amount" value={ingredient["amount"]} /></td>
-                                    <td><input name="ingredient" value={ingredient["name"]} /></td>
-                                    <td><input name="measurement" value={ingredient["measurement"]} /></td>
-                                </tr>})}
+                    { ingredientInfoRows } 
                 </table>
                 <input type="button" value="Add Ingredient" onClick={this.handleAddIngredient} />
                 <input type="submit" value="Update" href="{{ url_for('create.index') }}" />
