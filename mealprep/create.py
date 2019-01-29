@@ -39,10 +39,12 @@ def create_list():
 @bp.route('/add', methods=('GET', 'POST'))
 def add_recipe():
     if request.method == 'POST':
-        recipe_name = request.form['recipe_name'].capitalize()
-        meal_served = request.form['meal_served'].capitalize()
-        serving_size = request.form['serving_size']
-        ingredient_info = request.form['ingredient_info']
+        print("in add_recipe")
+        recipe_to_add_info = request.get_json()
+        recipe_name = recipe_to_add_info['recipeName']
+        meal_served = recipe_to_add_info['mealServed']
+        serving_size = recipe_to_add_info['servingSize']
+        ingredient_info = recipe_to_add_info['ingredientInfo']
         #ingredient_info is string in same format that is entered into text area
         #split ingredient info into amount, measurement, name for each ingredient
         recipe_info = ParseRecipe.parse_ingredient_info(ingredient_info)
@@ -62,8 +64,7 @@ def add_recipe():
                     ' VALUES ((SELECT id from recipe WHERE recipe_name=?), ?, ?, ?)',
                     (recipe_name, ingredient, measurement, amount))
         db.commit()
-        return redirect(url_for('create.index'))
-    return render_template('foodlist/add.html')
+    return jsonify("success")
 
 @bp.route('/edit', methods=('GET', 'POST'))
 def select_recipe_to_edit():
@@ -106,37 +107,7 @@ def edit_recipe():
         update_recipe(recipe_ID, recipe_name, meal_served, serving_size)
         update_ingredient_info(ingredient_list, recipe_ID)
         print(ingredient_info)
-        return jsonify("test")
-        # ingredient_ids = [row['id'] for row in ingredient_info]
-        # amounts = request.form.getlist('amount')
-        # ingredients = request.form.getlist('ingredient')
-        # measurements = request.form.getlist('measurement')
-        # # create dict to associate ingredient_id with correct
-        # # amount, ingredient, measurement
-        # ingredient_info_dictionary = create_ingredient_info_dict(
-        #         ingredient_ids, amounts, ingredients, measurements)
-        # #update database libraries with new information
-        # update_recipe(id, recipe_name, meal_served, serving_size)
-        # update_ingredient_info(ingredient_info_dictionary, id)
-        # return redirect(url_for('create.index'))
-    # return render_template('foodlist/edit.html', recipe_info=recipe_info, 
-    #                        ingredient_info=ingredient_info)
-    
-# commit new ingredient_info from user into database for correct recipe
-# and ingredient based on their respective id    
-def update_ingredient_info(ingredient_list, recipe_ID):
-    db = get_db()
-    for ingredient in ingredient_list:
-        ingredient_id = ingredient.ingredient_id
-        amount = ingredient.amount
-        ingredient_name = ingredient.name
-        measurement = ingredient.measurement
-        db.execute(
-            'UPDATE ingredient SET ingredient = ?, measurement = ?,'
-            ' amount = ? WHERE recipe_id = ? AND id = ?',
-            (ingredient_name, measurement, amount, recipe_ID, ingredient_id)
-        )
-    db.commit()
+        return jsonify("success")
 
 @bp.route('/select', methods=('GET', 'POST'))
 def fetch_recipes():
@@ -201,7 +172,22 @@ def grocery_list():
                                                 ingredient_amounts,
                                                 ingredient_measurements)
         return jsonify(grocery_list)
-        
+
+# commit new ingredient_info from user into database for correct recipe
+# and ingredient based on their respective id    
+def update_ingredient_info(ingredient_list, recipe_ID):
+    db = get_db()
+    for ingredient in ingredient_list:
+        ingredient_id = ingredient.ingredient_id
+        amount = ingredient.amount
+        ingredient_name = ingredient.name
+        measurement = ingredient.measurement
+        db.execute(
+            'UPDATE ingredient SET ingredient = ?, measurement = ?,'
+            ' amount = ? WHERE recipe_id = ? AND id = ?',
+            (ingredient_name, measurement, amount, recipe_ID, ingredient_id)
+        )
+    db.commit()        
     
 def check_create_input_for_errors(start_day, number_days):        
     valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",

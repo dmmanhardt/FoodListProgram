@@ -32,7 +32,7 @@ class Edit extends Component {
 
         this.props.history.push({
             pathname: '/EditRecipe',
-            search: '?query=abc',
+            // search: '?query=abc',
             state: { recipeToEditInfo: recipeToEditInfo }
         })};
 

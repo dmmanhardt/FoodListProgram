@@ -5,6 +5,7 @@ class Add extends Component {
         super(props);
 
         this.initialState = {
+            // recipeToAddInfo: []
             recipeName: "",
             mealServed: "",
             servingSize: "",
@@ -16,14 +17,42 @@ class Add extends Component {
 
     handleChange = event => {
         const { name, value } = event.target;
+        // const updatedState = this.state;
+        // updatedState[name] = value;
 
         this.setState({
             [name] : value
         });
     }
 
-    handleSubmitRecipe = () => {
-        // POST recipe info to API
+    // create recipe class to store recipeInfo in, then stringify whole recipe and
+    // pass to API?
+    handleAddRecipe = () => {
+        const recipeName = this.state.recipeName;
+        const mealServed = this.state.mealServed;
+        const servingSize = this.state.servingSize;
+        const ingredientInfo = this.state.ingredientInfo;
+        const addRecipeUrl = "http://localhost:5000/add";
+
+        fetch(addRecipeUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                // recipeName
+                {recipeName, mealServed, servingSize, ingredientInfo}
+            )
+        })
+            .then(result => result.json())
+            // add resulting ingredient info to recipeToEditInfo
+            .then((result) => {
+                console.log(result)
+                });   
+        this.props.history.push({
+            pathname: '/'
+        }); 
     }
 
     render() {
@@ -48,10 +77,8 @@ class Add extends Component {
                     value={this.servingSize}
                     onChange={this.handleChange} />
                 <label>Ingredient List (paste ingredient list here)</label>
-                <textarea name="ingredientInfo">
-                    {this.ingredientInfo}
-                </textarea>
-                <input type="submit" value="Add" href="{{ url_for('create.index') }}" />
+                <textarea name="ingredientInfo" value={this.ingredientInfo} onChange={this.handleChange} />
+                <input type="submit" value="Add Recipe!" onClick={this.handleAddRecipe} />
             </form>
         );
     }
