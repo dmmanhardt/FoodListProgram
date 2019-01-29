@@ -77,11 +77,7 @@ class EditRecipe extends Component {
 
     handleSubmitEdits = () => {
         const recipeToEditInfo = this.state.recipeToEditInfo;
-        const { recipeID, recipeName } = recipeToEditInfo;
         const editRecipeUrl = "http://localhost:5000/edit_recipe";
-
-        console.log(recipeName);
-        console.log(recipeID);
 
         fetch(editRecipeUrl, {
             method: 'POST',
@@ -90,8 +86,7 @@ class EditRecipe extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(
-                recipeName,
-                recipeID
+                recipeToEditInfo
             )
         })
             .then(result => result.json())
