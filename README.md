@@ -11,8 +11,7 @@ choose a recipe for each meal for each day specified. The recipe will then be di
 picked for each meal. This can then be saved to the location the program is installed in.
 
 ## **Future Plans**:
+1. Switching front-end to be JavaScript/React based. (In progress)
 1. Add an option to change where the grocery shopping list is saved.
 1. Add an option to email the grocery shopping list.
-1. Cleaning up HTML templates
-1. Switching front-end to be JavaScript/React based.
 1. Finish unit testing with pytest

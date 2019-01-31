@@ -17,6 +17,7 @@ def parse_ingredient_info(ingredient_info):
          "stick": ["stick", "sticks"], "clove": ["cloves", "clove"], "can": ["cans", "can"], "large": ["large"],
          "small": ["small"], "scoop": ["scoop", "scoops"], "filets": ["filet", "filets"], "sprig": ["sprigs", "sprig"]}
     ingredient_info = format_ingredient_info(ingredient_info)
+    print(ingredient_info)
     for row in ingredient_info:
         amount = ''
         measurement = ''
@@ -25,8 +26,12 @@ def parse_ingredient_info(ingredient_info):
         row = row.split()
         for word in row:
             if check_for_numbers(word) == True:
+                print(word)
                 removal_list.append(word)
-                word = float(sum(Fraction(s) for s in word.split()))
+                try:
+                    word = float(sum(Fraction(s) for s in word.split()))
+                except:
+                    continue
                 if amount != '':
                     amount += word
                 else:

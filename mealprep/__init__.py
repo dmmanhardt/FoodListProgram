@@ -1,10 +1,12 @@
 import os
 from flask import Flask
+from flask_cors import CORS, cross_origin
 
 
 def create_app(test_config=None):
     # creates and configures app
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
     base_directory = os.path.dirname(os.path.abspath(__file__))
     app.config.from_mapping(
         SECRET_KEY='dev',

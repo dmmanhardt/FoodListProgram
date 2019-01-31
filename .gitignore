@@ -2,6 +2,8 @@ venv/
 
 mealprep/__pycache__/
 
+mealprep/__pycache__/*.pyc
+
 *.pyc
 __pycache__/
 
