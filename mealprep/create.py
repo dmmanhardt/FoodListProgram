@@ -109,6 +109,13 @@ def edit_recipe():
         print(ingredient_info)
         return jsonify("success")
 
+@bp.route('/delete_recipe', methods=('GET', 'POST'))
+def delete_recipe():
+    if request.method =='POST':
+        recipe_to_be_deleted = request.get_json()
+        delete_recipe_from_db(recipe_to_be_deleted)
+        return jsonify("success")
+
 @bp.route('/select', methods=('GET', 'POST'))
 def fetch_recipes():
     recipe_list = []
@@ -187,8 +194,17 @@ def update_ingredient_info(ingredient_list, recipe_ID):
             ' amount = ? WHERE recipe_id = ? AND id = ?',
             (ingredient_name, measurement, amount, recipe_ID, ingredient_id)
         )
-    db.commit()        
-    
+    db.commit()  
+
+def delete_recipe_from_db(recipe_to_be_deleted):
+    db = get_db()
+    db.execute(
+        'DELETE FROM recipe'
+        ' WHERE id = ?',
+        (recipe_to_be_deleted,)
+    )     
+    db.commit()
+
 def check_create_input_for_errors(start_day, number_days):        
     valid_days = ("Sunday", "Monday", "Tuesday", "Wednesday",
                   "Thursday", "Friday", "Saturday")

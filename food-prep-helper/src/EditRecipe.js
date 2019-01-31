@@ -99,6 +99,30 @@ class EditRecipe extends Component {
         });
     }
 
+    handleDeleteRecipe = () => {
+        const recipeToDelete = this.state.recipeToEditInfo.recipeID;
+        const deleteRecipeUrl = "http://localhost:5000/delete_recipe";
+
+        fetch(deleteRecipeUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                recipeToDelete
+            )
+        })
+            .then(result => result.json())
+            .then(result => {
+                console.log(result);
+            })
+        
+        this.props.history.push({
+            pathname: '/'
+        });
+    }
+
     render() {
         // checks to see if ingredientInfo exists, then creates new row for
         // each ingredient that lists ingredient info
@@ -147,6 +171,7 @@ class EditRecipe extends Component {
                 </table>
                 <input type="button" value="Add Ingredient" onClick={this.handleAddIngredient} />
                 <input type="submit" value="Update Recipe!" onClick={this.handleSubmitEdits} />
+                <input type="submit" value="Delete Recipe" onClick={this.handleDeleteRecipe} />
             </form>
         )
     }
